@@ -14,3 +14,6 @@ build/
 .idea/
 .vscode/
 *.swp
+
+# R1 test certs
+plugin/certs/
