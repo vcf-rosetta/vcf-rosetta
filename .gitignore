@@ -17,3 +17,6 @@ build/
 
 # R1 test certs
 plugin/certs/
+
+# R1 filled-in config (has vCenter host/user) — keep local
+plugin/r1.env
