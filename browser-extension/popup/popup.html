@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <h1>vCenter 中文界面</h1>
+
+  <label class="row">
+    <span>启用翻译</span>
+    <input type="checkbox" id="enabled" />
+  </label>
+
+  <div class="field">
+    <label for="hosts">仅在这些主机启用(每行一个,留空=自动检测 vCenter 页面)</label>
+    <textarea id="hosts" rows="4" placeholder="vc.example.com&#10;172.20.10.50"></textarea>
+  </div>
+
+  <button id="save">保存并应用</button>
+  <p class="hint" id="status"></p>
+  <p class="meta">词表:12,818 条 · 保存后刷新页面生效</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
