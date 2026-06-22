@@ -36,5 +36,8 @@ button {
   cursor: pointer;
 }
 button:hover { background: #18633a; }
+button.secondary { background: #4a5b66; margin-top: 8px; }
+button.secondary:hover { background: #3a4951; }
+hr { border: none; border-top: 1px solid #e3e8ec; margin: 14px 0 10px; }
 .hint { color: #1d7a46; font-size: 12px; min-height: 14px; margin: 8px 0 0; }
 .meta { color: #889; font-size: 11px; margin: 6px 0 0; }

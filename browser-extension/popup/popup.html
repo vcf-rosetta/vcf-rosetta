@@ -19,6 +19,14 @@
 
   <button id="save">保存并应用</button>
   <p class="hint" id="status"></p>
+
+  <hr />
+  <label class="row">
+    <span>收集未翻译词条(调试)</span>
+    <input type="checkbox" id="collect" />
+  </label>
+  <button id="dump" class="secondary">导出未翻译词条</button>
+  <p class="meta">浏览缺词页面(任务/告警等)后点导出,把 JSON 发给开发补词。</p>
   <p class="meta">词表:12,818 条 · 保存后刷新页面生效</p>
 
   <script src="popup.js"></script>
