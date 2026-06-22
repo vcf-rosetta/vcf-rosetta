@@ -53,6 +53,33 @@
     );
   }
 
+  // ── 受控模式替换 ──────────────────────────────────────────
+  // 用于"数字动态、后缀固定"的场景(如 "267.45 GHz free")。仅匹配高度具体的
+  // 安全模式,避免误翻别处的同名词。精确匹配未命中时才尝试。
+  const PHRASES = [
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+free$/i, '$1 空闲'],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+used$/i, '$1 已用'],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+capacity$/i, '$1 容量'],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+available$/i, '$1 可用'],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+allocated$/i, '$1 已分配'],
+    [/^Last updated at\b/i, '最后更新于'],
+    [/^Updated\b/i, '已更新'],
+    [/^(\d+)\s+days?$/i, '$1 天'],
+    [/^(\d+)\s+hours?$/i, '$1 小时'],
+    [/^(\d+)\s+minutes?$/i, '$1 分钟'],
+    [/^(\d+)\s+seconds?$/i, '$1 秒'],
+    [/^(\d+)\s+days?\s+ago$/i, '$1 天前'],
+    [/^(\d+)\s+hours?\s+ago$/i, '$1 小时前'],
+    [/^(\d+)\s+minutes?\s+ago$/i, '$1 分钟前'],
+    [/^a few seconds ago$/i, '几秒前'],
+  ];
+  function applyPhrases(s) {
+    for (var i = 0; i < PHRASES.length; i++) {
+      if (PHRASES[i][0].test(s)) return s.replace(PHRASES[i][0], PHRASES[i][1]);
+    }
+    return s;
+  }
+
   // ── 文本节点翻译 ──────────────────────────────────────────
   function translateText(node) {
     if (node.__vcZh) return;
@@ -63,7 +90,15 @@
     if (zh && zh !== trimmed) {
       node.nodeValue = raw.replace(trimmed, zh); // 保留首尾空白
       node.__vcZh = true;
-    } else if (!zh) {
+      return;
+    }
+    if (zh) return; // 命中但译文==原文(专有名词),不动
+    // 精确未命中:试受控模式替换
+    const ph = applyPhrases(trimmed);
+    if (ph !== trimmed) {
+      node.nodeValue = raw.replace(trimmed, ph);
+      node.__vcZh = true;
+    } else {
       recordMissing(trimmed);
     }
   }
