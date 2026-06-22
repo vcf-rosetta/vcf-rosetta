@@ -8,20 +8,22 @@ cd "$(dirname "$0")/.."        # -> plugin/
 rm -rf dist build-tmp
 mkdir -p dist build-tmp
 
-# Root of the zip: manifest + UI + bundled data (glossary + alarm explanations).
-# Data is inlined as JS (window.__glossary / window.__alarms) so the plugin works
-# fully offline inside vCenter — no backend/fetch needed for the MVP.
+# Root of the zip: manifest + UI + per-locale data files. The plugin fetches the
+# selected language's data at runtime (offline inside vCenter; only the chosen
+# language is loaded). Add a locale by dropping in glossary.<loc>.json +
+# alarm-explanations.<loc>.json and a popup/UI option.
 cp manifest/plugin.json build-tmp/
 cp ui/index.html ui/app.js ui/app.css ui/vc-api.js build-tmp/
 
-node -e '
-const fs=require("fs");
-const g=JSON.parse(fs.readFileSync("i18n/glossary.zh-CN.json","utf8"));
-fs.writeFileSync("build-tmp/glossary-data.js","window.__glossary="+JSON.stringify(g)+";\n");
-const a=JSON.parse(fs.readFileSync("semantics/alarm-explanations.zh-CN.json","utf8"));
-fs.writeFileSync("build-tmp/alarm-data.js","window.__alarms="+JSON.stringify(a)+";\n");
-console.log("bundled glossary:",Object.keys(g).length,"terms; alarms:",Object.keys(a).filter(k=>k!=="_meta").length);
-'
+# 各语言数据(术语表 + 告警解释库)
+for g in i18n/glossary.*.json; do
+  case "$g" in *conflicts*|*overrides*) continue;; esac
+  cp "$g" build-tmp/
+done
+cp semantics/alarm-explanations.*.json build-tmp/
+
+echo "bundled locales:"
+ls build-tmp/glossary.*.json | sed 's#.*/glossary\.##; s#\.json##' | tr '\n' ' '; echo
 
 ( cd build-tmp && zip -r ../dist/plugin.zip . >/dev/null )
 rm -rf build-tmp

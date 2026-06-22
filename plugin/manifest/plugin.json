@@ -29,16 +29,19 @@
         "i18n": {
             "locales": [
                 "en-US",
-                "zh-CN"
+                "zh-CN",
+                "de-DE"
             ],
             "definitions": {
                 "vcfrosetta.plugin.name": {
                     "en-US": "VCF Rosetta",
-                    "zh-CN": "VCF Rosetta 中文运维"
+                    "zh-CN": "VCF Rosetta 运维助手",
+                    "de-DE": "VCF Rosetta Betriebsassistent"
                 },
                 "vcfrosetta.assistant.title": {
-                    "en-US": "Chinese Ops Assistant",
-                    "zh-CN": "中文运维助手"
+                    "en-US": "Ops Assistant",
+                    "zh-CN": "运维助手",
+                    "de-DE": "Betriebsassistent"
                 }
             }
         }

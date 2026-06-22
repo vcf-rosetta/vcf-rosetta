@@ -9,6 +9,9 @@ body {
 header { padding: 14px 20px 8px; }
 header h1 { font-size: 17px; margin: 0; }
 header .sub { color: #647c8a; font-size: 12px; }
+.head-row { display: flex; align-items: center; justify-content: space-between; }
+.lang { font-size: 12px; color: #647c8a; display: flex; align-items: center; gap: 6px; }
+.lang select { font-size: 13px; padding: 3px 6px; border: 1px solid #ccd6db; border-radius: 4px; }
 
 .tabs { display: flex; gap: 4px; padding: 0 20px; border-bottom: 1px solid #d4dde2; }
 .tab {

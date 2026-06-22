@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "purpose": "Alarm-Erklärungsbibliothek (Deutsch). Ordnet englische vCenter-Alarmnamen einer deutschen Erklärung zu: Symptom, mögliche Ursachen, empfohlene Maßnahmen.",
+    "schema": "key = englischer vCenter-Alarmname (exakte Übereinstimmung); Wert = { name, severity: info|warning|critical, symptom, causes:[], actions:[] }",
+    "version": "0.1.0",
+    "locale": "de"
+  },
+
+  "Host connection and power state": {
+    "name": "Hostverbindung und Energiestatus",
+    "severity": "critical",
+    "symptom": "vCenter hat die Verbindung zum ESXi-Host verloren, oder der Energiestatus des Hosts ist abnormal.",
+    "causes": ["Management-Netzwerk des Hosts unterbrochen oder vmk0 ausgefallen", "hostd-/vpxa-Agentdienst gestoppt", "Host abgestürzt (PSOD) oder ausgeschaltet", "Firewall-/Routingproblem zwischen vCenter und Host"],
+    "actions": ["Management-IP des Hosts anpingen und Netzwerkerreichbarkeit prüfen", "Über iDRAC/iLO prüfen, ob der Host online ist bzw. ein PSOD vorliegt", "Per SSH am Host die Management-Agents neu starten: services.sh restart oder /etc/init.d/hostd restart", "Verbindung von vCenter zum Host über Port 902/443 prüfen"]
+  },
+  "Host connection failure": {
+    "name": "Hostverbindungsfehler",
+    "severity": "critical",
+    "symptom": "vCenter kann den Host nicht erreichen; der Host wird als „reagiert nicht“ angezeigt.",
+    "causes": ["Management-Agent (hostd/vpxa) reagiert nicht", "Störung im Management-Netzwerk", "Zertifikats- oder Zeitabweichung führt zu Authentifizierungsfehler"],
+    "actions": ["Management-Netzwerk und Ports prüfen", "Management-Agents des Hosts neu starten", "Zeitsynchronisation (NTP) zwischen Host und vCenter prüfen"]
+  },
+  "Host CPU usage": {
+    "name": "CPU-Auslastung des Hosts",
+    "severity": "warning",
+    "symptom": "Die CPU-Auslastung des Hosts liegt dauerhaft über dem Schwellenwert.",
+    "causes": ["Zu hohe VM-Last oder starke vCPU-Überbelegung auf dem Host", "Einzelne VM verbraucht außer Kontrolle CPU", "DRS nicht ausbalanciert oder deaktiviert"],
+    "actions": ["VMs mit höchster CPU-Nutzung auf dem Host ermitteln", "DRS aktivieren bzw. Automatisierungsgrad anpassen, um Last zu verteilen", "CPU der außer Kontrolle geratenen VM begrenzen oder Anwendung prüfen", "Bei Bedarf Host zum Cluster hinzufügen"]
+  },
+  "Host memory usage": {
+    "name": "Arbeitsspeicherauslastung des Hosts",
+    "severity": "warning",
+    "symptom": "Die Speicherauslastung des Hosts ist dauerhaft hoch; ggf. Swapping/Ballooning.",
+    "causes": ["Zu starke Speicherüberbelegung", "Zu hohe Speicherreservierung von VMs", "Unzureichende Speicherkapazität des Hosts"],
+    "actions": ["VMs mit höchstem Speicherverbrauch ermitteln", "Auf Ballooning/Swapping prüfen (Leistungsdiagramme)", "VMs per DRS verschieben oder Hostspeicher erweitern"]
+  },
+  "Datastore usage on disk": {
+    "name": "Datenspeicherauslastung",
+    "severity": "warning",
+    "symptom": "Der belegte Speicherplatz des Datenspeichers überschreitet den Schwellenwert und nähert sich der Vollauslastung.",
+    "causes": ["Wachstum von VM-Festplatten/Snapshots", "Verwaiste oder verworfene Dateien belegen Platz", "Thick-Provisioning reserviert Platz"],
+    "actions": ["Große Dateien/Snapshots nach Belegung sortieren und finden", "Veraltete Snapshots und verwaiste Dateien bereinigen", "Einige VMs per Storage vMotion auf andere Datenspeicher verschieben", "Datenspeicherkapazität erweitern"]
+  },
+  "Datastore cluster usage on disk": {
+    "name": "Datenspeicher-Cluster-Auslastung",
+    "severity": "warning",
+    "symptom": "Die Gesamtauslastung des Datenspeicher-Clusters überschreitet den Schwellenwert.",
+    "causes": ["Mehrere Datenspeicher im Cluster nähern sich der Vollauslastung", "SDRS nicht aktiviert oder hat keinen Ausgleich ausgelöst"],
+    "actions": ["Prüfen, ob SDRS aktiviert ist, und Ausgleichsempfehlungen ansehen", "Datenspeicher erweitern oder dem Cluster hinzufügen", "Wiederverwendbaren Speicherplatz bereinigen"]
+  },
+  "vSAN health alarm": {
+    "name": "vSAN-Integritätsalarm",
+    "severity": "critical",
+    "symptom": "Die vSAN-Integritätsprüfung hat Probleme erkannt (Netzwerk/Festplatte/Kapazität/Objekte).",
+    "causes": ["Ausfall einer Festplattengruppe oder Cache-Festplatte", "vSAN-Netzwerkproblem (Multicast/Unicast, MTU)", "Unzureichende Kapazität oder nicht konforme Objekte", "Versions-/Treiberinkompatibilität"],
+    "actions": ["vSAN Skyline Health öffnen und die konkreten Fehlerpunkte prüfen", "Nach Fehlerkategorie behandeln: Festplatte → tauschen/neu aufbauen, Netzwerk → MTU/Verbindung prüfen", "Ausreichende Redundanzreserve der Kapazität sicherstellen", "HCL sowie Treiber-/Firmwareversion abgleichen"]
+  },
+  "HA VM failover failed": {
+    "name": "HA-VM-Failover fehlgeschlagen",
+    "severity": "critical",
+    "symptom": "Nach einem Hostausfall konnte vSphere HA die betroffenen VMs nicht auf anderen Hosts neu starten.",
+    "causes": ["Nicht genügend Clusterressourcen für den Neustart", "Beschränkung durch Zulassungssteuerung", "Datenspeicher der VM-Dateien nicht erreichbar", "Kompatibilität/Netzwerk nicht erfüllt"],
+    "actions": ["Clusterressourcen und Zulassungssteuerung prüfen", "Sicherstellen, dass Zielhosts Datenspeicher und Netzwerk der VM erreichen", "HA-Ereignisse prüfen, um die Ursache zu finden", "Bei Bedarf VM manuell auf passendem Host einschalten"]
+  },
+  "HA host status": {
+    "name": "HA-Hoststatus",
+    "severity": "warning",
+    "symptom": "vSphere HA meldet einen abnormalen Hoststatus (isoliert, Netzwerkpartition oder Agent nicht erreichbar).",
+    "causes": ["Management-/Heartbeat-Netzwerkstörung führt zu Isolation oder Partition", "FDM-Agent abnormal", "Heartbeat-Datenspeicher nicht erreichbar"],
+    "actions": ["Management-Netzwerk und Heartbeat-Datenspeicher prüfen", "HA auf dem Host neu konfigurieren (Reconfigure for vSphere HA)", "FDM-Protokolle prüfen"]
+  },
+  "Network uplink redundancy lost": {
+    "name": "Netzwerk-Uplink-Redundanz verloren",
+    "severity": "warning",
+    "symptom": "Die Uplink-Redundanz des Switches ist verloren; nur noch ein physischer Uplink vorhanden.",
+    "causes": ["Eine physische NIC ist ausgefallen oder Kabel/Transceiver defekt", "Portausfall am vorgelagerten physischen Switch", "NIC-Treiber-/Firmwareproblem"],
+    "actions": ["Ausgefallenen vmnic ermitteln; Kabel/Transceiver/Gegenport prüfen", "NIC-Teaming-Richtlinie und Redundanzkonfiguration prüfen", "Defekte Hardware tauschen und Redundanz bestätigen"]
+  },
+  "Host hardware health": {
+    "name": "Hardwareintegrität des Hosts",
+    "severity": "warning",
+    "symptom": "Hardwaresensoren des Hosts (Netzteil/Lüfter/Temperatur/Speicher) melden Abweichungen.",
+    "causes": ["Netzteil-/Lüfterausfall", "Übertemperatur", "Warnung bei Speicher oder anderen Komponenten"],
+    "actions": ["Unter Überwachung → Hardwareintegrität den konkreten Sensor prüfen", "Über iDRAC/iLO die Hardwarewarnungen abgleichen", "Defekte Komponente beim Hardwarehersteller tauschen lassen"]
+  },
+  "Host IPMI System Event Log status": {
+    "name": "Status des IPMI-Systemereignisprotokolls",
+    "severity": "warning",
+    "symptom": "Das IPMI-Systemereignisprotokoll (SEL) des Hosts meldet ein Hardwareereignis.",
+    "causes": ["Der BMC hat ein Hardwarefehlerereignis aufgezeichnet", "SEL ist voll"],
+    "actions": ["SEL ansehen und exportieren, um das Ereignis zu lokalisieren", "Nach Behebung des Hardwareproblems das SEL leeren", "Den Alarm in vCenter auf Normal zurücksetzen"]
+  },
+  "Certificate status": {
+    "name": "Zertifikatsstatus",
+    "severity": "warning",
+    "symptom": "Ein Zertifikat läuft demnächst ab oder ist bereits abgelaufen.",
+    "causes": ["Maschinen-/Lösungszertifikat läuft ab", "Automatische Erneuerung nicht aktiviert"],
+    "actions": ["Unter Verwaltung → Zertifikate die ablaufenden Zertifikate prüfen", "Zertifikat erneuern oder ersetzen", "Automatische Erneuerung aktivieren, um erneutes Ablaufen zu vermeiden"]
+  },
+  "License capacity monitoring": {
+    "name": "Lizenzkapazitätsüberwachung",
+    "severity": "warning",
+    "symptom": "Die Lizenznutzung nähert sich der lizenzierten Kapazität oder überschreitet sie; bzw. die Evaluierungsversion läuft demnächst ab.",
+    "causes": ["Lizenzkapazität deckt die aktuelle CPU-/Kern-/Speichermenge nicht", "Es wird eine Evaluierungsversion verwendet, die bald abläuft"],
+    "actions": ["Unter Verwaltung → Lizenzierung Nutzung und Ablauf prüfen", "In VCF 9 wird die Lizenzierung über VCF Operations verwaltet", "Lizenz aufstocken oder Ressourcen anpassen"]
+  },
+  "Virtual machine CPU usage": {
+    "name": "CPU-Auslastung der VM",
+    "severity": "warning",
+    "symptom": "Die CPU-Auslastung der VM liegt dauerhaft über dem Schwellenwert.",
+    "causes": ["Hohe Anwendungslast", "Unzureichende vCPU-Konfiguration", "Hoher CPU-Ready-Wert (Hostkonkurrenz)"],
+    "actions": ["Prozesse in der VM und den CPU-Ready-Wert prüfen", "vCPU erhöhen oder VM auf weniger belasteten Host verschieben", "Anwendungsebene auf Auffälligkeiten prüfen"]
+  },
+  "Virtual machine memory usage": {
+    "name": "Arbeitsspeicherauslastung der VM",
+    "severity": "warning",
+    "symptom": "Die Speicherauslastung der VM ist dauerhaft hoch.",
+    "causes": ["Hoher Speicherverbrauch der Anwendung", "Unzureichende Speicherkonfiguration", "Hostspeicherkonkurrenz führt zu Rückgewinnung"],
+    "actions": ["Aktiven/verbrauchten Speicher der VM und mögliches Ballooning prüfen", "Speicherkonfiguration erhöhen", "Hostspeicherkonkurrenz entschärfen"]
+  },
+  "Virtual machine consolidation needed status": {
+    "name": "VM-Konsolidierung erforderlich",
+    "severity": "warning",
+    "symptom": "Die VM hat redundante Snapshot-Festplatten, die konsolidiert werden müssen.",
+    "causes": ["Festplatten nach Snapshot-Löschung nicht erfolgreich konsolidiert", "Von Sicherungssoftware hinterlassene Snapshots"],
+    "actions": ["Für die VM „Konsolidieren“ ausführen", "Sicherstellen, dass Snapshots korrekt bereinigt wurden", "Prüfen, ob Sicherungsaufträge Snapshots hinterlassen"]
+  },
+  "Migration error": {
+    "name": "Migrationsfehler",
+    "severity": "warning",
+    "symptom": "vMotion-/Storage-vMotion-Migration fehlgeschlagen.",
+    "causes": ["CPU-Inkompatibilität zwischen Quell-/Zielhost (EVC nicht aktiviert)", "Störung im vMotion-Netzwerk", "Unzureichende Zielressourcen", "Datenspeicher nicht erreichbar"],
+    "actions": ["Sicherstellen, dass im Cluster eine passende EVC-Baseline aktiviert ist", "Verbindung des vMotion-VMkernel-Netzwerks prüfen", "Ausreichende Ressourcen von Zielhost/Datenspeicher sicherstellen", "Den konkreten Fehler in den Aufgabendetails prüfen"]
+  }
+}

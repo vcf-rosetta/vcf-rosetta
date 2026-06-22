@@ -3,49 +3,51 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VCF Rosetta 中文运维助手</title>
+  <title>VCF Rosetta</title>
   <link rel="stylesheet" href="app.css" />
 </head>
 <body>
   <header>
-    <h1>VCF Rosetta · 中文运维助手</h1>
-    <span class="sub">资产 / 告警 / 任务中文化 · 告警解释 · 术语查询</span>
+    <div class="head-row">
+      <h1 id="title">VCF Rosetta</h1>
+      <label class="lang"><span id="lang-label">语言</span>
+        <select id="lang">
+          <option value="zh-CN">简体中文</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </label>
+    </div>
+    <span class="sub" id="subtitle"></span>
   </header>
 
   <nav class="tabs">
-    <button class="tab active" data-tab="overview">资产总览</button>
-    <button class="tab" data-tab="tasks">最近任务</button>
-    <button class="tab" data-tab="alarms">告警解释</button>
-    <button class="tab" data-tab="glossary">术语查询</button>
+    <button class="tab active" data-tab="overview"></button>
+    <button class="tab" data-tab="tasks"></button>
+    <button class="tab" data-tab="alarms"></button>
+    <button class="tab" data-tab="glossary"></button>
   </nav>
 
-  <!-- 资产总览(实时,best-effort) -->
   <section id="tab-overview" class="panel">
     <div id="overview-cards" class="cards"></div>
     <p id="overview-note" class="note"></p>
   </section>
 
-  <!-- 最近任务(实时,best-effort,任务名中文化) -->
   <section id="tab-tasks" class="panel hidden">
     <div id="tasks-box"></div>
     <p id="tasks-note" class="note"></p>
   </section>
 
-  <!-- 告警解释(静态库) -->
   <section id="tab-alarms" class="panel hidden">
-    <input id="alarm-search" class="search" type="search" placeholder="搜索告警(中文名 / 英文名 / 症状)…" />
+    <input id="alarm-search" class="search" type="search" />
     <div id="alarm-list"></div>
   </section>
 
-  <!-- 术语查询(静态词表) -->
   <section id="tab-glossary" class="panel hidden">
-    <input id="glossary-search" class="search" type="search" placeholder="输入英文或中文查术语…" />
+    <input id="glossary-search" class="search" type="search" />
     <div id="glossary-meta" class="meta"></div>
     <table class="grid"><tbody id="glossary-rows"></tbody></table>
   </section>
 
-  <script src="glossary-data.js"></script>
-  <script src="alarm-data.js"></script>
   <script src="vc-api.js"></script>
   <script src="app.js"></script>
 </body>
