@@ -5,10 +5,10 @@
 
 ## 规模
 
-- **主词表**:12,813 条唯一英→中映射(`plugin/i18n/glossary.zh-CN.json`)
+- **最终权威词表**:12,818 条唯一英→中映射(`plugin/i18n/glossary.zh-CN.json`),已定稿
 - **领域拆分**:73 个领域词典(`plugin/i18n/domains/`)
-- **冲突待定稿**:628 条(`plugin/i18n/glossary.conflicts.json`)
-- **项目补充**:核心缺口与校准(`plugin/i18n/glossary.supplement.zh-CN.json`)
+- **审定覆盖**:634 条裁决(`plugin/i18n/glossary.overrides.zh-CN.json`),628 条冲突 ✅ 全部审定完成
+- **冲突原始记录**:留档(`plugin/i18n/glossary.conflicts.json`)
 
 ## 核心运维术语(第一步插件 5 视图用)
 
@@ -67,13 +67,22 @@
 
 (完整 73 个领域见 `plugin/i18n/domains/`)
 
+## 审定原则(冲突裁决依据)
+
+- **移除/删除** = Remove/Delete;**故障转移** = Failover;**映像** = Image;**基准** = Baseline
+- **标记** = Tag;**份额** = Shares;**入站/出站** = Ingress/Egress;**来宾+内省** = Guest/Introspection
+- **软件库** = Depot;**专用** = Private;**账户** = Account;**详细信息** = Details;**身份验证** = Authentication
+- **纳管/下架** = Commission/Decommission;纯缩写保留(BGP/MTU/APD…),生僻缩写带简注(SCIM/TEP…)
+- 产品名保留原文(vSphere Replication / Traceflow / SRM…)
+
 ## 用法约定
 
-1. **取词以主词表为准,supplement 覆盖**:`glossary.zh-CN.json` → `glossary.supplement.zh-CN.json`。
+1. **直接用 `glossary.zh-CN.json`**:已定稿,审定覆盖已应用,无需再合并。
 2. **生产插件 i18n**:manifest 的 zh-CN 值,用本词表的规范译法填,保证用词一致。
 3. **专有名词保留英文**:vSphere Client、vMotion、CPU、UUID、VMXNET3 等(词表中英文==中文即此类,非漏译)。
 
-## 待办
+## 状态
 
-- [ ] 审定 628 条冲突(如"映像/镜像""基准/基准线"),定稿并入 supplement
+- [x] 628 条冲突全部审定完成(见 `glossary.overrides.zh-CN.json`)
 - [ ] 第一步插件视图取词时,核对核心术语表
+- [ ] 随产品迭代补充新词条

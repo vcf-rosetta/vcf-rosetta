@@ -8,16 +8,25 @@
 
 | 文件 | 内容 |
 |------|------|
-| `glossary.zh-CN.json` | **主词表**,12,813 条唯一英→中映射,按英文键排序。合并 73 个领域词典(冲突按加载顺序 last-wins) |
-| `glossary.supplement.zh-CN.json` | **项目补充/校准**,补齐主词表缺失的核心运维术语 + 统一冲突项规范译法。**优先级高于主词表** |
-| `glossary.conflicts.json` | 跨领域**冲突清单**(同一英文有多个译法),628 条,待人工定稿 |
-| `domains/<domain>.json` | 73 个**按领域**拆分的词典(NSX / vSAN / DRS / 存储 / 权限 / 自动化…),保留原始分类 |
+| `glossary.zh-CN.json` | **最终权威词表**,12,818 条唯一英→中映射,按英文键排序。已合并 73 个领域词典并**应用审定覆盖**,直接使用此文件即可 |
+| `glossary.overrides.zh-CN.json` | **审定覆盖表**(634 条):628 条跨领域冲突的规范裁决 + 核心补充。记录每个冲突最终选了哪个译法,已合入主词表 |
+| `glossary.conflicts.json` | 冲突**原始记录**(628 条,同英文多译法),审定前快照,留档备查 |
+| `domains/<domain>.json` | 73 个**按领域**拆分的词典(NSX / vSAN / DRS / 存储 / 权限 / 自动化…),保留原始分类,未应用审定覆盖 |
 
-## 合并优先级
+## 状态:✅ 628 条冲突已全部审定
 
-```
-glossary.zh-CN.json  →  glossary.supplement.zh-CN.json(后者覆盖)
-```
+`glossary.zh-CN.json` 已是定稿,审定覆盖已应用。如需重新生成:`master(domains) → overrides`。
+
+## 审定原则(摘要)
+
+- **移除/删除** = Remove/Delete 区分用词
+- **故障转移** = Failover(不再混用"故障切换")
+- **映像** = Image;**基准** = Baseline;**标记** = Tag;**份额** = Shares
+- **入站/出站** = Ingress/Egress;**来宾 + 内省** = Guest / Introspection
+- **软件库** = Depot;**专用** = Private;**账户** = Account;**详细信息** = Details
+- **纳管/下架** = Commission/Decommission;**身份验证** = Authentication
+- 纯缩写(BGP/MTU/APD/LUN…)保留裸缩写;生僻缩写(SCIM/TEP/NSSA…)带简注
+- 产品名保留原文(vSphere Replication / Traceflow / SRM…)
 
 ## 说明
 
