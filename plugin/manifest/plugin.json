@@ -17,8 +17,8 @@
             "monitor": {
                 "views": [
                     {
-                        "navigationId": "vcfrosetta-r1-probe",
-                        "labelKey": "vcfrosetta.r1.title",
+                        "navigationId": "vcfrosetta-assistant",
+                        "labelKey": "vcfrosetta.assistant.title",
                         "uri": "index.html"
                     }
                 ]
@@ -33,12 +33,12 @@
             ],
             "definitions": {
                 "vcfrosetta.plugin.name": {
-                    "en-US": "VCF Rosetta (R1 Probe)",
-                    "zh-CN": "VCF Rosetta(R1 验证)"
+                    "en-US": "VCF Rosetta",
+                    "zh-CN": "VCF Rosetta 中文运维"
                 },
-                "vcfrosetta.r1.title": {
-                    "en-US": "Locale Routing Probe",
-                    "zh-CN": "语言路由验证"
+                "vcfrosetta.assistant.title": {
+                    "en-US": "Chinese Ops Assistant",
+                    "zh-CN": "中文运维助手"
                 }
             }
         }

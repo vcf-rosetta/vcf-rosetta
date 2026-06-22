@@ -3,37 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VCF Rosetta — R1 Locale Probe</title>
-  <style>
-    body { font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-           margin: 24px; color: #1b2a32; }
-    h1 { font-size: 18px; }
-    .card { border: 1px solid #ccd; border-radius: 6px; padding: 16px; margin: 12px 0; }
-    .k { color: #586; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
-    .v { font-size: 15px; margin-top: 2px; word-break: break-all; }
-    .zh { font-size: 22px; font-weight: 600; }
-    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
-    td { border-bottom: 1px solid #eef; padding: 6px 8px; font-size: 14px; }
-    .ok { color: #1d7a46; } .warn { color: #b35900; }
-  </style>
+  <title>VCF Rosetta 中文运维助手</title>
+  <link rel="stylesheet" href="app.css" />
 </head>
 <body>
-  <h1>VCF Rosetta — R1 语言路由验证 / Locale Routing Probe</h1>
+  <header>
+    <h1>VCF Rosetta · 中文运维助手</h1>
+    <span class="sub">告警中文解释 + 术语查询(VCF 9 离线可用)</span>
+  </header>
 
-  <div class="card">
-    <div class="k">中文渲染自检 (iframe content — should always be Chinese)</div>
-    <div class="v zh" id="zhSample">集群 · 数据存储 · 告警 · 症状 · 建议操作</div>
-    <div class="v" style="margin-top:6px;color:#586">
-      若此行显示为中文 → 插件 iframe 内的中文渲染不受宿主语言限制(预期结果)。
-    </div>
-  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="alarms">告警解释</button>
+    <button class="tab" data-tab="glossary">术语查询</button>
+  </nav>
 
-  <div class="card">
-    <div class="k">宿主报告的 locale (what the vSphere Client tells the plugin)</div>
-    <table id="probe"><tbody></tbody></table>
-    <div class="v" id="verdict" style="margin-top:10px;"></div>
-  </div>
+  <section id="tab-alarms" class="panel">
+    <input id="alarm-search" class="search" type="search" placeholder="搜索告警(中文名 / 英文名 / 症状)…" />
+    <div id="alarm-list"></div>
+  </section>
 
-  <script src="locale-probe.js"></script>
+  <section id="tab-glossary" class="panel hidden">
+    <input id="glossary-search" class="search" type="search" placeholder="输入英文或中文查术语…" />
+    <div id="glossary-meta" class="meta"></div>
+    <table class="grid"><tbody id="glossary-rows"></tbody></table>
+  </section>
+
+  <!-- 数据(由 build-zip.sh 从 i18n / semantics 生成,打进插件包,离线可用) -->
+  <script src="glossary-data.js"></script>
+  <script src="alarm-data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

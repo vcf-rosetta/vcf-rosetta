@@ -1,0 +1,53 @@
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  margin: 0;
+  color: #21333e;
+  background: #fafcfd;
+  font-size: 14px;
+}
+header { padding: 14px 20px 8px; }
+header h1 { font-size: 17px; margin: 0; }
+header .sub { color: #647c8a; font-size: 12px; }
+
+.tabs { display: flex; gap: 4px; padding: 0 20px; border-bottom: 1px solid #d4dde2; }
+.tab {
+  background: none; border: none; padding: 8px 14px; font-size: 14px; cursor: pointer;
+  color: #4a6675; border-bottom: 2px solid transparent;
+}
+.tab.active { color: #0079b8; border-bottom-color: #0079b8; font-weight: 600; }
+
+.panel { padding: 14px 20px; }
+.hidden { display: none; }
+.search {
+  width: 100%; max-width: 520px; padding: 8px 10px; font-size: 14px;
+  border: 1px solid #ccd6db; border-radius: 4px; margin-bottom: 12px;
+}
+.meta { color: #647c8a; font-size: 12px; margin-bottom: 8px; }
+.empty { color: #889; padding: 12px 0; }
+
+/* 告警卡片 */
+.card { border: 1px solid #dbe3e7; border-left-width: 4px; border-radius: 5px; margin-bottom: 8px; background: #fff; }
+.card.sev-critical { border-left-color: #c92100; }
+.card.sev-warning { border-left-color: #e8a700; }
+.card.sev-info { border-left-color: #8a9aa6; }
+.card-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; }
+.card-head:hover { background: #f3f7f9; }
+.badge { font-size: 12px; padding: 1px 8px; border-radius: 10px; color: #fff; background: #8a9aa6; white-space: nowrap; }
+.sev-critical .badge { background: #c92100; }
+.sev-warning .badge { background: #e8a700; }
+.card-title { font-weight: 600; }
+.card-en { color: #8a9aa6; font-size: 12px; margin-left: auto; }
+.card-body { display: none; padding: 0 12px 12px 12px; }
+.card.open .card-body { display: block; }
+.symptom { margin: 4px 0 8px; }
+.block { margin: 6px 0; }
+.block b { color: #4a6675; }
+.block ul, .block ol { margin: 4px 0 0; padding-left: 20px; }
+.block li { margin: 2px 0; }
+
+/* 术语表 */
+.grid { width: 100%; border-collapse: collapse; }
+.grid td { border-bottom: 1px solid #eef2f4; padding: 6px 10px; vertical-align: top; }
+.grid td.en { color: #4a6675; width: 55%; }
+.grid td.zh { font-weight: 500; }
