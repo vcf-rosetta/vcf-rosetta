@@ -3,8 +3,16 @@
 (function () {
   'use strict';
 
-  const dict = window.__vcDict || {};
-  if (Object.keys(dict).length === 0) return;
+  // 字典按需加载:仅在确认是 vCenter 页面时 fetch dict.json,避免在每个网站注入 4MB。
+  let dict = {};
+  async function loadDict() {
+    if (Object.keys(dict).length) return true;
+    try {
+      const res = await fetch(chrome.runtime.getURL('dict.json'));
+      dict = await res.json();
+      return Object.keys(dict).length > 0;
+    } catch (e) { return false; }
+  }
 
   // ── 未翻译词条采集(调试用)──────────────────────────────
   // 开启后,把所有「未命中字典的英文文本」收集起来,供导出补词。
@@ -175,18 +183,22 @@
     });
   }
 
+  async function activateIfNeeded(cfg) {
+    if (!shouldActivate(cfg)) return;
+    if (!(await loadDict())) return;       // 仅 vCenter 页面才真正加载字典
+    if (document.body) init();
+    else document.addEventListener('DOMContentLoaded', init, { once: true });
+  }
+
   chrome.storage.sync.get({ hosts: [], enabled: true, collect: false }, cfg => {
     collect = !!cfg.collect;
-    if (shouldActivate(cfg)) {
-      if (document.body) init();
-      else document.addEventListener('DOMContentLoaded', init, { once: true });
-    }
+    activateIfNeeded(cfg);
   });
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.type === 'VC_ENABLE') init();
+    if (msg.type === 'VC_ENABLE') { loadDict().then(ok => { if (ok) init(); }); }
     else if (msg.type === 'VC_DISABLE') { observer.disconnect(); location.reload(); }
-    else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect) walkAndTranslate(document.body); }
+    else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect && Object.keys(dict).length) walkAndTranslate(document.body); }
     else if (msg.type === 'VC_DUMP') { sendResponse({ count: window.__vcDumpMissing() }); }
   });
 })();

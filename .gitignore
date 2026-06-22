@@ -28,3 +28,8 @@ plugin/dist/
 plugin/tests/node_modules/
 plugin/tests/shot-*.png
 plugin/dist/_uitest/
+
+# 官方语言包源(大文件,不入库)
+vsphere-lang.tgz
+vsphere-l10n.tgz
+vsphere-l10n-all.tgz
