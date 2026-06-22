@@ -3,13 +3,17 @@
 (function () {
   'use strict';
 
-  // 字典按需加载:仅在确认是 vCenter 页面时 fetch dict.json,避免在每个网站注入 4MB。
+  // 字典按需加载:仅在确认是 vCenter 页面时 fetch 选定语言的 dict.<lang>.json,
+  // 避免在每个网站注入数 MB。语言由用户在 popup 选择(默认 zh-CN)。
   let dict = {};
-  async function loadDict() {
-    if (Object.keys(dict).length) return true;
+  let loadedLang = null;
+  async function loadDict(lang) {
+    lang = lang || 'zh-CN';
+    if (loadedLang === lang && Object.keys(dict).length) return true;
     try {
-      const res = await fetch(chrome.runtime.getURL('dict.json'));
+      const res = await fetch(chrome.runtime.getURL('dict.' + lang + '.json'));
       dict = await res.json();
+      loadedLang = lang;
       return Object.keys(dict).length > 0;
     } catch (e) { return false; }
   }
@@ -185,19 +189,20 @@
 
   async function activateIfNeeded(cfg) {
     if (!shouldActivate(cfg)) return;
-    if (!(await loadDict())) return;       // 仅 vCenter 页面才真正加载字典
+    if (!(await loadDict(cfg.lang))) return;   // 仅 vCenter 页面才加载选定语言字典
     if (document.body) init();
     else document.addEventListener('DOMContentLoaded', init, { once: true });
   }
 
-  chrome.storage.sync.get({ hosts: [], enabled: true, collect: false }, cfg => {
+  chrome.storage.sync.get({ hosts: [], enabled: true, collect: false, lang: 'zh-CN' }, cfg => {
     collect = !!cfg.collect;
     activateIfNeeded(cfg);
   });
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.type === 'VC_ENABLE') { loadDict().then(ok => { if (ok) init(); }); }
-    else if (msg.type === 'VC_DISABLE') { observer.disconnect(); location.reload(); }
+    if (msg.type === 'VC_ENABLE') {
+      chrome.storage.sync.get({ lang: 'zh-CN' }, c => loadDict(c.lang).then(ok => { if (ok) init(); }));
+    } else if (msg.type === 'VC_DISABLE') { observer.disconnect(); location.reload(); }
     else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect && Object.keys(dict).length) walkAndTranslate(document.body); }
     else if (msg.type === 'VC_DUMP') { sendResponse({ count: window.__vcDumpMissing() }); }
   });

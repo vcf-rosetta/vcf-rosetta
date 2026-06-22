@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "vCenter 中文界面 (vcf-rosetta)",
-  "version": "2.1.0",
-  "description": "将 vCenter Server / VCF 9.x UI 实时翻译为简体中文,无需修改 vCenter 服务器。基于官方 + 审定术语词表(47,761 条)。",
+  "name": "vCenter 多语言界面 (vcf-rosetta)",
+  "version": "3.0.0",
+  "description": "将 vCenter Server / VCF 9.x UI 实时翻译为简体中文或德文,无需修改 vCenter 服务器。基于官方 + 审定术语词表。",
   "permissions": [
     "storage",
     "scripting",
@@ -10,7 +10,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "vCenter 中文界面"
+    "default_title": "vCenter 多语言界面"
   },
   "content_scripts": [
     {
@@ -26,7 +26,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "dict.json"
+        "dict.*.json"
       ],
       "matches": [
         "https://*/*"

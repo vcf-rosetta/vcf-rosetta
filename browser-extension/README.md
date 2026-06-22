@@ -21,9 +21,28 @@ browser-extension/
 
 ## 安装(开发者模式)
 
+```bash
+git clone https://github.com/vcf-rosetta/vcf-rosetta.git
+cd vcf-rosetta
+node browser-extension/build-dict.mjs    # 生成 dict.<locale>.json(从 glossary 构建,首次必跑)
+```
 1. Chrome/Edge 打开 `chrome://extensions`,开启「开发者模式」
-2. 「加载已解压的扩展程序」→ 选择本 `browser-extension/` 目录
-3. 打开 vCenter(`https://<vc>/ui`)→ 界面自动变中文
+2. 「加载已解压的扩展程序」→ 选择 `browser-extension/` 目录
+3. 打开 vCenter(`https://<vc>/ui`)→ 界面自动翻译
+
+> `dict.*.json` 是从 `plugin/i18n/glossary.*.json` 生成的(较大,不入库)。clone 后跑一次
+> `build-dict.mjs` 即可;词表更新后重跑。
+
+## 多语言:一次安装,popup 里选
+
+点扩展图标 → **翻译语言** 下拉框选:
+- **简体中文**(zh-CN,47,777 条:官方 + 审定)
+- **Deutsch 德文**(de,35,385 条:官方)
+
+切换后自动刷新当前页生效。**无需为每种语言单独安装或重新 clone**——一个扩展带多语言字典,按选择按需加载对应 `dict.<lang>.json`(仅在 vCenter 页面加载)。
+
+新增语言:`node /tmp/build-locale.mjs <locale>` 从官方语言包生成 `glossary.<locale>.json`,
+再 `build-dict.mjs` + 在 popup 下拉加一项即可。
 
 ## 配置
 

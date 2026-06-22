@@ -3,18 +3,28 @@ const enabledEl = document.getElementById('enabled');
 const hostsEl = document.getElementById('hosts');
 const statusEl = document.getElementById('status');
 const collectEl = document.getElementById('collect');
+const langEl = document.getElementById('lang');
 
 // 载入已存配置
-chrome.storage.sync.get({ enabled: true, hosts: [], collect: false }, cfg => {
+chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'zh-CN' }, cfg => {
   enabledEl.checked = !!cfg.enabled;
   hostsEl.value = (cfg.hosts || []).join('\n');
   collectEl.checked = !!cfg.collect;
+  langEl.value = cfg.lang || 'zh-CN';
 });
 
 async function activeTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab;
 }
+
+// 切换语言:保存并刷新当前页生效
+langEl.addEventListener('change', async () => {
+  await chrome.storage.sync.set({ lang: langEl.value });
+  const tab = await activeTab();
+  if (tab && tab.id != null) chrome.tabs.reload(tab.id);
+  statusEl.textContent = '已切换语言,正在刷新页面…';
+});
 
 // 采集开关:即时生效
 collectEl.addEventListener('change', async () => {
