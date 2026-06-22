@@ -46,6 +46,17 @@ header .sub { color: #647c8a; font-size: 12px; }
 .block ul, .block ol { margin: 4px 0 0; padding-left: 20px; }
 .block li { margin: 2px 0; }
 
+/* 资产总览 */
+.cards { display: flex; flex-wrap: wrap; gap: 12px; }
+.metric { min-width: 120px; flex: 1; background: #fff; border: 1px solid #dbe3e7; border-radius: 6px; padding: 16px; text-align: center; }
+.metric .num { font-size: 28px; font-weight: 700; color: #0079b8; }
+.metric .lbl { color: #647c8a; font-size: 13px; margin-top: 4px; }
+.note { color: #647c8a; font-size: 12px; margin-top: 12px; }
+.loading { color: #647c8a; }
+
+/* 表头 */
+.grid thead th { text-align: left; color: #4a6675; font-size: 12px; padding: 6px 10px; border-bottom: 2px solid #d4dde2; }
+
 /* 术语表 */
 .grid { width: 100%; border-collapse: collapse; }
 .grid td { border-bottom: 1px solid #eef2f4; padding: 6px 10px; vertical-align: top; }

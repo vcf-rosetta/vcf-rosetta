@@ -12,7 +12,7 @@ mkdir -p dist build-tmp
 # Data is inlined as JS (window.__glossary / window.__alarms) so the plugin works
 # fully offline inside vCenter — no backend/fetch needed for the MVP.
 cp manifest/plugin.json build-tmp/
-cp ui/index.html ui/app.js ui/app.css build-tmp/
+cp ui/index.html ui/app.js ui/app.css ui/vc-api.js build-tmp/
 
 node -e '
 const fs=require("fs");
