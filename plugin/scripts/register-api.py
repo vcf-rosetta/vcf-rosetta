@@ -99,6 +99,31 @@ def main():
                 print(f"NOT registered: {KEY}")
             return
 
+        if action == "dump":
+            # Dump the full extension structure of any key — use this to copy
+            # exactly how a WORKING plugin on this vCenter is registered.
+            #   python register-api.py dump com.vmware.lcm.client
+            target = sys.argv[2] if len(sys.argv) > 2 else KEY
+            ext = em.FindExtension(target)
+            if not ext:
+                print(f"NOT found: {target}")
+                return
+            print(f"=== {ext.key} v{ext.version} ===")
+            print(f"shownInSolutionManager = {getattr(ext, 'shownInSolutionManager', None)}")
+            print(f"subjectName = {getattr(ext, 'subjectName', None)}")
+            for i, c in enumerate(ext.client or []):
+                print(f"client[{i}].type    = {c.type}")
+                print(f"client[{i}].url     = {c.url}")
+                print(f"client[{i}].version = {c.version}")
+                print(f"client[{i}].company = {c.company}")
+            for i, s in enumerate(ext.server or []):
+                print(f"server[{i}].type        = {s.type}")
+                print(f"server[{i}].url         = {s.url}")
+                print(f"server[{i}].adminEmail  = {s.adminEmail}")
+                print(f"server[{i}].thumbprint  = {s.serverThumbprint}")
+                print(f"server[{i}].company     = {s.company}")
+            return
+
         if action == "unregister":
             if existing:
                 em.UnregisterExtension(KEY)
