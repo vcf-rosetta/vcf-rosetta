@@ -1,0 +1,2580 @@
+{
+  "Reset to Green": [
+    "重置为绿色",
+    "重置为正常"
+  ],
+  "Remove Datastore": [
+    "移除数据存储",
+    "删除数据存储"
+  ],
+  "Turn On Fault Tolerance": [
+    "启用容错",
+    "开启容错",
+    "打开容错"
+  ],
+  "Turn Off Fault Tolerance": [
+    "禁用容错",
+    "关闭容错"
+  ],
+  "FT Status": [
+    "FT 状态",
+    "容错状态"
+  ],
+  "Lifecycle Manager": [
+    "生命周期管理器",
+    "Lifecycle Manager"
+  ],
+  "vSphere Lifecycle Manager": [
+    "vSphere 生命周期管理器",
+    "vSphere Lifecycle Manager"
+  ],
+  "vLCM": [
+    "vLCM",
+    "vLCM（vSphere 生命周期管理器）"
+  ],
+  "Images": [
+    "映像",
+    "镜像"
+  ],
+  "Baseline": [
+    "基准",
+    "基准线"
+  ],
+  "Baselines": [
+    "基准",
+    "基准线"
+  ],
+  "Compliance Status": [
+    "合规状态",
+    "合规性状态"
+  ],
+  "Answer File": [
+    "应答文件",
+    "答案文件"
+  ],
+  "Defined In": [
+    "定义于",
+    "定义位置"
+  ],
+  "Approval Pending": [
+    "等待审批",
+    "待审批",
+    "审批待处理"
+  ],
+  "Optimizable Resources Only": [
+    "仅显示可优化资源",
+    "仅可优化资源"
+  ],
+  "FT Logging": [
+    "容错日志记录",
+    "FT 日志记录"
+  ],
+  "FT Encryption": [
+    "容错加密",
+    "FT 加密"
+  ],
+  "FT Logging Network": [
+    "容错日志记录网络",
+    "FT 日志记录网络"
+  ],
+  "vRealize Operations": [
+    "vRealize Operations",
+    "VCF Operations（原 vRealize Operations）"
+  ],
+  "vRealize Log Insight": [
+    "vRealize Log Insight",
+    "VCF Operations for Logs（原 vRealize Log Insight）"
+  ],
+  "Aria Operations for Logs": [
+    "Aria Operations for Logs",
+    "VCF Operations for Logs（原 Aria Operations for Logs）"
+  ],
+  "Aria Operations for Networks": [
+    "Aria Operations for Networks",
+    "VCF Operations for Networks"
+  ],
+  "Aria Automation": [
+    "Aria Automation",
+    "VCF Automation（原 Aria Automation）"
+  ],
+  "vRealize Automation": [
+    "vRealize Automation",
+    "VCF Automation（原 vRealize Automation）"
+  ],
+  "Cloud Builder": [
+    "Cloud Builder",
+    "Cloud Builder（已被 VCF Installer 替代）"
+  ],
+  "Request Catalog Item": [
+    "请求目录项",
+    "申请目录项"
+  ],
+  "Approval Rejected": [
+    "审批已拒绝",
+    "审批被拒绝"
+  ],
+  "Flavor Mapping": [
+    "规格映射",
+    "配置映射"
+  ],
+  "Image Mapping": [
+    "镜像映射",
+    "映像映射"
+  ],
+  "Cloud Account": [
+    "云账户",
+    "云帐户"
+  ],
+  "vSphere Pods": [
+    "vSphere Pods",
+    "vSphere Pod"
+  ],
+  "Clone to Template": [
+    "克隆到模板",
+    "克隆为模板"
+  ],
+  "Vendor Add-on": [
+    "供应商插件",
+    "供应商加载项",
+    "供应商附加组件"
+  ],
+  "Edit Image": [
+    "编辑映像",
+    "编辑镜像"
+  ],
+  "Export Image": [
+    "导出映像",
+    "导出镜像"
+  ],
+  "Import Image": [
+    "导入映像",
+    "导入镜像"
+  ],
+  "Baseline Group": [
+    "基准线组",
+    "基准组"
+  ],
+  "Upgrade Baseline": [
+    "升级基准线",
+    "升级基准"
+  ],
+  "Patch Baseline": [
+    "修补基准线",
+    "补丁基准",
+    "修补程序基准"
+  ],
+  "Extension Baseline": [
+    "扩展基准线",
+    "扩展基准"
+  ],
+  "Number of Ports": [
+    "端口数",
+    "端口数量"
+  ],
+  "DVS": [
+    "分布式交换机",
+    "DVS（分布式虚拟交换机）"
+  ],
+  "Teaming and Failover": [
+    "绑定和故障转移",
+    "组合与故障转移",
+    "组合和故障切换"
+  ],
+  "Override Port Policies": [
+    "覆盖端口策略",
+    "替代端口策略"
+  ],
+  "VCF Operations for Networks": [
+    "VCF Operations（网络）",
+    "VCF Operations for Networks（网络运维）",
+    "VCF Operations for Networks",
+    "VCF Operations 网络分析"
+  ],
+  "IPFIX": [
+    "IPFIX",
+    "IPFIX（互联网协议流信息导出）",
+    "IPFIX（IP 流信息导出）"
+  ],
+  "vRNI": [
+    "vRNI",
+    "vRNI（VMware Aria Operations for Networks）"
+  ],
+  "TKG": [
+    "TKG",
+    "TKG（Tanzu Kubernetes Grid）"
+  ],
+  "TKC": [
+    "TKC",
+    "TKC（Tanzu Kubernetes 集群）"
+  ],
+  "vSphere DRS": [
+    "vSphere DRS",
+    "vSphere DRS（分布式资源调度器）"
+  ],
+  "Partially Automated": [
+    "部分自动",
+    "部分自动化",
+    "半自动"
+  ],
+  "Fully Automated": [
+    "全自动",
+    "完全自动化"
+  ],
+  "EVC": [
+    "EVC",
+    "EVC（增强型 vMotion 兼容性）"
+  ],
+  "vSphere HA": [
+    "vSphere HA",
+    "vSphere HA（高可用性）"
+  ],
+  "HA": [
+    "HA",
+    "HA（高可用性）"
+  ],
+  "Leave Powered On": [
+    "保持开机",
+    "保持开机状态"
+  ],
+  "VM Component Protection": [
+    "VM 组件保护",
+    "虚拟机组件保护"
+  ],
+  "PDL": [
+    "PDL",
+    "PDL（永久设备丢失）",
+    "PDL（持久设备丢失）"
+  ],
+  "APD": [
+    "APD",
+    "APD（所有路径断开）",
+    "APD（所有路径关闭）",
+    "APD（所有路径已断开）"
+  ],
+  "Proactive HA": [
+    "主动式 HA",
+    "主动 HA"
+  ],
+  "vApps": [
+    "vApps",
+    "vApp"
+  ],
+  "CPU Shares": [
+    "CPU 份额",
+    "CPU 共享"
+  ],
+  "Memory Shares": [
+    "内存份额",
+    "内存共享"
+  ],
+  "Scalable Shares": [
+    "可扩展共享",
+    "可缩放份额",
+    "可扩展份额"
+  ],
+  "Proactive HA Automation Level": [
+    "主动 HA 自动化级别",
+    "主动式 HA 自动化级别"
+  ],
+  "VM-VM Affinity Rule": [
+    "虚拟机-虚拟机亲和性规则",
+    "虚拟机到虚拟机亲和性规则"
+  ],
+  "VM-Host Affinity Rule": [
+    "虚拟机-主机亲和性规则",
+    "虚拟机到主机亲和性规则"
+  ],
+  "Separate Virtual Machines": [
+    "分离虚拟机",
+    "分隔虚拟机"
+  ],
+  "Slot Policy": [
+    "时隙策略",
+    "插槽策略",
+    "槽策略"
+  ],
+  "Heartbeat Datastores": [
+    "检测信号数据存储",
+    "心跳数据存储"
+  ],
+  "Datastore with PDL": [
+    "具有 PDL 的数据存储",
+    "处于 PDL 状态的数据存储"
+  ],
+  "Datastore with APD": [
+    "具有 APD 的数据存储",
+    "处于 APD 状态的数据存储"
+  ],
+  "Native Key Provider": [
+    "本机密钥提供程序",
+    "原生密钥提供程序"
+  ],
+  "KMS": [
+    "KMS",
+    "KMS（密钥管理服务器）"
+  ],
+  "Physical Adapter": [
+    "物理网络适配器",
+    "物理适配器"
+  ],
+  "Route based on originating virtual port": [
+    "基于原始虚拟端口路由",
+    "基于始发虚拟端口的路由",
+    "基于源虚拟端口路由"
+  ],
+  "Route based on IP hash": [
+    "基于 IP 哈希路由",
+    "基于 IP 哈希的路由"
+  ],
+  "Route based on source MAC hash": [
+    "基于源 MAC 哈希路由",
+    "基于源 MAC 哈希的路由"
+  ],
+  "Use explicit failover order": [
+    "使用显式故障转移顺序",
+    "使用显式故障切换顺序"
+  ],
+  "Commission Hosts": [
+    "纳管主机",
+    "调试主机",
+    "上架主机",
+    "上线主机"
+  ],
+  "Commission": [
+    "纳管",
+    "调试",
+    "上线"
+  ],
+  "Precheck": [
+    "预检",
+    "预检查"
+  ],
+  "CSR": [
+    "CSR",
+    "CSR（证书签名请求）"
+  ],
+  "Shrink Cluster": [
+    "收缩集群",
+    "缩减集群"
+  ],
+  "FIPS Compliance": [
+    "FIPS 合规性",
+    "FIPS 合规"
+  ],
+  "Tier-0 Gateway": [
+    "第 0 层网关",
+    "Tier-0 网关"
+  ],
+  "Transit Gateways": [
+    "传输网关",
+    "中转网关",
+    "Transit Gateway（传输网关）"
+  ],
+  "Transit Gateway": [
+    "传输网关",
+    "中转网关",
+    "Transit Gateway（传输网关）",
+    "中转网关（TGW）"
+  ],
+  "Chargeback": [
+    "计费回溯",
+    "计费",
+    "费用分摊",
+    "退款管理"
+  ],
+  "Showback": [
+    "成本展示",
+    "费用展示"
+  ],
+  "VVOL": [
+    "VVol",
+    "vVol"
+  ],
+  "TPM": [
+    "TPM",
+    "TPM 保护",
+    "TPM（可信平台模块）",
+    "TPM（受信平台模块）"
+  ],
+  "Common Name": [
+    "公用名",
+    "通用名称"
+  ],
+  "Locality": [
+    "城市",
+    "所在地"
+  ],
+  "State": [
+    "状态",
+    "省/直辖市"
+  ],
+  "N-VDS": [
+    "N-VDS",
+    "N-VDS（NSX 虚拟分布式交换机）"
+  ],
+  "Datastore Heartbeating": [
+    "数据存储检测信号",
+    "数据存储心跳"
+  ],
+  "Storage DRS": [
+    "存储 DRS",
+    "Storage DRS",
+    "Storage DRS（存储 DRS）"
+  ],
+  "Memory Metric for Load Balancing": [
+    "用于负载均衡的内存指标",
+    "负载均衡内存指标"
+  ],
+  "CPU Over-Commitment": [
+    "CPU 过量使用",
+    "CPU 超额分配"
+  ],
+  "Add VM Override": [
+    "添加虚拟机覆盖",
+    "添加虚拟机替代"
+  ],
+  "VM Restart Priority": [
+    "虚拟机重启优先级",
+    "VM 重启优先级"
+  ],
+  "VM Dependency Restart Condition": [
+    "虚拟机依赖重启条件",
+    "VM 依赖关系重启条件"
+  ],
+  "Shut Down and Restart VMs": [
+    "关机（关闭来宾操作系统）并重启虚拟机",
+    "关闭并重启虚拟机"
+  ],
+  "VM Monitoring": [
+    "虚拟机监控",
+    "VM 监控"
+  ],
+  "VM Monitoring Sensitivity": [
+    "虚拟机监控灵敏度",
+    "VM 监控灵敏度"
+  ],
+  "Dedicated Failover Hosts": [
+    "专用故障切换主机",
+    "专用故障转移主机"
+  ],
+  "Reset Rule": [
+    "复位规则",
+    "重置规则"
+  ],
+  "Review details": [
+    "查看详细信息",
+    "查看详情"
+  ],
+  "Workload Mobility": [
+    "工作负载移动性",
+    "工作负载迁移"
+  ],
+  "RAV": [
+    "RAV（复制辅助 vMotion）",
+    "复制辅助 vMotion"
+  ],
+  "Network Extension": [
+    "网络扩展",
+    "网络延伸"
+  ],
+  "Immediate": [
+    "立即",
+    "紧急"
+  ],
+  "Severity": [
+    "严重性",
+    "严重程度"
+  ],
+  "Migration Wave": [
+    "迁移批次",
+    "迁移波次"
+  ],
+  "MTU": [
+    "MTU",
+    "MTU（最大传输单元）"
+  ],
+  "Physical Adapters": [
+    "物理网络适配器",
+    "物理适配器"
+  ],
+  "Wake on LAN": [
+    "网络唤醒",
+    "局域网唤醒"
+  ],
+  "Remove Port Group": [
+    "移除端口组",
+    "删除端口组"
+  ],
+  "Private VLAN": [
+    "专用 VLAN",
+    "私有 VLAN"
+  ],
+  "VDS": [
+    "VDS",
+    "VDS（vSphere 分布式交换机）"
+  ],
+  "CDP": [
+    "CDP",
+    "CDP（Cisco 发现协议）"
+  ],
+  "LLDP": [
+    "LLDP",
+    "LLDP（链路层发现协议）"
+  ],
+  "NIC Teaming": [
+    "NIC 绑定",
+    "NIC 组合"
+  ],
+  "WWPN": [
+    "WWPN",
+    "WWPN（全球端口名称）"
+  ],
+  "WWNN": [
+    "WWNN",
+    "WWNN（全球节点名称）"
+  ],
+  "Schedule New Task": [
+    "计划新任务",
+    "创建新计划任务"
+  ],
+  "Object Count": [
+    "对象计数",
+    "对象数量"
+  ],
+  "Deduplication and Compression": [
+    "重复数据消除和压缩",
+    "去重和压缩",
+    "重复数据删除和压缩"
+  ],
+  "Review Passwords": [
+    "查看密码",
+    "审阅密码"
+  ],
+  "VM Management Network": [
+    "虚拟机管理网络",
+    "VM 管理网络"
+  ],
+  "Teaming Policy": [
+    "绑定策略",
+    "组合策略"
+  ],
+  "Route Based on Originating Virtual Port": [
+    "基于发起虚拟端口的路由",
+    "基于源虚拟端口的路由"
+  ],
+  "Route Based on Physical NIC Load": [
+    "基于物理网卡负载的路由",
+    "基于物理 NIC 负载的路由"
+  ],
+  "Use Explicit Failover Order": [
+    "使用显式故障切换顺序",
+    "使用显式故障转移顺序"
+  ],
+  "Failover Order": [
+    "故障切换顺序",
+    "故障转移顺序"
+  ],
+  "Unused Adapters": [
+    "未使用的适配器",
+    "未使用适配器"
+  ],
+  "Move Up": [
+    "向上移动",
+    "上移"
+  ],
+  "Move Down": [
+    "向下移动",
+    "下移"
+  ],
+  "vSS": [
+    "标准交换机",
+    "vSS（vSphere 标准交换机）"
+  ],
+  "VIP": [
+    "VIP",
+    "VIP（虚拟 IP）"
+  ],
+  "Shares (resource)": [
+    "共享（资源）",
+    "份额（资源）"
+  ],
+  "Low (shares)": [
+    "低（共享）",
+    "低（份额）"
+  ],
+  "Normal (shares)": [
+    "正常（共享）",
+    "正常（份额）",
+    "普通（份额）"
+  ],
+  "High (shares)": [
+    "高（共享）",
+    "高（份额）"
+  ],
+  "Custom (shares)": [
+    "自定义（共享）",
+    "自定义（份额）"
+  ],
+  "PVLAN": [
+    "专用 VLAN",
+    "PVLAN（专用 VLAN）"
+  ],
+  "FT Role": [
+    "容错角色",
+    "FT 角色"
+  ],
+  "Test Failover (FT)": [
+    "测试故障切换（容错）",
+    "测试故障切换（FT）"
+  ],
+  "Test Restart Secondary": [
+    "测试重启辅助 VM",
+    "测试重启辅助虚拟机"
+  ],
+  "Payload Template": [
+    "负载模板",
+    "载荷模板"
+  ],
+  "SR-IOV": [
+    "SR-IOV",
+    "SR-IOV（单根 I/O 虚拟化）"
+  ],
+  "NSX Application Platform": [
+    "NSX 应用平台",
+    "NSX 应用程序平台"
+  ],
+  "Approve": [
+    "审批",
+    "批准"
+  ],
+  "Pending Approval": [
+    "待审批",
+    "等待审批"
+  ],
+  "Request Form": [
+    "请求表单",
+    "申请表单"
+  ],
+  "UMDS": [
+    "UMDS（Update Manager 下载服务）",
+    "UMDS（vSphere 更新管理器下载服务）"
+  ],
+  "Patches": [
+    "补丁",
+    "修补程序"
+  ],
+  "vSphere Lifecycle Manager Depot": [
+    "vSphere 生命周期管理器库",
+    "vSphere Lifecycle Manager 软件库"
+  ],
+  "Running": [
+    "运行中",
+    "正在运行"
+  ],
+  "Notes": [
+    "备注",
+    "注释"
+  ],
+  "Related Objects": [
+    "关联对象",
+    "相关对象"
+  ],
+  "SDRS": [
+    "SDRS（存储 DRS）",
+    "SDRS（Storage DRS）"
+  ],
+  "Storage DRS Automation Level": [
+    "存储 DRS 自动化级别",
+    "Storage DRS 自动化级别"
+  ],
+  "Traceflow": [
+    "Traceflow",
+    "流路径追踪",
+    "流量跟踪（Traceflow）",
+    "Traceflow（数据包追踪）"
+  ],
+  "Local Span": [
+    "本地跨度",
+    "本地 SPAN"
+  ],
+  "TCP/IP Stack": [
+    "TCP/IP 堆栈",
+    "TCP/IP 协议栈"
+  ],
+  "NAT": [
+    "NAT",
+    "NAT（网络地址转换）"
+  ],
+  "SNAT": [
+    "SNAT",
+    "SNAT（源 NAT）",
+    "SNAT（源地址转换）"
+  ],
+  "DNAT": [
+    "DNAT",
+    "DNAT（目标 NAT）",
+    "DNAT（目标地址转换）"
+  ],
+  "Translated IP": [
+    "转换后的 IP",
+    "转换后 IP",
+    "已转换 IP"
+  ],
+  "Identity Provider": [
+    "身份提供程序",
+    "身份提供商"
+  ],
+  "OIDC": [
+    "OIDC",
+    "OIDC（OpenID Connect）"
+  ],
+  "Privileges": [
+    "特权",
+    "权限"
+  ],
+  "Remediation Pre-Check": [
+    "修复预检查",
+    "修复预检"
+  ],
+  "Host Profiles": [
+    "主机配置文件",
+    "主机配置文件（已弃用）"
+  ],
+  "Quick Boot": [
+    "快速启动",
+    "快速引导"
+  ],
+  "Live Patch": [
+    "实时修补",
+    "实时补丁"
+  ],
+  "PXE Booted Hosts": [
+    "PXE 启动的主机",
+    "PXE 引导主机"
+  ],
+  "Create Tag Category": [
+    "创建标签类别",
+    "创建标签分类"
+  ],
+  "Activate Auto-renewal": [
+    "激活自动续订",
+    "激活自动续期"
+  ],
+  "Renew Certificate": [
+    "续订证书",
+    "续期证书"
+  ],
+  "Manual Renewal": [
+    "手动续订",
+    "手动续期"
+  ],
+  "Restore from Backup": [
+    "从备份恢复",
+    "从备份还原"
+  ],
+  "VM Storage Policies": [
+    "VM 存储策略",
+    "虚拟机存储策略"
+  ],
+  "VASA Provider": [
+    "VASA 提供程序",
+    "VASA 提供商"
+  ],
+  "Physical NIC": [
+    "物理 NIC",
+    "物理网卡"
+  ],
+  "Route based on physical NIC load": [
+    "基于物理 NIC 负载路由",
+    "基于物理网卡负载路由"
+  ],
+  "Link status only": [
+    "仅链接状态",
+    "仅链路状态"
+  ],
+  "Beacon probing": [
+    "信标检测",
+    "信标探测"
+  ],
+  "Port-level configuration reset": [
+    "端口级别配置重置",
+    "端口级配置重置"
+  ],
+  "Active": [
+    "活动",
+    "主动"
+  ],
+  "NSX Federation": [
+    "NSX Federation（联合管理）",
+    "NSX 联邦",
+    "NSX Federation"
+  ],
+  "Remove vCenter HA": [
+    "删除 vCenter HA",
+    "删除 vCenter HA 配置"
+  ],
+  "Test Failover": [
+    "测试故障转移",
+    "测试故障切换"
+  ],
+  "Microsoft Entra ID": [
+    "Microsoft Entra ID（Azure AD）",
+    "Microsoft Entra ID",
+    "Microsoft Entra ID（原 Azure AD）"
+  ],
+  "Propagate to children": [
+    "传播到子对象",
+    "传播到子项"
+  ],
+  "Oversubscription": [
+    "过量使用",
+    "超额订阅"
+  ],
+  "Network Operations": [
+    "网络运维",
+    "网络运营"
+  ],
+  "vSphere Configuration Profile": [
+    "vSphere 配置文件",
+    "vSphere 配置配置文件"
+  ],
+  "vSphere Configuration Profiles": [
+    "vSphere 配置文件",
+    "vSphere 配置配置文件"
+  ],
+  "Tag Management": [
+    "标签管理",
+    "标记管理"
+  ],
+  "VAMI": [
+    "VAMI（虚拟机设备管理界面）",
+    "VAMI（vCenter 设备管理界面）",
+    "VAMI",
+    "VAMI（Appliance 管理界面）"
+  ],
+  "VMware Cloud Foundation Installer": [
+    "VMware Cloud Foundation Installer",
+    "VMware Cloud Foundation 安装程序"
+  ],
+  "VCF Installer Appliance": [
+    "VCF Installer 设备",
+    "VCF 安装程序虚拟设备"
+  ],
+  "Initiator": [
+    "发起者",
+    "发起方",
+    "启动方"
+  ],
+  "Server SSL": [
+    "服务器 SSL",
+    "服务器端 SSL"
+  ],
+  "Server SSL Profile": [
+    "服务器 SSL 配置文件",
+    "服务器端 SSL 配置文件"
+  ],
+  "Health Monitor": [
+    "健康监控器",
+    "健康监视器",
+    "健康监控"
+  ],
+  "Enhanced Data Path": [
+    "增强型数据路径",
+    "增强数据路径"
+  ],
+  "Overlay Transport Zone": [
+    "覆盖传输区域",
+    "Overlay 传输区域"
+  ],
+  "Edge Host Affinity": [
+    "Edge 主机关联",
+    "边缘主机亲和性",
+    "Edge 主机亲和性"
+  ],
+  "Gateway Firewall Disabled by Default": [
+    "默认禁用网关防火墙",
+    "网关防火墙默认禁用"
+  ],
+  "Connectivity and Service Profiles": [
+    "连接和服务配置文件",
+    "连接性和服务配置文件"
+  ],
+  "Centralized Transit Gateway": [
+    "集中式传输网关",
+    "集中式 Transit Gateway",
+    "集中式中转网关"
+  ],
+  "CTGW": [
+    "CTGW（集中式传输网关）",
+    "CTGW（集中式 Transit Gateway）",
+    "集中式中转网关"
+  ],
+  "Distributed Transit Gateway": [
+    "分布式传输网关",
+    "分布式 Transit Gateway",
+    "分布式中转网关"
+  ],
+  "DTGW": [
+    "DTGW（分布式传输网关）",
+    "DTGW（分布式 Transit Gateway）",
+    "分布式中转网关"
+  ],
+  "VPC-Ready Workload Domains": [
+    "VPC 就绪工作负载域",
+    "VPC 就绪型工作负载域"
+  ],
+  "EDP Standard": [
+    "EDP 标准版",
+    "EDP 标准"
+  ],
+  "Industrial vSwitch": [
+    "工业 vSwitch",
+    "工业虚拟交换机"
+  ],
+  "NSX Edge Platform Usability": [
+    "NSX Edge 平台可用性",
+    "NSX Edge 平台易用性",
+    "NSX Edge 平台可用性改进"
+  ],
+  "Single NSX Manager Support": [
+    "单个 NSX Manager 支持",
+    "单 NSX Manager 支持"
+  ],
+  "Parallel Redundancy Protocol": [
+    "并行冗余协议（PRP）",
+    "并行冗余协议"
+  ],
+  "PRP": [
+    "并行冗余协议",
+    "PRP（并行冗余协议）"
+  ],
+  "Edge Form Factor": [
+    "Edge 规格",
+    "Edge 外形规格"
+  ],
+  "ASN": [
+    "ASN",
+    "ASN（自治系统编号）",
+    "ASN（自治系统号）"
+  ],
+  "Foundation Load Balancer": [
+    "基础负载均衡器",
+    "Foundation 负载均衡器"
+  ],
+  "Cluster Autoscaler": [
+    "集群自动扩缩容",
+    "集群自动缩放器"
+  ],
+  "4K Native Emulated Virtual Disks": [
+    "4K 原生仿真虚拟磁盘",
+    "4K 原生模拟虚拟磁盘"
+  ],
+  "Translated Port": [
+    "转换后端口",
+    "已转换端口"
+  ],
+  "Max New Connection Rate": [
+    "最大新连接速率",
+    "最大新建连接速率"
+  ],
+  "Active Health Monitor": [
+    "主动健康监控器",
+    "主动健康检查"
+  ],
+  "Passive Health Monitor": [
+    "被动健康监控器",
+    "被动健康检查"
+  ],
+  "Rise Count": [
+    "恢复计数",
+    "上升计数"
+  ],
+  "Fall Count": [
+    "失败计数",
+    "下降计数"
+  ],
+  "Antrea Egress (group)": [
+    "Antrea 出口（组）",
+    "Antrea Egress（组）"
+  ],
+  "Tag Name": [
+    "标签名称",
+    "标记名称"
+  ],
+  "Assign Tag": [
+    "分配标签",
+    "分配标记"
+  ],
+  "App ID": [
+    "应用程序 ID",
+    "应用 ID"
+  ],
+  "Domain (FQDN) Name": [
+    "域名（FQDN）",
+    "域（FQDN）名称"
+  ],
+  "NSX Application IDs": [
+    "NSX 应用程序 ID 列表",
+    "NSX 应用 ID"
+  ],
+  "Start and stop with host": [
+    "随主机启停",
+    "随主机启动和停止"
+  ],
+  "Start and stop with port usage": [
+    "随端口使用启停",
+    "随端口使用启动和停止"
+  ],
+  "Start and stop manually": [
+    "手动启停",
+    "手动启动和停止"
+  ],
+  "Disconnect Host": [
+    "断开主机",
+    "断开连接主机",
+    "断开主机连接"
+  ],
+  "Pre-check Remediation": [
+    "修复预检查",
+    "修复预检"
+  ],
+  "Small (LB size)": [
+    "小型（负载均衡器）",
+    "小型（负载均衡器大小）"
+  ],
+  "Medium (LB size)": [
+    "中型（负载均衡器）",
+    "中型（负载均衡器大小）"
+  ],
+  "Large (LB size)": [
+    "大型（负载均衡器）",
+    "大型（负载均衡器大小）"
+  ],
+  "Admin State (LB)": [
+    "管理状态（LB）",
+    "管理状态（负载均衡器）"
+  ],
+  "Access Log (LB)": [
+    "访问日志（LB）",
+    "访问日志（负载均衡器）"
+  ],
+  "Add Active Monitor": [
+    "添加主动监控器",
+    "添加主动监控"
+  ],
+  "Add Passive Monitor": [
+    "添加被动监控器",
+    "添加被动监控"
+  ],
+  "Health Monitor Type": [
+    "健康监控器类型",
+    "健康监控类型"
+  ],
+  "vSphere Replication": [
+    "vSphere 复制",
+    "vSphere Replication"
+  ],
+  "Failback": [
+    "故障恢复",
+    "故障回退",
+    "故障回切"
+  ],
+  "BGP": [
+    "BGP",
+    "BGP（边界网关协议）"
+  ],
+  "Customization Specification": [
+    "定制规范",
+    "自定义规格"
+  ],
+  "Customization Script": [
+    "定制脚本",
+    "自定义脚本"
+  ],
+  "Domain Name (customization)": [
+    "域名（定制）",
+    "域名（自定义）"
+  ],
+  "Per Seat": [
+    "每席位",
+    "按座位许可"
+  ],
+  "Per Server": [
+    "每服务器",
+    "按服务器许可"
+  ],
+  "NSX VPC": [
+    "NSX VPC",
+    "NSX VPC（虚拟私有云）"
+  ],
+  "Enable for Avi Load Balancer": [
+    "为 Avi 负载均衡器启用",
+    "启用 Avi 负载均衡器"
+  ],
+  "TGW": [
+    "TGW（传输网关）",
+    "TGW（Transit Gateway）",
+    "中转网关"
+  ],
+  "Apply To": [
+    "应用于",
+    "应用到"
+  ],
+  "N-S Services": [
+    "南北向服务",
+    "南北向服务（N-S 服务）"
+  ],
+  "N-S Egress QoS Profile": [
+    "南北向出站 QoS 配置文件",
+    "南北向出口 QoS 配置文件"
+  ],
+  "N-S Ingress QoS Profile": [
+    "南北向入站 QoS 配置文件",
+    "南北向入口 QoS 配置文件"
+  ],
+  "Short Log Identifier": [
+    "短日志标识符",
+    "日志短标识符",
+    "简短日志标识符"
+  ],
+  "VPC Connectivity Profile": [
+    "VPC 连接性配置文件",
+    "VPC 连接配置文件"
+  ],
+  "Add VPC Connectivity Profile": [
+    "添加 VPC 连接性配置文件",
+    "添加 VPC 连接配置文件"
+  ],
+  "Failover Mode": [
+    "故障转移模式",
+    "故障切换模式"
+  ],
+  "Preemptive": [
+    "抢占式",
+    "抢占"
+  ],
+  "Non-Preemptive": [
+    "非抢占式",
+    "非抢占"
+  ],
+  "VRF": [
+    "VRF（虚拟路由转发）",
+    "VRF（虚拟路由和转发）"
+  ],
+  "Local AS Number": [
+    "本地 AS 号",
+    "本地 AS 编号"
+  ],
+  "VPC Service Profile": [
+    "VPC 服务配置文件",
+    "VPC 服务配置"
+  ],
+  "VPC Security Profile": [
+    "VPC 安全配置文件",
+    "VPC 安全配置"
+  ],
+  "Health Alerts": [
+    "健康告警",
+    "运行状况告警"
+  ],
+  "How it Started": [
+    "告警触发原因",
+    "如何开始"
+  ],
+  "Capacity Overview": [
+    "容量概览",
+    "容量概述"
+  ],
+  "Keep VMDKs Together": [
+    "保持 VMDK 在一起",
+    "将 VMDK 保持在一起"
+  ],
+  "Remote AS Number": [
+    "远程 AS 编号",
+    "远端 AS 号"
+  ],
+  "Inter SR iBGP": [
+    "SR 间 iBGP",
+    "跨 SR iBGP"
+  ],
+  "Multipath Relax": [
+    "多路径放宽",
+    "多路径松弛"
+  ],
+  "Graceful Restart": [
+    "优雅重启",
+    "平滑重启"
+  ],
+  "Graceful Restart Timer": [
+    "优雅重启定时器",
+    "平滑重启计时器"
+  ],
+  "Graceful Restart Stale Timer": [
+    "优雅重启过期定时器",
+    "平滑重启陈旧计时器"
+  ],
+  "Helper Only": [
+    "仅助手模式",
+    "仅辅助模式"
+  ],
+  "Graceful Restart and Helper": [
+    "优雅重启与助手模式",
+    "平滑重启和辅助模式"
+  ],
+  "Route Aggregation": [
+    "路由汇总",
+    "路由聚合"
+  ],
+  "No Prepend": [
+    "不追加",
+    "不预添加"
+  ],
+  "No Prepend Replace AS": [
+    "不追加替换 AS",
+    "不预添加并替换 AS"
+  ],
+  "BFD Multiplier": [
+    "BFD 倍增器",
+    "BFD 倍数"
+  ],
+  "Hold Down Time": [
+    "保持倒计时",
+    "保持超时时间"
+  ],
+  "Download Advertised Routes": [
+    "下载通告路由",
+    "下载已通告路由"
+  ],
+  "Download Learned Routes": [
+    "下载学习到的路由",
+    "下载已学习路由"
+  ],
+  "Route Redistribution": [
+    "路由重分发",
+    "路由重分布"
+  ],
+  "EVPN": [
+    "EVPN（以太网 VPN）",
+    "EVPN"
+  ],
+  "Health Chart": [
+    "运行状况图表",
+    "健康状况图表",
+    "健康图表"
+  ],
+  "Badge": [
+    "标记",
+    "徽章"
+  ],
+  "Collecting": [
+    "正在收集",
+    "收集中"
+  ],
+  "Interconnect (IX)": [
+    "互联（IX）",
+    "互连（IX）"
+  ],
+  "Mobility Agent": [
+    "迁移代理",
+    "Mobility Agent"
+  ],
+  "OSAM": [
+    "操作系统辅助迁移",
+    "OSAM（操作系统辅助迁移）"
+  ],
+  "Mobility Groups": [
+    "迁移组",
+    "移动性组"
+  ],
+  "Mobility Group": [
+    "迁移组",
+    "移动性组"
+  ],
+  "Migrating Virtual Machines with Mobility Groups": [
+    "使用迁移组迁移虚拟机",
+    "使用 Mobility Groups 迁移虚拟机"
+  ],
+  "Managing Failed or Canceled Migrations": [
+    "管理失败或已取消的迁移",
+    "管理失败或取消的迁移"
+  ],
+  "Extend Networks": [
+    "延伸网络",
+    "扩展网络"
+  ],
+  "Allow Overlapping Source VLAN": [
+    "允许重叠源 VLAN",
+    "允许重叠的源 VLAN"
+  ],
+  "Allow Overlapping IP Subnet": [
+    "允许重叠 IP 子网",
+    "允许重叠的 IP 子网"
+  ],
+  "Allow Overlapping Destination VLAN": [
+    "允许重叠目标 VLAN",
+    "允许重叠的目标 VLAN"
+  ],
+  "Interconnect Status": [
+    "互联状态",
+    "互连状态"
+  ],
+  "VCF Operations Orchestrator": [
+    "VCF Operations Orchestrator",
+    "VCF Operations Orchestrator（编排器）"
+  ],
+  "Scheduled Workflows": [
+    "计划工作流",
+    "已计划的工作流"
+  ],
+  "Manage & Govern": [
+    "管理和治理",
+    "管理与治理"
+  ],
+  "Hard Enforcement": [
+    "强制执行",
+    "硬执行"
+  ],
+  "Membership Criteria": [
+    "成员资格条件",
+    "成员条件"
+  ],
+  "OSPF": [
+    "OSPF",
+    "OSPF（开放最短路径优先）"
+  ],
+  "IPAM": [
+    "IPAM",
+    "IPAM（IP 地址管理）"
+  ],
+  "LCM": [
+    "LCM",
+    "LCM（生命周期管理）"
+  ],
+  "Plan Patching": [
+    "计划修补",
+    "计划补丁"
+  ],
+  "Bundle Type": [
+    "软件包类型",
+    "包类型"
+  ],
+  "Online Depot": [
+    "在线仓库",
+    "在线存储库"
+  ],
+  "Offline Depot": [
+    "离线仓库",
+    "离线存储库"
+  ],
+  "vCenter Reduced Downtime Upgrade": [
+    "vCenter 最小停机时间升级",
+    "vCenter 减少停机升级"
+  ],
+  "Multicast": [
+    "多播",
+    "组播"
+  ],
+  "Replications": [
+    "复制",
+    "复制任务"
+  ],
+  "Auto-include new disks in replication": [
+    "自动包含复制中的新磁盘",
+    "自动将新磁盘包含在复制中"
+  ],
+  "MPIT": [
+    "MPIT（多个时间点）",
+    "MPIT（多点恢复）"
+  ],
+  "Failover": [
+    "故障转移",
+    "故障切换"
+  ],
+  "VMware Live Recovery": [
+    "VMware Live Recovery",
+    "VMware 实时恢复"
+  ],
+  "Site Recovery Manager": [
+    "Site Recovery Manager",
+    "站点恢复管理器"
+  ],
+  "SRM": [
+    "SRM（Site Recovery Manager）",
+    "SRM（站点恢复管理器）"
+  ],
+  "Remove Hosts": [
+    "移除主机",
+    "删除主机"
+  ],
+  "Medium": [
+    "中",
+    "中型"
+  ],
+  "VCF Automation for All Apps": [
+    "VCF Automation 全应用版",
+    "VCF Automation（全应用版）"
+  ],
+  "VCF Automation for VM Apps": [
+    "VCF Automation VM 应用版",
+    "VCF Automation（VM 应用版）"
+  ],
+  "Unlimited (limit)": [
+    "无限制（限制）",
+    "无限制"
+  ],
+  "Cluster Image Selection": [
+    "集群映像选择",
+    "集群镜像选择"
+  ],
+  "Fleet Management": [
+    "机群管理",
+    "Fleet Management（舰队管理）",
+    "Fleet 管理"
+  ],
+  "vCenter Root Password": [
+    "vCenter Root 密码",
+    "vCenter root 密码"
+  ],
+  "vCenter Details": [
+    "vCenter 详情",
+    "vCenter 详细信息"
+  ],
+  "Cluster Details": [
+    "集群详情",
+    "集群详细信息"
+  ],
+  "vSphere Supervisor Details": [
+    "vSphere Supervisor 详情",
+    "vSphere Supervisor 详细信息"
+  ],
+  "NSX Deployment Size": [
+    "NSX 部署大小",
+    "NSX 部署规模"
+  ],
+  "NSX Appliance Size": [
+    "NSX 设备大小",
+    "NSX Appliance 大小"
+  ],
+  "Appliance 1 FQDN": [
+    "设备 1 FQDN",
+    "Appliance 1 FQDN"
+  ],
+  "Appliance 2 FQDN": [
+    "设备 2 FQDN",
+    "Appliance 2 FQDN"
+  ],
+  "Appliance 3 FQDN": [
+    "设备 3 FQDN",
+    "Appliance 3 FQDN"
+  ],
+  "Appliance Cluster FQDN": [
+    "设备集群 FQDN",
+    "Appliance 集群 FQDN"
+  ],
+  "Auditor Password (NSX)": [
+    "审计员密码（NSX）",
+    "审核员密码（NSX）"
+  ],
+  "Private - Transit Gateway IP Block": [
+    "私有 Transit Gateway IP 块",
+    "专用 - 传输网关 IP 块"
+  ],
+  "Private (Transit Gateway) CIDR": [
+    "私有（Transit Gateway）CIDR",
+    "专用（传输网关）CIDR",
+    "私有（中转网关）CIDR"
+  ],
+  "Decommission Hosts": [
+    "移除主机",
+    "下架主机",
+    "下线主机"
+  ],
+  "Unassigned Hosts": [
+    "未分配主机",
+    "未分配的主机"
+  ],
+  "Add Unassigned Hosts": [
+    "添加未分配主机",
+    "添加未分配的主机"
+  ],
+  "VCF Identity Broker": [
+    "VCF Identity Broker",
+    "VCF 身份代理"
+  ],
+  "Managing Accounts and Passwords": [
+    "管理帐户和密码",
+    "管理账户和密码"
+  ],
+  "Credential Type": [
+    "凭据类型",
+    "凭证类型"
+  ],
+  "Backup and Restore of VMware Cloud Foundation": [
+    "VMware Cloud Foundation 备份和恢复",
+    "VMware Cloud Foundation 的备份和还原"
+  ],
+  "Upgrade Sequence": [
+    "升级序列",
+    "升级顺序"
+  ],
+  "VLAN Trunk": [
+    "VLAN 中继",
+    "VLAN Trunk"
+  ],
+  "Hybrid": [
+    "混合",
+    "混合复制"
+  ],
+  "Backup & Restore": [
+    "备份和还原",
+    "备份与恢复"
+  ],
+  "Backup History": [
+    "备份历史记录",
+    "备份历史"
+  ],
+  "Syslog": [
+    "系统日志",
+    "Syslog（系统日志）"
+  ],
+  "VCF Operations for Logs": [
+    "VCF Operations for Logs",
+    "VCF Operations（日志）",
+    "VCF Operations for Logs（日志分析）"
+  ],
+  "Connectivity Status": [
+    "连通性状态",
+    "连接状态"
+  ],
+  "NSX Manager Details": [
+    "NSX Manager 详细信息",
+    "NSX Manager 详情"
+  ],
+  "Powered Off VMs": [
+    "已关机的虚拟机",
+    "已关闭虚拟机"
+  ],
+  "Oversized VMs": [
+    "规模过大的虚拟机",
+    "过大规格虚拟机"
+  ],
+  "Decommission": [
+    "移除",
+    "退役",
+    "停用"
+  ],
+  "Decommission Host": [
+    "停用主机",
+    "退役主机"
+  ],
+  "Take Snapshot": [
+    "拍摄快照",
+    "创建快照"
+  ],
+  "Failed": [
+    "已失败",
+    "失败"
+  ],
+  "Recent Tasks": [
+    "最近任务",
+    "最近的任务"
+  ],
+  "Past Day": [
+    "过去一天",
+    "过去 1 天"
+  ],
+  "Past Week": [
+    "过去一周",
+    "过去 1 周"
+  ],
+  "Past Month": [
+    "过去一个月",
+    "过去 1 个月"
+  ],
+  "Past Year": [
+    "过去一年",
+    "过去 1 年"
+  ],
+  "Memory Active (KB)": [
+    "活动内存 (KB)",
+    "内存活跃（KB）"
+  ],
+  "Memory Balloon (KB)": [
+    "气球内存 (KB)",
+    "内存气球（KB）"
+  ],
+  "Filter": [
+    "筛选",
+    "过滤器"
+  ],
+  "Export to CSV": [
+    "导出为 CSV",
+    "导出到 CSV"
+  ],
+  "Loading": [
+    "加载中",
+    "正在加载"
+  ],
+  "No items to display": [
+    "没有可显示的项目",
+    "没有要显示的项目"
+  ],
+  "Remove": [
+    "移除",
+    "删除"
+  ],
+  "Getting Started": [
+    "入门指南",
+    "入门"
+  ],
+  "Latency Sensitivity": [
+    "延迟敏感度",
+    "延迟灵敏度",
+    "延迟敏感性"
+  ],
+  "Windows (guest OS)": [
+    "Windows（来宾操作系统）",
+    "Windows（客户机操作系统）"
+  ],
+  "Linux (guest OS)": [
+    "Linux（来宾操作系统）",
+    "Linux（客户机操作系统）"
+  ],
+  "Video Card": [
+    "显卡",
+    "视频卡"
+  ],
+  "Floppy Drive": [
+    "软盘驱动器",
+    "软驱"
+  ],
+  "PVRDMA": [
+    "PVRDMA",
+    "PVRDMA（半虚拟化 RDMA）"
+  ],
+  "DirectPath I/O": [
+    "DirectPath I/O（PCI 直通）",
+    "DirectPath I/O"
+  ],
+  "Flash Read Cache Reservation": [
+    "闪存读缓存预留",
+    "闪存读取缓存预留"
+  ],
+  "Federation": [
+    "联合管理",
+    "Federation"
+  ],
+  "Add On-Prem Location": [
+    "添加本地站点",
+    "添加本地位置"
+  ],
+  "Configure Identity Provider": [
+    "配置身份提供商",
+    "配置身份提供程序"
+  ],
+  "SAML": [
+    "SAML",
+    "SAML（安全断言标记语言）"
+  ],
+  "SCIM": [
+    "SCIM（用户预配协议）",
+    "SCIM（跨域身份管理系统）"
+  ],
+  "sAMAccountName": [
+    "sAMAccountName",
+    "sAMAccountName（AD 登录名）"
+  ],
+  "Identity Sources": [
+    "身份源",
+    "身份来源"
+  ],
+  "Add Identity Source": [
+    "添加身份源",
+    "添加身份来源"
+  ],
+  "Default Identity Source": [
+    "默认身份源",
+    "默认身份来源"
+  ],
+  "CPU Usage (%)": [
+    "CPU 使用率 (%)",
+    "CPU 使用率（%）"
+  ],
+  "CPU Ready": [
+    "CPU 就绪",
+    "CPU 就绪时间"
+  ],
+  "Disk Read Latency (ms)": [
+    "磁盘读取延迟 (ms)",
+    "磁盘读取延迟（ms）"
+  ],
+  "Disk Write Latency (ms)": [
+    "磁盘写入延迟 (ms)",
+    "磁盘写入延迟（ms）"
+  ],
+  "Summation (rollup)": [
+    "求和（汇总）",
+    "总和（汇总）"
+  ],
+  "Statistics Level": [
+    "统计信息级别",
+    "统计级别"
+  ],
+  "Privilege": [
+    "特权",
+    "权限"
+  ],
+  "LUN": [
+    "LUN",
+    "LUN（逻辑单元号）"
+  ],
+  "HBA": [
+    "HBA",
+    "HBA（主机总线适配器）"
+  ],
+  "FCoE": [
+    "FCoE",
+    "FCoE（以太网光纤通道）"
+  ],
+  "Active/Active": [
+    "主/主",
+    "主动/主动"
+  ],
+  "Dependent Hardware iSCSI Adapter": [
+    "依赖硬件 iSCSI 适配器",
+    "依赖型硬件 iSCSI 适配器"
+  ],
+  "IQN": [
+    "IQN",
+    "IQN（iSCSI 限定名称）"
+  ],
+  "Binary Management": [
+    "二进制管理",
+    "二进制文件管理"
+  ],
+  "Depot Configuration": [
+    "仓库配置",
+    "软件库配置"
+  ],
+  "Depot URL": [
+    "仓库 URL",
+    "软件库 URL"
+  ],
+  "Bundle": [
+    "软件包",
+    "捆绑包"
+  ],
+  "Bundles": [
+    "软件包",
+    "捆绑包"
+  ],
+  "NSSA": [
+    "NSSA（非完全末梢区域）",
+    "NSSA（非纯末梢区域）"
+  ],
+  "OSPF Authentication": [
+    "OSPF 认证",
+    "OSPF 身份验证"
+  ],
+  "None (OSPF auth)": [
+    "无（OSPF 认证）",
+    "无（OSPF 身份验证）"
+  ],
+  "Password (OSPF auth)": [
+    "密码（OSPF 认证）",
+    "密码（OSPF 身份验证）"
+  ],
+  "MD5 (OSPF auth)": [
+    "MD5（OSPF 认证）",
+    "MD5（OSPF 身份验证）"
+  ],
+  "OSPF Configured Interfaces": [
+    "OSPF 配置接口",
+    "已配置 OSPF 的接口"
+  ],
+  "OSPF Route Redistribution": [
+    "OSPF 路由重分发",
+    "OSPF 路由重分布"
+  ],
+  "OSPF Route Redistribution Status": [
+    "OSPF 路由重分发状态",
+    "OSPF 路由重分布状态"
+  ],
+  "External IPv4 Blocks": [
+    "外部 IPv4 块",
+    "外部 IPv4 地址块"
+  ],
+  "Private IPv4 Blocks": [
+    "私有 IPv4 块",
+    "私有 IPv4 地址块"
+  ],
+  "Managed by NSX Policy Management": [
+    "由 NSX 策略管理",
+    "由 NSX 策略管理管理"
+  ],
+  "VM Classes": [
+    "VM 类",
+    "虚拟机类"
+  ],
+  "Add VM Class": [
+    "添加 VM 类",
+    "添加虚拟机类"
+  ],
+  "Tier-1 Gateway": [
+    "第 1 层网关",
+    "Tier-1 网关"
+  ],
+  "Active Active": [
+    "主主模式",
+    "主/主"
+  ],
+  "Active Standby": [
+    "主备模式",
+    "主/备"
+  ],
+  "MAC Pool": [
+    "MAC 池",
+    "MAC 地址池"
+  ],
+  "Jump to Application": [
+    "跳转到应用程序层",
+    "跳转到应用程序"
+  ],
+  "Supervisors": [
+    "Supervisors",
+    "Supervisor",
+    "Supervisor 列表"
+  ],
+  "Override cluster network settings": [
+    "替代集群网络设置",
+    "覆盖集群网络设置"
+  ],
+  "VCF Fleet": [
+    "VCF 机群",
+    "VCF Fleet"
+  ],
+  "FQDN": [
+    "FQDN（完全限定域名）",
+    "FQDN"
+  ],
+  "Ingress CIDR": [
+    "入站 CIDR",
+    "Ingress CIDR"
+  ],
+  "Egress CIDR": [
+    "出站 CIDR",
+    "Egress CIDR"
+  ],
+  "Namespace Self-Service": [
+    "命名空间自助服务",
+    "命名空间自服务"
+  ],
+  "Harbor Registry": [
+    "Harbor 仓库",
+    "Harbor 镜像仓库"
+  ],
+  "vSphere Kubernetes Service": [
+    "vSphere Kubernetes 服务",
+    "vSphere Kubernetes 服务（VKS）"
+  ],
+  "VKS": [
+    "VKS（vSphere Kubernetes 服务）",
+    "vSphere Kubernetes 服务"
+  ],
+  "Local Consumption Interface": [
+    "本地消费界面",
+    "本地消费接口"
+  ],
+  "Identity Source": [
+    "身份源",
+    "身份来源"
+  ],
+  "Active Directory over LDAP": [
+    "LDAP 方式的 Active Directory",
+    "通过 LDAP 的 Active Directory"
+  ],
+  "Account Type": [
+    "帐户类型",
+    "账户类型"
+  ],
+  "Service Account": [
+    "服务帐户",
+    "服务账户"
+  ],
+  "iSCSI Initiator": [
+    "iSCSI 发起程序",
+    "iSCSI 启动器"
+  ],
+  "CHAP Authentication": [
+    "CHAP 身份验证",
+    "CHAP 认证"
+  ],
+  "Mutual CHAP": [
+    "双向 CHAP",
+    "相互 CHAP"
+  ],
+  "Dead Path": [
+    "断路路径",
+    "死亡路径"
+  ],
+  "All LB VIP Routes": [
+    "所有负载均衡 VIP 路由",
+    "所有负载均衡器 VIP 路由"
+  ],
+  "All Connected Segments and Service Ports": [
+    "所有已连接段和服务端口",
+    "所有已连接网段和服务端口"
+  ],
+  "All LB SNAT IP Routes": [
+    "所有负载均衡 SNAT IP 路由",
+    "所有负载均衡器 SNAT IP 路由"
+  ],
+  "Ingress QoS Profile": [
+    "入口 QoS 配置文件",
+    "入站 QoS 配置文件"
+  ],
+  "Egress QoS Profile": [
+    "出口 QoS 配置文件",
+    "出站 QoS 配置文件"
+  ],
+  "ND Profile": [
+    "ND 配置文件",
+    "ND 配置文件（邻居发现）"
+  ],
+  "DAD Profile": [
+    "DAD 配置文件",
+    "DAD 配置文件（重复地址检测）"
+  ],
+  "Connected Routes": [
+    "直连路由",
+    "已连接路由"
+  ],
+  "Remove from Product Home": [
+    "从产品主页中删除",
+    "从产品主页删除"
+  ],
+  "Mashup Chart": [
+    "混搭图表",
+    "混合图表"
+  ],
+  "Create Report": [
+    "创建报告",
+    "创建报表"
+  ],
+  "Run Report": [
+    "运行报告",
+    "运行报表"
+  ],
+  "Schedule Report": [
+    "计划报告",
+    "计划报表"
+  ],
+  "Report Template": [
+    "报告模板",
+    "报表模板"
+  ],
+  "Export Report": [
+    "导出报告",
+    "导出报表"
+  ],
+  "Oversized": [
+    "规模过大",
+    "配置过高"
+  ],
+  "Undersized": [
+    "规模不足",
+    "配置不足"
+  ],
+  "Rightsizing": [
+    "规模优化",
+    "合理调整规格"
+  ],
+  "Appliance Management": [
+    "设备管理",
+    "Appliance 管理"
+  ],
+  "Shut Down": [
+    "关机",
+    "关闭"
+  ],
+  "NIC 0": [
+    "网卡 0（管理网络）",
+    "网络适配器 0"
+  ],
+  "Enable Health Check": [
+    "启用健康检查",
+    "启用运行状况检查"
+  ],
+  "VLAN and MTU Health Check": [
+    "VLAN 和 MTU 健康检查",
+    "VLAN 和 MTU 运行状况检查"
+  ],
+  "Teaming and Failover Health Check": [
+    "组合和故障切换健康检查",
+    "成组和故障切换运行状况检查"
+  ],
+  "Change both compute resource and storage": [
+    "同时更改计算资源和存储",
+    "更改计算资源和存储"
+  ],
+  "VMFS on FC": [
+    "FC 上的 VMFS",
+    "基于 FC 的 VMFS"
+  ],
+  "vVol": [
+    "VVol",
+    "vVol（虚拟卷）"
+  ],
+  "Failures to Tolerate": [
+    "可容忍的故障数",
+    "可容忍故障数"
+  ],
+  "Storage Traffic Separation": [
+    "存储流量分离",
+    "存储流量分隔",
+    "存储流量隔离"
+  ],
+  "NSX Traffic Separation": [
+    "NSX 流量分离",
+    "NSX 流量分隔",
+    "NSX 流量隔离"
+  ],
+  "Storage Traffic and NSX Traffic Separation": [
+    "存储流量和 NSX 流量分离",
+    "存储流量和 NSX 流量分隔"
+  ],
+  "Private CIDR": [
+    "专用 CIDR",
+    "私有 CIDR"
+  ],
+  "Commission ESX Hosts": [
+    "上架 ESX 主机",
+    "上线 ESX 主机",
+    "纳管 ESX 主机"
+  ],
+  "Decommission ESX Hosts": [
+    "下架 ESX 主机",
+    "下线 ESX 主机",
+    "移除 ESX 主机"
+  ],
+  "vSAN Express Storage Architecture (ESA)": [
+    "vSAN 表达存储架构（ESA）",
+    "vSAN 快速存储架构（ESA）"
+  ],
+  "Validate All": [
+    "全部验证",
+    "验证全部"
+  ],
+  "Skip failed hosts during commissioning": [
+    "在上架期间跳过失败的主机",
+    "跳过上线失败的主机",
+    "纳管时跳过失败主机"
+  ],
+  "Hosts Added": [
+    "已添加的主机",
+    "已添加主机"
+  ],
+  "Tags and Categories": [
+    "标签与分类",
+    "标签和类别"
+  ],
+  "Tag Category": [
+    "标签分类",
+    "标签类别",
+    "标记类别"
+  ],
+  "Remove Tag": [
+    "删除标记",
+    "删除标签"
+  ],
+  "Category Name": [
+    "分类名称",
+    "类别名称"
+  ],
+  "Category Description": [
+    "分类描述",
+    "类别描述"
+  ],
+  "Associable Object Types": [
+    "可关联对象类型",
+    "关联对象类型",
+    "可关联的对象类型"
+  ],
+  "Network Introspection Settings": [
+    "网络自省设置",
+    "网络内省设置"
+  ],
+  "Guest Introspection": [
+    "来宾自省",
+    "客户机内省"
+  ],
+  "Network Introspection": [
+    "网络自省",
+    "网络内省"
+  ],
+  "Group 2": [
+    "第 2 组",
+    "组 2"
+  ],
+  "Balanced": [
+    "平衡",
+    "均衡"
+  ],
+  "Guided Network Troubleshooting": [
+    "引导式网络故障排除",
+    "引导式网络故障排查"
+  ],
+  "Crown Jewel Analysis": [
+    "核心资产分析",
+    "关键资产分析"
+  ],
+  "Flow Based Application Discovery": [
+    "基于流量的应用程序发现",
+    "基于流量的应用发现"
+  ],
+  "Crown Jewels": [
+    "核心资产",
+    "关键资产"
+  ],
+  "Business Applications with Flows": [
+    "带流量的业务应用",
+    "带流量数据的业务应用"
+  ],
+  "Malware Prevention": [
+    "恶意软件防御",
+    "恶意软件防护"
+  ],
+  "Malware Prevention Dashboard": [
+    "恶意软件防御仪表板",
+    "恶意软件防护仪表板"
+  ],
+  "Guest Introspection Agent": [
+    "客户机内省代理",
+    "来宾自省代理"
+  ],
+  "NSX Guest Introspection": [
+    "NSX 客户机内省",
+    "NSX 来宾自省"
+  ],
+  "NSX Network Detection and Response": [
+    "NSX 网络检测和响应",
+    "NSX 网络检测与响应"
+  ],
+  "Reorder Rules": [
+    "重新排序规则",
+    "重新排列规则"
+  ],
+  "Remediation Precheck": [
+    "修复预检",
+    "修复预检查"
+  ],
+  "Desired Configuration": [
+    "期望配置",
+    "所需配置"
+  ],
+  "URL Reputation": [
+    "URL 信誉",
+    "URL 声誉"
+  ],
+  "VMCP": [
+    "VMCP（虚拟机组件保护）",
+    "VMCP"
+  ],
+  "Leave powered on": [
+    "保持开机状态",
+    "保持开机"
+  ],
+  "Affinity Rules": [
+    "亲和性规则",
+    "关联规则"
+  ],
+  "Cores per Socket": [
+    "每个插槽的核心数",
+    "每插槽核心数"
+  ],
+  "Physical Function": [
+    "物理功能（PF）",
+    "物理功能"
+  ],
+  "Tags": [
+    "标签",
+    "标记"
+  ],
+  "Tag": [
+    "标签",
+    "标记"
+  ],
+  "vSphere Tags": [
+    "vSphere 标签",
+    "vSphere 标记"
+  ],
+  "Assign or Remove Tags": [
+    "分配或删除标签",
+    "分配或删除标记"
+  ],
+  "Add Tag": [
+    "添加标签",
+    "添加标记"
+  ],
+  "Create Tag": [
+    "创建标签",
+    "创建标记"
+  ],
+  "Edit Tag": [
+    "编辑标签",
+    "编辑标记"
+  ],
+  "Delete Tag": [
+    "删除标签",
+    "删除标记"
+  ],
+  "Tag Description": [
+    "标签描述",
+    "标记描述"
+  ],
+  "Unassign Tag": [
+    "取消分配标签",
+    "取消分配标记"
+  ],
+  "Tags & Custom Attributes": [
+    "标签和自定义属性",
+    "标记和自定义属性"
+  ],
+  "Delete Tag Category": [
+    "删除标签类别",
+    "删除标记类别"
+  ],
+  "Edit Tag Category": [
+    "编辑标签类别",
+    "编辑标记类别"
+  ],
+  "Same Format as Source": [
+    "与源格式相同",
+    "与源相同的格式"
+  ],
+  "Thick Provision Lazy Zeroed": [
+    "厚置备延迟置零",
+    "厚置备延迟归零"
+  ],
+  "Thick Provision Eager Zeroed": [
+    "厚置备快速置零",
+    "厚置备立即归零"
+  ],
+  "Reboot": [
+    "重启",
+    "重新引导"
+  ],
+  "Overall Health": [
+    "总体运行状况",
+    "总体健康状况"
+  ],
+  "Degraded": [
+    "降级",
+    "已降级"
+  ],
+  "Service Accounts": [
+    "服务帐户",
+    "服务账户"
+  ],
+  "Guest OS Family": [
+    "客户机操作系统系列",
+    "来宾操作系统系列"
+  ],
+  "ISO Image": [
+    "ISO 映像",
+    "ISO 镜像"
+  ],
+  "Virtual Trusted Platform Module": [
+    "虚拟可信平台模块",
+    "虚拟受信平台模块"
+  ],
+  "vTPM": [
+    "vTPM（虚拟可信平台模块）",
+    "vTPM（虚拟 TPM）",
+    "vTPM"
+  ],
+  "Trusted Platform Module": [
+    "可信平台模块",
+    "受信平台模块"
+  ],
+  "BusLogic Parallel": [
+    "BusLogic 并行",
+    "BusLogic 并行（SCSI）"
+  ],
+  "LSI Logic Parallel": [
+    "LSI Logic 并行",
+    "LSI Logic 并行（SCSI）"
+  ],
+  "LSI Logic SAS": [
+    "LSI Logic SAS",
+    "LSI Logic SAS（SCSI）"
+  ],
+  "Total Video Memory": [
+    "总显存",
+    "总视频内存"
+  ],
+  "Compliance Suite": [
+    "合规套件",
+    "合规性套件"
+  ],
+  "TCP MSS Clamping": [
+    "TCP MSS 限制",
+    "TCP MSS 钳位"
+  ],
+  "Remote ID": [
+    "远端 ID",
+    "远程 ID"
+  ],
+  "Remote Networks": [
+    "远端网络",
+    "远程网络"
+  ],
+  "IKE-Flex": [
+    "IKE-Flex",
+    "IKE-Flex（自适应）"
+  ],
+  "Group 5": [
+    "第 5 组",
+    "组 5"
+  ],
+  "Group 14": [
+    "第 14 组",
+    "组 14"
+  ],
+  "Group 15": [
+    "第 15 组",
+    "组 15"
+  ],
+  "Group 16": [
+    "第 16 组",
+    "组 16"
+  ],
+  "Group 19": [
+    "第 19 组",
+    "组 19"
+  ],
+  "Group 20": [
+    "第 20 组",
+    "组 20"
+  ],
+  "Group 21": [
+    "第 21 组",
+    "组 21"
+  ],
+  "Security Association Lifetime": [
+    "安全关联生命周期",
+    "安全关联生存期"
+  ],
+  "SA Lifetime": [
+    "SA 生命周期",
+    "SA 生存期"
+  ],
+  "Drift Detection": [
+    "漂移检测",
+    "配置漂移检测"
+  ],
+  "Compliance Score": [
+    "合规评分",
+    "合规性评分"
+  ],
+  "Remove Disk Group": [
+    "移除磁盘组",
+    "删除磁盘组"
+  ],
+  "Pre-check": [
+    "预检",
+    "预检查"
+  ],
+  "Variance threshold": [
+    "差异阈值",
+    "方差阈值"
+  ],
+  "Skyline Health": [
+    "Skyline 健康",
+    "Skyline 健康状况"
+  ],
+  "vSAN Health": [
+    "vSAN 健康",
+    "vSAN 健康状况"
+  ],
+  "Reserved Capacity": [
+    "保留容量",
+    "预留容量"
+  ],
+  "FSVM": [
+    "文件服务虚拟机",
+    "FSVM（文件服务虚拟机）"
+  ],
+  "AUTH_SYS": [
+    "AUTH_SYS（系统认证）",
+    "AUTH_SYS"
+  ],
+  "TEP": [
+    "TEP",
+    "TEP（隧道端点）"
+  ],
+  "System managed credentials": [
+    "系统管理的凭据",
+    "系统托管凭据"
+  ],
+  "vSAN Skyline Health": [
+    "vSAN Skyline 健康状况",
+    "vSAN Skyline 健康"
+  ],
+  "Ask VMware": [
+    "询问 VMware",
+    "咨询 VMware"
+  ],
+  "vSAN object health": [
+    "vSAN 对象健康状况",
+    "vSAN 对象健康"
+  ],
+  "Operations reserve": [
+    "操作预留",
+    "操作保留"
+  ],
+  "Host rebuild reserve": [
+    "主机重建预留",
+    "主机重建保留"
+  ],
+  "VM home objects": [
+    "VM 主对象",
+    "虚拟机主目录对象"
+  ],
+  "VM memory snapshots": [
+    "VM 内存快照",
+    "虚拟机内存快照"
+  ],
+  "Native trace objects": [
+    "本机跟踪对象",
+    "原生跟踪对象"
+  ],
+  "ESA": [
+    "ESA",
+    "极速存储架构"
+  ],
+  "Original Storage Architecture": [
+    "原始存储架构",
+    "传统存储架构（OSA）"
+  ],
+  "OSA": [
+    "OSA",
+    "传统存储架构"
+  ],
+  "IOMMU": [
+    "IOMMU（I/O 内存管理单元）",
+    "IOMMU"
+  ],
+  "Encrypted vMotion": [
+    "加密的 vMotion",
+    "加密 vMotion"
+  ],
+  "Normal Lockdown Mode": [
+    "普通锁定模式",
+    "正常锁定模式"
+  ],
+  "Guest OS Customization": [
+    "来宾 OS 定制",
+    "客户机操作系统自定义"
+  ],
+  "Customization Specifications": [
+    "自定义规格",
+    "自定义规范"
+  ],
+  "Guest Customization": [
+    "来宾操作系统自定义",
+    "客户机自定义"
+  ],
+  "Privilege Category": [
+    "权限类别",
+    "特权类别"
+  ],
+  "NVDIMM": [
+    "NVDIMM（非易失性双列直插内存模块）",
+    "NVDIMM"
+  ],
+  "Suspend Fault Tolerance": [
+    "暂停容错",
+    "挂起容错"
+  ],
+  "Memory Tier": [
+    "内存层级",
+    "内存层"
+  ],
+  "DRAM Tier": [
+    "DRAM 层级",
+    "DRAM 层"
+  ],
+  "NVMe Tier": [
+    "NVMe 层级",
+    "NVMe 层"
+  ],
+  "Live Patching": [
+    "实时修补",
+    "实时补丁"
+  ],
+  "AMD SEV-SNP": [
+    "AMD SEV-SNP（安全加密虚拟化安全嵌套分页）",
+    "AMD SEV-SNP"
+  ],
+  "Oversubscription (IDS)": [
+    "流量超额（IDS）",
+    "超额订阅（IDS）"
+  ],
+  "NSX Malware Prevention": [
+    "NSX 恶意软件防护",
+    "NSX 恶意软件防御"
+  ],
+  "Global Inventory Lists": [
+    "全局清单列表",
+    "全局清单"
+  ],
+  "Decommission Selected Hosts": [
+    "下架选定主机",
+    "移除所选主机"
+  ],
+  "Skip failed hosts during decommissioning": [
+    "在下架期间跳过失败的主机",
+    "移除时跳过失败主机"
+  ],
+  "SSO Domain Name": [
+    "SSO 域名称",
+    "SSO 域名"
+  ],
+  "Appliance Size": [
+    "设备规模",
+    "设备规格"
+  ],
+  "Large": [
+    "大型",
+    "大"
+  ],
+  "Extra Large": [
+    "超大型",
+    "超大"
+  ],
+  "Private Transit Gateway CIDR": [
+    "私有 Transit Gateway CIDR",
+    "私有中转网关 CIDR"
+  ],
+  "vSAN ESA": [
+    "vSAN ESA（快速存储架构）",
+    "vSAN ESA"
+  ],
+  "Patch VCF Operations Fleet Management": [
+    "修补 VCF Operations 机群管理",
+    "修补 VCF Operations Fleet 管理"
+  ],
+  "Benchmark": [
+    "基准",
+    "基准测试"
+  ],
+  "Troubleshooting Workbench": [
+    "故障排除工作台",
+    "故障排查工作台"
+  ],
+  "Checklist": [
+    "检查列表",
+    "核对清单"
+  ]
+}

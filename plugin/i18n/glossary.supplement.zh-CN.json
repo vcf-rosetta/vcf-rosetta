@@ -1,0 +1,16 @@
+{
+  "_note": "项目补充/校准词条,优先级高于 glossary.zh-CN.json。用于补齐主词表缺失的核心运维术语,以及统一冲突项的规范译法。合并顺序:glossary.zh-CN.json -> 本文件(后者覆盖)。",
+
+  "Recommendation": "建议操作",
+  "Recommendations": "建议操作",
+  "Issue": "问题",
+  "Issues": "问题",
+  "All Issues": "所有问题",
+  "Reset to Green": "重置为正常",
+  "Reset To Green": "重置为正常",
+
+  "Images": "映像",
+  "Baseline": "基准",
+  "Baselines": "基准",
+  "Compliance Status": "合规状态"
+}
