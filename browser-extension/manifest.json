@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "vCenter 中文界面 (vcf-rosetta)",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "将 vCenter Server / VCF 9.x UI 实时翻译为简体中文,无需修改 vCenter 服务器。基于 12,818 条审定术语词表。",
   "permissions": [
     "storage",
