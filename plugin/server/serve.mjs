@@ -46,12 +46,16 @@ const [cert, key] = await Promise.all([readFile(certPath), readFile(keyPath)]);
 https
   .createServer({ cert, key }, async (req, res) => {
     const path = normalize(decodeURIComponent(new URL(req.url, "https://x").pathname));
+    const peer = req.socket.remoteAddress;
+    const ts = new Date().toISOString();
     const route = ROUTES[path];
     if (!route) {
+      console.log(`[${ts}] ${peer} ${req.method} ${path} -> 404`);
       res.writeHead(404, { "content-type": "text/plain" });
       res.end("404");
       return;
     }
+    console.log(`[${ts}] ${peer} ${req.method} ${path} -> 200`);
     try {
       const body = await readFile(route.file);
       // CORS + framing: vSphere Client loads plug-in UI inside its own frame.
