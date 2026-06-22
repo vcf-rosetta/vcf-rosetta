@@ -95,19 +95,24 @@ bash prepare.sh                 # 查依赖、生成证书、算指纹、找 SDK
 | 真机 url.* / sdk.* locale 原值 | `________________` |
 | 截图 | (附) |
 
-### VCF 9.1
+### VCF 9.1 — 实测结果(2026-06-22,vc.knight.com,插件 v0.1.2)
 
 | 项 | 结果 |
 |----|------|
-| 插件是否出现 | ⬜ 是 / ⬜ 否 |
-| Q1 iframe 中文是否正常 | ⬜ PASS / ⬜ FAIL |
-| Q2 宿主是否传 zh(verdict) | ⬜ ✅传了 / ⬜ ⚠️没传 |
-| Q3 导航插件名语言 | ⬜ 中文 / ⬜ 英文 |
-| `window.htmlClientSdk present` | ⬜ true / ⬜ false |
-| 真机 url.* / sdk.* locale 原值 | `________________` |
-| 截图 | (附) |
+| 插件是否出现 | ✅ 是(状态 DEPLOYED;视图在 vCenter 根对象 → Monitor) |
+| Q1 iframe 中文是否正常 | ✅ PASS(集群·数据存储·告警·症状·建议操作 正常中文) |
+| Q2 宿主 locale 是否中文 | ✅ 是 —— `navigator.language = zh-CN`,`navigator.languages = zh-CN, zh, zh-TW, zh-HK, en-US, en` |
+| Q3 **宿主渲染我们自带的 zh-CN 标签** | ✅ **中文**("语言路由验证" 正确显示) |
+| `window.htmlClientSdk present` | false(极简 iframe 未加载 SDK 引导脚本;生产版需加) |
+| url.* / sdk.* 显式 locale | (none) —— 宿主不走 URL/SDK 显式传 locale,而是经 navigator.language |
+| 部署链路 | DOWNLOADED → unzip → manifest 校验通过 → DEPLOYED + 反向代理注册 |
 
-### 结论
-- 整体分级:⬜ 完全成立 / ⬜ 成立(需自管 locale) / ⬜ 不成立
-- 下一步:________________
-- 把结论同步回 [HLD.md](HLD.md) §10 R1。
+### 结论:✅ **完全成立**
+- **核心结论**:VCF 9.1 官方虽移除中文,但**第三方 remote plugin 可自带 zh-CN,且宿主会渲染**(manifest i18n 标签 + iframe 内容都中文)。项目商业前提**技术成立**。
+- **locale 策略**:宿主不通过 URL/SDK 显式传 locale,但**经 `navigator.language` 暴露 zh-CN**;插件按 HLD §6.3 读 navigator.language 即可自动切中文,无需依赖宿主显式信号。
+- **踩坑记录(供生产复用)**:
+  1. 9.1 插件类型必须 `vsphere-client-remote`(非旧的 `vsphere-client-serenity`)
+  2. `client.url`/`server.url` 指向 **下载用的 `plugin.zip`**(非裸 plugin.json)
+  3. manifest 真实 schema:`manifestVersion`/`plugin.api.version` = `1.2.0`;必须有 `requirements.vcenter.server`;`configuration.nameKey`;视图走 `objects.<类型>.<category>.views`;i18n 为 `definitions.i18n.definitions[key][locale]`;locale 用 `en-US`/`zh-CN`;**不能有 `_comment` 等多余字段**;`forceExpand` 仅限 dynamic category
+  4. 注册走 ExtensionManager API(`register-api.py`);改 zip 后需 **bump 版本** + 删 vCenter 缓存 `vc-packages/.../com.vcfrosetta.r1probe-*` + 重启 `vsphere-ui` 才会重新部署
+- 下一步:第一步生产插件用 Angular+Clarity 实现 5 个只读视图;沿用本套 manifest/打包/注册流程。

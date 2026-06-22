@@ -189,14 +189,16 @@ manifest 的 resource list 指向一个 locale-keyed JSON:
 
 | # | 风险 | 严重度 | 缓解 |
 |---|------|--------|------|
-| R1 | 宿主移除 `zh-CN` 后,vSphere Client 是否仍把插件自带的 `zh-CN` 资源渲染出来(可能强制限定 4 locale) | **高** | 插件内自管 locale + 资源(§6.3);需在 9.0/9.1 真机**尽早实测**;最坏情况:UI 文案走 en key,中文由插件 DOM 直填 |
+| ~~R1~~ | ~~宿主移除 `zh-CN` 后,vSphere Client 是否仍渲染插件自带 zh-CN~~ | ✅ **已验证消除** | **2026-06-22 在 VCF 9.1(vc.knight.com)实测通过**:remote plugin 自带 zh-CN 可部署,宿主渲染 manifest i18n 中文标签,iframe 内中文正常,`navigator.language=zh-CN`。详见 [R1-POC.md](R1-POC.md)。结论:项目前提技术成立。 |
 | R2 | localization bundle 配错导致插件部署卡死(历史 release notes 有先例) | 中 | 保守 i18n 清单 + 严格 fallback(§6.4) |
 | R3 | Aria Ops API 鉴权与 vCenter SSO 整合 | 中 | 第一步先打通 vCenter,Aria 健康分可分期接入 |
 | R4 | Java 17 注册环境依赖 | 低 | 部署文档明确前置条件 |
 
 **待确认(需真机/SDK 验证)**
-- [ ] 插件自定义 locale(`zh-CN`)在 9.0/9.1 的实际渲染行为(R1,**最高优先**)
-- [ ] `plugin.json` resource list 的精确 schema 与 locale key 命名(`zh-CN` vs `zh`)
+- [x] ~~插件自定义 locale(`zh-CN`)的实际渲染行为(R1)~~ → ✅ 9.1 实测通过(见 R1-POC.md)
+- [x] ~~`plugin.json` 精确 schema~~ → ✅ 已由 9.1 真机确定:`manifestVersion 1.2.0` + `definitions.i18n.definitions[key][locale]`,locale 用 `zh-CN`(见 R1-POC §踩坑)
+- [ ] 9.0 GA 上复测(目前在 9.1 验证;9.0 待补)
+- [ ] 生产插件 Angular+Clarity SDK 引导(htmlClientSdk 在极简 iframe 中为 false)
 - [ ] Clarity 17 i18n 与插件自管 locale 的协同方式
 
 ---
