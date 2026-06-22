@@ -54,21 +54,22 @@ def build_extension():
 
     desc = vim.Description(label=LABEL, summary=SUMMARY)
 
+    # Modeled on a WORKING remote plugin on vCenter 9.1 (com.vmware.vrops.ui):
+    #   client.type = vsphere-client-remote, url -> downloadable plugin.zip,
+    #   server.type = HTTPS with self-signed cert thumbprint, url matching client.
     server = vim.Extension.ServerInfo(
         url=plugin_url,
         description=desc,
         company=COMPANY,
-        type="https",
+        type="HTTPS",
         adminEmail=["admin@vcf-rosetta.local"],
         serverThumbprint=thumb,
     )
-    # Remote vSphere Client plug-in: client type must be vsphere-client-serenity,
-    # url points at the plugin manifest (plugin.json).
     client = vim.Extension.ClientInfo(
         version=VERSION,
         description=desc,
         company=COMPANY,
-        type="vsphere-client-serenity",
+        type="vsphere-client-remote",
         url=plugin_url,
     )
     return vim.Extension(

@@ -35,6 +35,9 @@ if (!certPath || !keyPath) {
 
 // Map request paths to files. Manifest is exposed at /plugin.json.
 const ROUTES = {
+  // vSphere 9.x downloads the plug-in as a .zip package (client.url -> plugin.zip),
+  // not a bare plugin.json. Build it with scripts/build-zip.sh first.
+  "/plugin.zip": { file: join(PLUGIN_ROOT, "dist", "plugin.zip"), type: "application/zip" },
   "/plugin.json": { file: join(PLUGIN_ROOT, "manifest", "plugin.json"), type: "application/json" },
   "/": { file: join(PLUGIN_ROOT, "ui", "index.html"), type: "text/html; charset=utf-8" },
   "/index.html": { file: join(PLUGIN_ROOT, "ui", "index.html"), type: "text/html; charset=utf-8" },
