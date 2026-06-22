@@ -1,0 +1,136 @@
+{
+  "_meta": {
+    "purpose": "告警中文解释库 — 远程插件语义层核心资产。把 vCenter 英文告警名映射到中文症状/可能原因/建议操作。这是浏览器翻译给不了的增值内容(翻译只译名字,这里解释问题并给处置建议)。",
+    "schema": "key = vCenter 告警英文名(精确匹配);值 = { name: 中文名, severity: info|warning|critical, symptom: 症状一句话, causes: [可能原因], actions: [建议处置步骤], readonly: 是否只读建议 }",
+    "version": "0.1.0",
+    "seedCount": 18,
+    "todo": "随真机告警样本扩充;causes/actions 经 SME 复核后定稿"
+  },
+
+  "Host connection and power state": {
+    "name": "主机连接和电源状态",
+    "severity": "critical",
+    "symptom": "vCenter 与该 ESXi 主机失去连接,或主机电源状态异常。",
+    "causes": ["主机管理网络中断或 vmk0 故障", "hostd / vpxa 代理服务停止", "主机崩溃(PSOD)或断电", "vCenter 与主机间防火墙/路由问题"],
+    "actions": ["ping 主机管理 IP,确认网络可达", "iDRAC/iLO 查看主机是否在线、有无 PSOD", "SSH 登主机重启管理代理:services.sh restart 或 /etc/init.d/hostd restart", "确认 vCenter→主机 902/443 端口连通"]
+  },
+  "Host connection failure": {
+    "name": "主机连接失败",
+    "severity": "critical",
+    "symptom": "vCenter 无法连接到主机,主机显示为「未响应」。",
+    "causes": ["管理代理(hostd/vpxa)无响应", "主机管理网络故障", "证书或时间不同步导致认证失败"],
+    "actions": ["确认管理网络与端口连通", "重启主机管理代理", "检查主机与 vCenter 时间(NTP)是否同步"]
+  },
+  "Host CPU usage": {
+    "name": "主机 CPU 使用率",
+    "severity": "warning",
+    "symptom": "主机 CPU 使用率持续超过告警阈值。",
+    "causes": ["主机上虚拟机负载过高或 vCPU 超分严重", "个别 VM 失控占用 CPU", "DRS 未均衡或被禁用"],
+    "actions": ["查看主机上 CPU 占用最高的 VM", "评估开启/调整 DRS 自动化级别以迁移负载", "对失控 VM 限制 CPU 或排查应用", "必要时向集群添加主机扩容"]
+  },
+  "Host memory usage": {
+    "name": "主机内存使用率",
+    "severity": "warning",
+    "symptom": "主机内存使用率持续偏高,可能出现交换/气球回收。",
+    "causes": ["内存超分过度", "VM 内存预留过高", "主机内存容量不足"],
+    "actions": ["查看主机内存消耗最高的 VM", "检查是否发生 ballooning/swapping(性能图表)", "用 DRS 迁移部分 VM 或扩容主机内存"]
+  },
+  "Datastore usage on disk": {
+    "name": "磁盘上的数据存储使用率",
+    "severity": "warning",
+    "symptom": "数据存储已用空间超过阈值,接近写满。",
+    "causes": ["VM 磁盘/快照增长", "孤立或废弃文件占用空间", "厚置备磁盘预占空间"],
+    "actions": ["按占用排序定位大文件/快照", "清理过期快照与孤立文件", "Storage vMotion 迁移部分 VM 到其他数据存储", "扩容数据存储容量"]
+  },
+  "Datastore cluster usage on disk": {
+    "name": "磁盘上的数据存储集群使用率",
+    "severity": "warning",
+    "symptom": "数据存储集群整体使用率超过阈值。",
+    "causes": ["集群内多个数据存储普遍接近写满", "SDRS 未启用或未触发均衡"],
+    "actions": ["检查 SDRS 是否启用并查看均衡建议", "扩容或新增数据存储到集群", "清理可回收空间"]
+  },
+  "vSAN health alarm": {
+    "name": "vSAN 健康告警",
+    "severity": "critical",
+    "symptom": "vSAN 健康检查检测到问题(网络/磁盘/容量/对象等)。",
+    "causes": ["磁盘组或缓存盘故障", "vSAN 网络(组播/单播、MTU)异常", "容量不足或对象未合规", "版本/驱动不兼容"],
+    "actions": ["打开 vSAN Skyline 健康查看具体失败项", "按失败类别处置:磁盘→换盘重建、网络→查 MTU/连通", "确认容量有足够冗余预留", "核对 HCL 与驱动/固件版本"]
+  },
+  "HA VM failover failed": {
+    "name": "HA 虚拟机故障转移失败",
+    "severity": "critical",
+    "symptom": "主机故障后 vSphere HA 未能在其他主机重启受影响虚拟机。",
+    "causes": ["集群剩余资源不足以满足重启", "准入控制策略限制", "VM 文件所在数据存储不可达", "兼容性/网络不满足"],
+    "actions": ["检查集群资源与准入控制设置", "确认目标主机能访问该 VM 的数据存储与网络", "查看 HA 事件定位失败原因", "必要时手动在合适主机开机"]
+  },
+  "HA host status": {
+    "name": "HA 主机状态",
+    "severity": "warning",
+    "symptom": "vSphere HA 报告主机状态异常(隔离、网络分区或代理不可达)。",
+    "causes": ["管理网络/心跳网络故障导致隔离或分区", "FDM 代理异常", "心跳数据存储不可达"],
+    "actions": ["检查管理网络与心跳数据存储", "在主机上重新配置 HA(Reconfigure for vSphere HA)", "查看 FDM 日志"]
+  },
+  "Network uplink redundancy lost": {
+    "name": "网络上行链路冗余丢失",
+    "severity": "warning",
+    "symptom": "交换机上行链路冗余丢失,仅剩单条物理上行。",
+    "causes": ["某条物理网卡 down 或线缆/光模块故障", "上联物理交换机端口故障", "网卡驱动/固件问题"],
+    "actions": ["定位 down 的 vmnic,检查线缆/光模块/对端端口", "确认 NIC 绑定策略与冗余配置", "更换故障硬件后确认冗余恢复"]
+  },
+  "Host hardware health": {
+    "name": "主机硬件健康状况",
+    "severity": "warning",
+    "symptom": "主机硬件传感器(电源/风扇/温度/内存等)报告异常。",
+    "causes": ["电源模块/风扇故障", "温度过高", "内存或其他部件预警"],
+    "actions": ["在监控→硬件健康查看具体传感器", "登录 iDRAC/iLO 核对硬件告警", "联系硬件厂商更换故障部件"]
+  },
+  "Host IPMI System Event Log status": {
+    "name": "主机 IPMI 系统事件日志状态",
+    "severity": "warning",
+    "symptom": "主机 IPMI 系统事件日志(SEL)报告硬件事件。",
+    "causes": ["BMC 记录到硬件错误事件", "SEL 已满"],
+    "actions": ["查看并导出 SEL 定位事件", "处理对应硬件问题后清空 SEL", "在 vCenter 重置该告警为正常"]
+  },
+  "Certificate status": {
+    "name": "证书状态",
+    "severity": "warning",
+    "symptom": "证书即将过期或已过期。",
+    "causes": ["机器/解决方案证书到期", "未启用自动续订"],
+    "actions": ["在 管理→证书 查看到期证书", "续订或替换证书", "启用自动续订避免再次过期"]
+  },
+  "License capacity monitoring": {
+    "name": "许可容量监控",
+    "severity": "warning",
+    "symptom": "许可使用量接近或超过授权容量,或评估版即将到期。",
+    "causes": ["许可容量不足以覆盖当前 CPU/核心/容量", "使用的是评估版且临近到期"],
+    "actions": ["在 管理→许可 查看用量与到期", "VCF 9 通过 VCF Operations 管理许可", "补充许可或调整资源"]
+  },
+  "Virtual machine CPU usage": {
+    "name": "虚拟机 CPU 使用率",
+    "severity": "warning",
+    "symptom": "虚拟机 CPU 使用率持续超过阈值。",
+    "causes": ["应用负载高", "vCPU 配置不足", "CPU Ready 高(主机争用)"],
+    "actions": ["查看 VM 内进程与 CPU Ready 指标", "评估增加 vCPU 或迁移到负载更低主机", "排查应用层异常"]
+  },
+  "Virtual machine memory usage": {
+    "name": "虚拟机内存使用率",
+    "severity": "warning",
+    "symptom": "虚拟机内存使用率持续偏高。",
+    "causes": ["应用内存占用高", "内存配置不足", "主机内存争用导致回收"],
+    "actions": ["查看 VM 内存活跃/消耗与是否被 ballooning", "评估增加内存配置", "缓解主机内存争用"]
+  },
+  "Virtual machine consolidation needed status": {
+    "name": "虚拟机需要整合快照",
+    "severity": "warning",
+    "symptom": "虚拟机存在需要整合的冗余快照磁盘。",
+    "causes": ["快照删除后磁盘未成功整合", "备份软件残留快照"],
+    "actions": ["对该 VM 执行「整合(Consolidate)」", "确认快照已正确清理", "检查备份作业是否遗留快照"]
+  },
+  "Migration error": {
+    "name": "迁移错误",
+    "severity": "warning",
+    "symptom": "vMotion / Storage vMotion 迁移失败。",
+    "causes": ["源/目标主机 CPU 不兼容(EVC 未启用)", "vMotion 网络异常", "目标资源不足", "数据存储不可达"],
+    "actions": ["确认集群已启用合适的 EVC 基线", "检查 vMotion vmkernel 网络连通", "确认目标主机/数据存储资源充足", "查看任务详情中的具体错误"]
+  }
+}
