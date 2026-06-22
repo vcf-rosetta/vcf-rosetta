@@ -81,11 +81,13 @@
   }
 
   // ── 文本节点翻译 ──────────────────────────────────────────
+  const CJK = /[一-鿿]/;
   function translateText(node) {
     if (node.__vcZh) return;
     const raw = node.nodeValue;
     if (!raw || !raw.trim()) return;
     const trimmed = raw.trim();
+    if (CJK.test(trimmed)) { node.__vcZh = true; return; } // 已是中文,早退(省重扫开销)
     const zh = dict[trimmed];
     if (zh && zh !== trimmed) {
       node.nodeValue = raw.replace(trimmed, zh); // 保留首尾空白
@@ -132,26 +134,41 @@
   }
 
   // ── MutationObserver(Angular SPA 路由切换 / 数据加载) ──────
-  let busy = false;
+  // 用 rAF 批处理:把待处理节点入队、合并到一帧统一翻译。绝不丢 mutation
+  // (旧版 busy 标志会丢弃繁忙期的变更 -> 漏翻)。
+  let pending = new Set();
+  let scheduled = false;
+  function flush() {
+    scheduled = false;
+    const roots = pending; pending = new Set();
+    roots.forEach(walkAndTranslate);
+  }
+  function schedule(node) {
+    pending.add(node);
+    if (!scheduled) {
+      scheduled = true;
+      (window.requestAnimationFrame || window.setTimeout)(flush, 0);
+    }
+  }
   const observer = new MutationObserver(mutations => {
-    if (busy) return;
-    busy = true;
     for (const m of mutations) {
-      if (m.type === 'childList') m.addedNodes.forEach(n => walkAndTranslate(n));
-      else if (m.type === 'characterData') translateText(m.target);
+      if (m.type === 'childList') m.addedNodes.forEach(schedule);
+      else if (m.type === 'characterData') schedule(m.target);
       else if (m.type === 'attributes' && m.target.nodeType === Node.ELEMENT_NODE) translateAttrs(m.target);
     }
-    busy = false;
   });
 
+  let started = false;
   function init() {
     walkAndTranslate(document.body);
+    const titleEl = document.querySelector('title');
+    if (titleEl) walkAndTranslate(titleEl);
+    if (started) return;                  // 已在监听 -> 仅重扫,避免重复 observer
+    started = true;
     observer.observe(document.body, {
       childList: true, subtree: true, characterData: true,
       attributes: true, attributeFilter: TRANSLATE_ATTRS,
     });
-    const titleEl = document.querySelector('title');
-    if (titleEl) walkAndTranslate(titleEl);
   }
 
   chrome.storage.sync.get({ hosts: [], enabled: true, collect: false }, cfg => {

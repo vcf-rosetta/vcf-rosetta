@@ -108,22 +108,29 @@
   document.getElementById('alarm-search').addEventListener('input', function (e) { renderAlarms(e.target.value); });
 
   // ── 术语查询(静态)──────────────────────────────────────
+  // 预计算小写检索索引一次,避免每次按键对 1.2 万条重复 toLowerCase。
   var glossaryKeys = Object.keys(glossary), MAX = 200;
+  var glossaryIndex = glossaryKeys.map(function (en) {
+    var zh = glossary[en];
+    return { en: en, zh: zh, hay: (en + '' + zh).toLowerCase() };
+  });
   function renderGlossary(q) {
     q = (q || '').trim().toLowerCase();
     var rows = document.getElementById('glossary-rows'), meta = document.getElementById('glossary-meta');
     rows.innerHTML = '';
     if (!q) { meta.textContent = '共 ' + glossaryKeys.length + ' 条术语,输入关键词查询。'; return; }
     var hits = 0, html = '';
-    for (var i = 0; i < glossaryKeys.length && hits < MAX; i++) {
-      var en = glossaryKeys[i], zh = glossary[en];
-      if (en.toLowerCase().indexOf(q) === -1 && String(zh).toLowerCase().indexOf(q) === -1) continue;
-      html += '<tr><td class="en">' + esc(en) + '</td><td class="zh">' + esc(zh) + '</td></tr>'; hits++;
+    for (var i = 0; i < glossaryIndex.length && hits < MAX; i++) {
+      if (glossaryIndex[i].hay.indexOf(q) === -1) continue;
+      html += '<tr><td class="en">' + esc(glossaryIndex[i].en) + '</td><td class="zh">' + esc(glossaryIndex[i].zh) + '</td></tr>'; hits++;
     }
     rows.innerHTML = html || '<tr><td colspan="2" class="empty">无匹配术语。</td></tr>';
     meta.textContent = hits >= MAX ? ('匹配较多,仅显示前 ' + MAX + ' 条,请细化关键词。') : ('匹配 ' + hits + ' 条。');
   }
-  document.getElementById('glossary-search').addEventListener('input', function (e) { renderGlossary(e.target.value); });
+  function debounce(fn, ms) {
+    var t; return function () { var a = arguments, c = this; clearTimeout(t); t = setTimeout(function () { fn.apply(c, a); }, ms); };
+  }
+  document.getElementById('glossary-search').addEventListener('input', debounce(function (e) { renderGlossary(e.target.value); }, 120));
 
   // 初始:默认页 + 静态页预渲染
   renderAlarms(''); renderGlossary('');

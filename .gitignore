@@ -23,3 +23,8 @@ plugin/r1.env
 
 # built plugin package
 plugin/dist/
+
+# plugin UI tests
+plugin/tests/node_modules/
+plugin/tests/shot-*.png
+plugin/dist/_uitest/
