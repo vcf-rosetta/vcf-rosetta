@@ -33,7 +33,7 @@ except ImportError:
     sys.exit("ERROR: pyvmomi not installed. Run: pip3 install --user pyvmomi")
 
 KEY = os.environ.get("PLUGIN_KEY", "com.vcfrosetta.r1probe")
-VERSION = os.environ.get("VERSION", "0.1.1")
+VERSION = os.environ.get("VERSION", "0.1.2")
 COMPANY = "vcf-rosetta"
 LABEL = "VCF Rosetta R1 Probe"
 SUMMARY = "R1 locale verification plug-in"
