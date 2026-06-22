@@ -1,45 +1,47 @@
 {
-  "_comment": "R1 verification manifest — minimal remote plug-in to test whether vSphere Client 9.0/9.1 renders a self-shipped zh-CN locale. SCHEMA NOTE: exact field names/structure must be reconciled against the official 9.0 remote plug-in sample's plugin.json before production use (see HLD R1 / open questions). Fields below follow the documented behavior: a locale-keyed resource map drives plug-in chrome strings.",
-
-  "manifestVersion": "1.0.0",
-  "requirements": {
-    "plugin.api.version": "1.0.0"
-  },
-
-  "configurations": {
-    "name": "#{plugin.name}",
-    "version": "0.1.0",
-    "key": "com.vcfrosetta.r1probe",
-    "vendor": "vcf-rosetta",
-    "company": "vcf-rosetta"
-  },
-
-  "definitions": {
-    "i18n": {
-      "_comment": "Locale-keyed resources. en is the fallback baseline; zh-CN is the locale under test. Per docs the resource map keys are locales and values are { messageKey: message }.",
-      "locales": ["en", "zh-CN"],
-      "resources": {
-        "en": {
-          "plugin.name": "VCF Rosetta (R1 Probe)",
-          "view.title": "Locale Routing Probe"
-        },
-        "zh-CN": {
-          "plugin.name": "VCF Rosetta(R1 验证)",
-          "view.title": "语言路由验证"
+    "manifestVersion": "1.2.0",
+    "requirements": {
+        "plugin.api.version": "1.2.0",
+        "vcenter.server": {
+            "version": "[7.0,)",
+            "environments": [
+                "onprem"
+            ]
         }
-      }
-    }
-  },
-
-  "global": {
-    "navigation": {
-      "items": [
-        {
-          "key": "vcfrosetta.r1.home",
-          "label": "#{plugin.name}",
-          "uri": "index.html"
+    },
+    "configuration": {
+        "nameKey": "vcfrosetta.plugin.name"
+    },
+    "objects": {
+        "Folder:RootFolder": {
+            "monitor": {
+                "views": [
+                    {
+                        "navigationId": "vcfrosetta-r1-probe",
+                        "labelKey": "vcfrosetta.r1.title",
+                        "uri": "index.html"
+                    }
+                ],
+                "forceExpand": true
+            }
         }
-      ]
+    },
+    "definitions": {
+        "i18n": {
+            "locales": [
+                "en-US",
+                "zh-CN"
+            ],
+            "definitions": {
+                "vcfrosetta.plugin.name": {
+                    "en-US": "VCF Rosetta (R1 Probe)",
+                    "zh-CN": "VCF Rosetta(R1 验证)"
+                },
+                "vcfrosetta.r1.title": {
+                    "en-US": "Locale Routing Probe",
+                    "zh-CN": "语言路由验证"
+                }
+            }
+        }
     }
-  }
 }
