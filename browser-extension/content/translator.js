@@ -10,12 +10,19 @@
   async function loadDict(lang) {
     lang = lang || 'zh-CN';
     if (loadedLang === lang && Object.keys(dict).length) return true;
+    const url = chrome.runtime.getURL('dict.' + lang + '.json');
     try {
-      const res = await fetch(chrome.runtime.getURL('dict.' + lang + '.json'));
+      const res = await fetch(url);
+      if (!res.ok) { console.warn('[vcf-rosetta] 字典加载失败 HTTP ' + res.status + ' @ ' + url); return false; }
       dict = await res.json();
       loadedLang = lang;
+      console.info('[vcf-rosetta] 字典已加载:' + lang + ',' + Object.keys(dict).length + ' 条');
       return Object.keys(dict).length > 0;
-    } catch (e) { return false; }
+    } catch (e) {
+      console.warn('[vcf-rosetta] 字典加载异常 @ ' + url + ' : ' + e.message +
+        '(请确认已运行 build-dict.mjs 且扩展已重新加载)');
+      return false;
+    }
   }
 
   // ── 未翻译词条采集(调试用)──────────────────────────────
