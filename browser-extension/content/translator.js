@@ -56,12 +56,14 @@
   // 每次成功加载字典后,会自动剔除「现已翻译」的条目,所以词库覆盖越全、待采集越少。
   let collect = false;
   const MISSING_KEY = 'missingTerms';
-  const missing = window.__vcMissing || (window.__vcMissing = new Set());
-  // 启动时载入已持久化的采集结果
+  // text -> { n:出现次数, tool:来源工具页, title:样本页标题, flags:[异常标记] }
+  const missing = window.__vcMissing || (window.__vcMissing = new Map());
+  // 启动时载入(兼容旧版:纯字符串数组 / 新版:{text:meta} 对象)
   try {
     chrome.storage.local.get(MISSING_KEY, got => {
-      const arr = got && got[MISSING_KEY];
-      if (Array.isArray(arr)) arr.forEach(s => missing.add(s));
+      const v = got && got[MISSING_KEY];
+      if (Array.isArray(v)) v.forEach(s => { if (typeof s === 'string' && !missing.has(s)) missing.set(s, { n: 1, tool: '?', title: '', flags: classifyFlags(s) }); });
+      else if (v && typeof v === 'object') for (const k in v) if (!missing.has(k)) missing.set(k, v[k]);
     });
   } catch (e) { /* ignore */ }
   let saveTimer = null;
@@ -69,14 +71,35 @@
     if (saveTimer) return;
     saveTimer = setTimeout(() => {
       saveTimer = null;
-      try { chrome.storage.local.set({ [MISSING_KEY]: Array.from(missing) }); } catch (e) { /* ignore */ }
+      try { chrome.storage.local.set({ [MISSING_KEY]: Object.fromEntries(missing) }); } catch (e) { /* ignore */ }
     }, 1500); // 防抖,避免频繁写盘
   }
-  // 字典加载后:剔除已翻译条目(升级/补词后自动收缩待采集集)
-  function pruneMissing() {
+  function pruneMissing() {       // 字典加载后剔除已翻译条目(补词后自动收缩)
     let changed = false;
-    missing.forEach(s => { if (dict[s] !== undefined) { missing.delete(s); changed = true; } });
+    missing.forEach((_, k) => { if (dict[k] !== undefined) { missing.delete(k); changed = true; } });
     if (changed) persistMissing();
+  }
+  // 来源工具页识别(给采集词条标来源,便于按工具补词)
+  function detectTool() {
+    const t = document.title || '';
+    if (/Operations for Logs|Log Insight|vRealize Log/.test(t)) return 'log';
+    if (/Aria Operations|VCF Operations|vRealize Operations/.test(t)) return 'aria-ops';
+    if (/Aria Automation|vRealize Automation/.test(t)) return 'aria-automation';
+    if (/\bNSX\b/.test(t)) return 'nsx';
+    if (/SDDC Manager/.test(t)) return 'sddc';
+    if (/vSphere|vCenter/.test(t)) return 'vcenter';
+    return location.hostname || 'other';
+  }
+  // 异常标记:帮助维护者快速判断该条该怎么处理
+  function classifyFlags(s) {
+    const f = [];
+    if (/\d/.test(s)) f.push('含数字·疑动态');       // 可能该进 PHRASES 模式而非词典
+    if (s.length > 60) f.push('长句');
+    if (/^[a-z]/.test(s)) f.push('疑片段');           // 小写开头,可能是被拆开的句子片段
+    if (/^[A-Z0-9 ()/_-]+$/.test(s) && s.length <= 28) f.push('全大写');
+    if (/[{}]|\$\{|%[sd@]|\bundefined\b|\[object/.test(s)) f.push('疑占位/异常');
+    if (/[A-Za-z][\w.]*(\.[A-Za-z][\w]*){2,}/.test(s)) f.push('疑标识符');  // 点分 key
+    return f;
   }
   // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文)
   function looksTranslatable(s) {
@@ -89,20 +112,32 @@
     return true;
   }
   function recordMissing(s) {
-    if (collect && looksTranslatable(s) && !missing.has(s)) { missing.add(s); persistMissing(); }
+    if (!collect || !looksTranslatable(s)) return;
+    const m = missing.get(s);
+    if (m) { m.n = (m.n || 1) + 1; }
+    else { missing.set(s, { n: 1, tool: detectTool(), title: (document.title || '').slice(0, 80), flags: classifyFlags(s) }); }
+    persistMissing();
   }
-  // 导出:下载 JSON + 打印到控制台
+  // 导出条目(带标记),按 工具→出现次数降序→字母 排序
+  function missingEntries() {
+    return Array.from(missing.entries())
+      .map(([text, m]) => ({ text: text, count: m.n || 1, tool: m.tool || '?', flags: m.flags || [], title: m.title || '' }))
+      .sort((a, b) => (a.tool < b.tool ? -1 : a.tool > b.tool ? 1 : b.count - a.count || (a.text.toLowerCase() < b.text.toLowerCase() ? -1 : 1)));
+  }
+  // 本地导出:下载带标记的 JSON + 打印摘要
   window.__vcDumpMissing = function () {
-    const list = Array.from(missing).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-    console.log('[vcf-rosetta] 未翻译词条 ' + list.length + ' 条:', list);
+    const entries = missingEntries();
+    const byTool = {}; entries.forEach(e => byTool[e.tool] = (byTool[e.tool] || 0) + 1);
+    console.log('[vcf-rosetta] 未翻译词条 ' + entries.length + ' 条,按工具:', byTool);
     try {
-      const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+      const payload = { generatedFrom: location.hostname, total: entries.length, byTool: byTool, entries: entries };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'vc-missing-' + list.length + '.json';
+      a.download = 'vc-missing-' + entries.length + '.json';
       document.body.appendChild(a); a.click(); a.remove();
     } catch (e) { /* 下载失败也已打印到控制台 */ }
-    return list.length;
+    return entries.length;
   };
 
   // 翻译 VCF 控制台页面。两条激活路径(加法,不互斥):
@@ -281,8 +316,8 @@
     else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect && Object.keys(dict).length) walkAndTranslate(document.body); }
     else if (msg.type === 'VC_DUMP') { sendResponse({ count: window.__vcDumpMissing() }); }
     else if (msg.type === 'VC_GET_MISSING') {
-      const list = Array.from(missing).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-      sendResponse({ list: list, lang: loadedLang || 'zh-CN' });
+      const entries = missingEntries();
+      sendResponse({ entries: entries, list: entries.map(e => e.text), lang: loadedLang || 'zh-CN' });
     }
     else if (msg.type === 'VC_CLEAR_MISSING') {
       missing.clear();

@@ -93,15 +93,15 @@ const REPO = 'vcf-rosetta/vcf-rosetta';
 const DEV_EMAIL = 'zhouwei008@gmail.com'; // 词条贡献接收邮箱
 const URL_BUDGET = 7000; // GitHub/mailto URL 实测安全上限,超出则截断并提示附本地文件
 
-// 取当前页采集到的未翻译词条,回调 (list, lang, region)
+// 取当前页采集到的未翻译词条(带标记),回调 (entries, lang, region)
 function withMissing(cb) {
   activeTab().then(tab => {
     if (!tab || tab.id == null) { statusEl.textContent = '请先打开 vCenter 页面。'; return; }
     chrome.tabs.sendMessage(tab.id, { type: 'VC_GET_MISSING' }, resp => {
       if (chrome.runtime.lastError || !resp) { statusEl.textContent = '请先刷新 vCenter 页面,并开启“收集未翻译词条”。'; return; }
-      const list = resp.list || [];
-      if (!list.length) { statusEl.textContent = '当前没有采集到未翻译词条(先开启收集并浏览缺词页面)。'; return; }
-      cb(list, resp.lang || langEl.value || 'zh-CN', (document.getElementById('region').value || '').trim());
+      const entries = resp.entries || (resp.list || []).map(t => ({ text: t, tool: '?', count: 1, flags: [] }));
+      if (!entries.length) { statusEl.textContent = '当前没有采集到未翻译词条(先开启收集并浏览缺词页面)。'; return; }
+      cb(entries, resp.lang || langEl.value || 'zh-CN', (document.getElementById('region').value || '').trim());
     });
   });
 }
@@ -113,28 +113,31 @@ function fitWithin(list, render) {
   }
   return { arr, truncated };
 }
+// 紧凑序列化(带标记):{text, tool, flags},省去 title/count 控制体积
+const compact = a => a.map(e => e.flags && e.flags.length ? { text: e.text, tool: e.tool, flags: e.flags } : { text: e.text, tool: e.tool });
 
-document.getElementById('contribute').addEventListener('click', () => withMissing((list, lang, region) => {
-  const title = `[i18n] ${lang} 缺词 ${list.length} 条${region ? ' · ' + region : ''}`;
+document.getElementById('contribute').addEventListener('click', () => withMissing((entries, lang, region) => {
+  const title = `[i18n] ${lang} 缺词 ${entries.length} 条${region ? ' · ' + region : ''}`;
   const render = a => `> 由 VCF 9 UI Translator 扩展自动采集的未翻译界面词条,目标语言:**${lang}**${region ? ',来源:' + region : ''}。\n` +
-    `> 维护者:合并到 \`plugin/i18n/domains/\` 后重建词典。\n\n\`\`\`json\n${JSON.stringify(a)}\n\`\`\`\n`;
-  const { arr, truncated } = fitWithin(list, render);
+    `> 每条带 \`tool\`(来源工具页)与 \`flags\`(异常标记,如 含数字·疑动态 / 疑标识符),便于维护者判断。\n` +
+    `> 维护者:\`node contrib/merge-incoming.mjs <file> ${lang}\` 去重后合并到 \`plugin/i18n/domains/\`。\n\n\`\`\`json\n${JSON.stringify(compact(a))}\n\`\`\`\n`;
+  const { arr, truncated } = fitWithin(entries, render);
   let body = render(arr);
-  if (truncated) body += `\n_注:词条过多,本 Issue 仅含前 ${arr.length}/${list.length} 条;完整清单请用“导出 JSON(本地)”后拖入评论。_\n`;
+  if (truncated) body += `\n_注:词条过多,本 Issue 仅含前 ${arr.length}/${entries.length} 条;完整清单请用“导出 JSON(本地)”后拖入评论。_\n`;
   chrome.tabs.create({ url: `https://github.com/${REPO}/issues/new?labels=${encodeURIComponent('i18n,translation-contribution')}` +
     `&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}` });
-  statusEl.textContent = truncated ? `已打开 GitHub(前 ${arr.length}/${list.length} 条);量大请另附本地导出。` : `已打开 GitHub(${list.length} 条),点 Submit 即可。`;
+  statusEl.textContent = truncated ? `已打开 GitHub(前 ${arr.length}/${entries.length} 条);量大请另附本地导出。` : `已打开 GitHub(${entries.length} 条),点 Submit 即可。`;
 }));
 
-document.getElementById('mail').addEventListener('click', () => withMissing((list, lang, region) => {
-  const subject = `[vcf-rosetta i18n] ${lang} 缺词 ${list.length} 条${region ? ' · ' + region : ''}`;
-  const render = a => `目标语言: ${lang}\n来源: ${region || '(未填)'}\n词条数: ${a.length}\n\n` +
-    `${JSON.stringify(a, null, 2)}\n`;
-  const { arr, truncated } = fitWithin(list, render);
+document.getElementById('mail').addEventListener('click', () => withMissing((entries, lang, region) => {
+  const subject = `[vcf-rosetta i18n] ${lang} 缺词 ${entries.length} 条${region ? ' · ' + region : ''}`;
+  const render = a => `目标语言: ${lang}\n来源: ${region || '(未填)'}\n词条数: ${a.length}\n(每条带 tool=来源工具页, flags=异常标记)\n\n` +
+    `${JSON.stringify(compact(a), null, 2)}\n`;
+  const { arr, truncated } = fitWithin(entries, render);
   let body = render(arr);
-  if (truncated) body += `\n注:词条较多,本邮件正文仅含前 ${arr.length}/${list.length} 条;请把“导出 JSON(本地)”得到的完整文件作为附件一并发送。\n`;
+  if (truncated) body += `\n注:词条较多,本邮件正文仅含前 ${arr.length}/${entries.length} 条;请把“导出 JSON(本地)”得到的完整文件作为附件一并发送。\n`;
   chrome.tabs.create({ url: `mailto:${DEV_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}` });
-  statusEl.textContent = truncated ? `已打开邮件(前 ${arr.length}/${list.length} 条);请把本地导出的 JSON 作为附件。` : `已打开邮件(${list.length} 条),发送即可。`;
+  statusEl.textContent = truncated ? `已打开邮件(前 ${arr.length}/${entries.length} 条);请把本地导出的 JSON 作为附件。` : `已打开邮件(${entries.length} 条),发送即可。`;
 }));
 
 document.getElementById('clear').addEventListener('click', async () => {

@@ -15,8 +15,16 @@ const [file, lang] = process.argv.slice(2);
 if (!file || !lang) { console.error("用法: node contrib/merge-incoming.mjs <terms.json> <lang>"); process.exit(1); }
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const terms = JSON.parse(readFileSync(file, "utf8"));
-if (!Array.isArray(terms)) { console.error("输入必须是 JSON 字符串数组"); process.exit(1); }
+// 接受多种形态:字符串数组 / 对象数组[{text}] / {entries:[{text}]} / {text:meta}
+const parsed = JSON.parse(readFileSync(file, "utf8"));
+function toStrings(p) {
+  if (Array.isArray(p)) return p.map(x => (typeof x === "string" ? x : x && x.text)).filter(Boolean);
+  if (p && Array.isArray(p.entries)) return toStrings(p.entries);
+  if (p && typeof p === "object") return Object.keys(p);
+  return [];
+}
+const terms = toStrings(parsed);
+if (!terms.length) { console.error("无法从输入提取词条(支持:字符串数组 / [{text}] / {entries} / {key:val})"); process.exit(1); }
 
 const glossaryPath = join(root, "plugin/i18n", `glossary.${lang}.json`);
 const glossary = existsSync(glossaryPath) ? JSON.parse(readFileSync(glossaryPath, "utf8")) : {};
