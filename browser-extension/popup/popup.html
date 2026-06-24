@@ -19,9 +19,11 @@
   <p class="meta" id="langStatus">首次选择某语言会按需下载对应词库(约数 MB),之后本地缓存,不重复下载。</p>
 
   <div class="field">
-    <label for="hosts">仅在这些主机启用(每行一个,留空=自动检测 vCenter 页面)</label>
-    <textarea id="hosts" rows="4" placeholder="vc.example.com&#10;172.20.10.50"></textarea>
+    <label for="hosts">强制启用的站点(每行一个;自动检测之外的额外站点。vc / Aria Ops / Log 等)</label>
+    <textarea id="hosts" rows="4" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
   </div>
+  <button id="addCurrent" class="secondary">➕ 添加当前站点并启用</button>
+  <p class="meta" id="curHost">当前站点:—</p>
 
   <button id="save">保存并应用</button>
   <p class="hint" id="status"></p>

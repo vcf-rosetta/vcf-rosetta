@@ -36,6 +36,29 @@ async function activeTab() {
   return tab;
 }
 
+// 显示当前站点
+const curHostEl = document.getElementById('curHost');
+async function currentHostname() {
+  const tab = await activeTab();
+  try { return tab && tab.url ? new URL(tab.url).hostname : ''; } catch (e) { return ''; }
+}
+currentHostname().then(h => { if (curHostEl) curHostEl.textContent = '当前站点:' + (h || '—'); });
+
+// ➕ 添加当前站点并启用:把当前页 IP/域名加入强制启用列表
+document.getElementById('addCurrent').addEventListener('click', async () => {
+  const host = await currentHostname();
+  if (!host || /^(chrome|edge|about)/.test(host)) { statusEl.textContent = '当前页不是可翻译的网站。'; return; }
+  const list = hostsEl.value.split('\n').map(s => s.trim()).filter(Boolean);
+  if (list.includes(host)) { statusEl.textContent = host + ' 已在列表中。'; return; }
+  list.push(host);
+  hostsEl.value = list.join('\n');
+  await chrome.storage.sync.set({ enabled: true, hosts: list });
+  enabledEl.checked = true;
+  const tab = await activeTab();
+  if (tab && tab.id != null) chrome.tabs.reload(tab.id);   // 重载让内容脚本在此站点激活
+  statusEl.textContent = '已添加并启用 ' + host + ',正在刷新…';
+});
+
 // 切换语言:保存并刷新当前页生效
 langEl.addEventListener('change', async () => {
   await chrome.storage.sync.set({ lang: langEl.value });

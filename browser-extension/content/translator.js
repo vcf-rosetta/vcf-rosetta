@@ -105,24 +105,26 @@
     return list.length;
   };
 
-  // 只翻译 VCF 控制台页面:① 用户配置的白名单;② 否则自动检测 Clarity UI 特征。
-  // 覆盖面:vCenter / vSphere Client、SDDC Manager,以及 Aria Operations(VCF Operations)。
+  // 翻译 VCF 控制台页面。两条激活路径(加法,不互斥):
+  //   ① 用户用「添加当前站点」显式强制启用的主机 —— 任何 VCF 工具页都能这样一键加白名单;
+  //   ② 自动检测 Clarity / VCF 工具特征(vCenter / SDDC Manager / Aria Operations / Aria Operations
+  //      for Logs(Log Insight)/ NSX 等)。
   function shouldActivate(cfg) {
     if (!cfg.enabled) return false;
     const hosts = cfg.hosts || [];
-    if (hosts.length > 0) {
-      return hosts.some(h => h && location.hostname.includes(h));
-    }
+    if (hosts.some(h => h && location.hostname.includes(h))) return true;   // 显式启用站点(加法)
     const t = document.title || '';
+    const TITLE_MARKERS = [
+      'vSphere', 'vCenter', 'SDDC Manager', 'Cloud Foundation',
+      'Aria Operations', 'VCF Operations', 'vRealize Operations',
+      'Operations for Logs', 'Log Insight', 'vRealize Log',          // 日志工具
+      'Aria Automation', 'vRealize Automation', 'NSX',               // 其它 VCF 工具
+    ];
     return (
       location.pathname.startsWith('/ui') ||
-      t.includes('vSphere') ||
-      t.includes('vCenter') ||
-      t.includes('SDDC Manager') ||
-      t.includes('Aria Operations') ||      // VCF / Aria Operations(原 vROps)
-      t.includes('VCF Operations') ||
-      t.includes('vRealize Operations') ||
-      !!document.querySelector('clr-header, .clr-app-container, vsphere-client')
+      TITLE_MARKERS.some(m => t.includes(m)) ||
+      // Clarity 框架特征(绝大多数 VCF 工具页都用 Clarity / Angular)
+      !!document.querySelector('clr-header, .clr-app-container, vsphere-client, clr-main-container')
     );
   }
 
