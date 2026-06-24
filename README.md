@@ -1,30 +1,44 @@
 # vcf-rosetta
 
-为 VMware Cloud Foundation (VCF) 9.0 / 9.1 提供**多语言 UI 插件**。VCF 9 官方 UI 当前仅公开支持
-English / Français / Español / 日本語,没有中文入口。本项目通过 vSphere Client **remote plug-in**
-为运维人员提供本地化界面与中文运维语义层(告警解释、术语统一、对象详情聚合)。
+为 VMware Cloud Foundation (VCF) 9.0 / 9.1 提供**中文(多语言)UI 本地化**。VCF 9 官方 UI 当前仅公开支持
+English / Français / Español / 日本語,没有中文入口。本项目用**浏览器扩展**把 vCenter / VCF 控制台界面
+实时翻译成中文(及更多语言),纯前端、不改 vCenter 服务器。
 
 > 罗塞塔石碑(Rosetta Stone)是多语言对照的经典符号 —— 取此名意在"让 VCF 说更多语言"。
 
+## 两个交付物(主次分明)
+
+| | 交付物 | 角色 | 状态 |
+|---|---|---|---|
+| **主线** | [`browser-extension/`](browser-extension/) | 翻译 vCenter / VCF / Aria Operations **原生界面**(DOM 实时替换),按需下载语言包 | ✅ 已发布 v3.4.3,持续迭代 |
+| 可选 | [`plugin/`](plugin/) | vSphere Client remote plug-in:嵌入 vCenter 的**中文运维助手面板**(告警解释 / 术语查询 / 资产概览)。**不翻译宿主界面** | ⏸️ POC/暂缓,代码保留,默认不部署 |
+
+> **为什么插件暂缓**:它不参与界面汉化(那是扩展的事),增量价值仅在"中文运维语义层",目前还薄(告警解释 19 条),
+> 且部署需在服务器跑服务 + 证书 + 注册到 vCenter。**当前主线只需扩展即可交付核心价值**。等运维语义层做厚再启用。
+
 ## 范围
 
-- **首发语言**:`en-US` + `zh-CN`(简体中文)
-- **后续**:`zh-TW`(繁体中文)及其他语言
-- **主战场**:vCenter,其次 Aria Operations(VCF Operations)
+- **首发语言**:`en-US` + `zh-CN`(简体中文)、`de`(德文);其余小语种走众包回流(见 [`contrib/`](contrib/))
+- **覆盖**:vCenter,以及 Aria Operations(VCF Operations)—— 把其地址加入扩展白名单即可翻译
+- **后续**:`zh-TW` 等
 
 ## 不做什么(重要边界)
 
-- ❌ 不替换 / 不注册 vCenter 宿主 UI 的官方语言包(平台未公开支持 `zh-CN` locale,风险高)
-- ❌ 不做独立 Web App(浏览器自带翻译已能覆盖此需求 —— 见 [docs/architecture.md](docs/architecture.md))
-- ✅ 只做插件自身页面、术语层、上下文桥接的本地化
+- ❌ 不替换 / 不注册 vCenter 宿主 UI 的官方语言包(平台未公开支持 `zh-CN` locale)
+- ❌ 不向任何服务器发送页面内容,翻译全程在本地完成
+- ✅ 词典按需从公开数据仓库 [`vcf-rosetta/langpacks`](https://github.com/vcf-rosetta/langpacks) 经 jsDelivr 下载并本地缓存
 
 ## 目录
 
 | 目录 | 内容 |
 |------|------|
-| [`plugin/`](plugin/) | vSphere Client remote plug-in 源码 |
-| [`docs/`](docs/) | 架构与设计文档 |
+| [`browser-extension/`](browser-extension/) | **主线** 浏览器扩展(Chrome/Edge);打包、上架物料见其内 `scripts/` 与 `store/` |
+| [`plugin/`](plugin/) | (可选)vSphere Client remote plug-in 源码;部署见 [docs/DEPLOY-linux.md](docs/DEPLOY-linux.md) |
+| [`plugin/i18n/`](plugin/i18n/) | 术语词库(英→中/德),扩展与插件共用 |
+| [`contrib/`](contrib/) | 社区词条回流(扩展一键采集 → Issue/邮件 → 合并) |
+| [`docs/`](docs/) | 架构、部署、Aria Ops 方案等文档 |
 
 ## 状态
 
-🚧 设计阶段 — 见 [docs/architecture.md](docs/architecture.md)
+- 扩展:**v3.4.3** 已发布;词库 48k+ 条,持续补词与审校
+- 插件:POC,暂缓部署
