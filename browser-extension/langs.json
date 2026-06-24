@@ -1,8 +1,8 @@
 {
   "_note": "可下载语言包目录。扩展据此显示语言选择器并按需下载 dict.<code>.json。version 变更即触发重新下载缓存。新增语种:在此登记一行,并把 dict.<code>.json 发布到 langpack base(见 scripts/publish-langpacks.mjs)。",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "languages": {
-    "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.1", "source": "official+curated", "status": "stable" },
-    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.1", "source": "official", "status": "stable" }
+    "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.2", "source": "official+curated", "status": "stable" },
+    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.2", "source": "official", "status": "stable" }
   }
 }

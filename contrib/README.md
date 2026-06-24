@@ -31,3 +31,13 @@
 | `.github/ISSUE_TEMPLATE/i18n-contribution.yml` | 贡献 Issue 模板 |
 
 > 语言种子:官方语言包覆盖 fr/es/ja/de(+ 本项目 zh-CN);其余小语种主要靠社区在此回流。
+
+## 审定红线(翻译/审校必须遵守)
+
+机器翻译会不自觉地往"官方 vCenter 用语"靠,但本项目审定特意做了取舍。批量翻译/审校时强制:
+- **账户**(Account),不是"帐户"
+- **来宾**(Guest),如"来宾操作系统",不是"客户机操作系统"
+- **主管**(Supervisor),统一中译,不保留英文 Supervisor
+- **映像**=Image(VM/ISO/模板);**镜像**=Mirroring(数据/磁盘镜像)——勿混
+- 标签型 `xxx:` 用半角冒号,与全表一致(不要改全角 `：`)
+完整原则见 `plugin/i18n/README.md` 的「审定原则」。
