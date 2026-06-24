@@ -170,23 +170,24 @@
   // ── 文本节点翻译 ──────────────────────────────────────────
   const CJK = /[一-鿿]/;
   function translateText(node) {
-    if (node.__vcZh) return;
     const raw = node.nodeValue;
     if (!raw || !raw.trim()) return;
+    // 关键:不要用"翻过就永久跳过"的布尔标志 —— Clarity 的 clr-datagrid 等虚拟列表会
+    // 回收复用同一批文本节点、只改写其文本(characterData)。我们改记录"上次写入的结果":
+    // 只要节点当前文本不等于我们上次的输出,就重新处理(覆盖新告警/新行/滚动复用)。
+    if (node.__vcOut !== undefined && raw === node.__vcOut) return; // 正是我们的输出 -> 跳过,防回环
     const trimmed = raw.trim();
-    if (CJK.test(trimmed)) { node.__vcZh = true; return; } // 已是中文,早退(省重扫开销)
+    if (CJK.test(trimmed)) return;            // 已是中文(原生或我们的输出),不动
     const zh = dict[trimmed];
     if (zh && zh !== trimmed) {
-      node.nodeValue = raw.replace(trimmed, zh); // 保留首尾空白
-      node.__vcZh = true;
+      node.nodeValue = node.__vcOut = raw.replace(trimmed, zh); // 保留首尾空白
       return;
     }
     if (zh) return; // 命中但译文==原文(专有名词),不动
     // 精确未命中:试受控模式替换
     const ph = applyPhrases(trimmed);
     if (ph !== trimmed) {
-      node.nodeValue = raw.replace(trimmed, ph);
-      node.__vcZh = true;
+      node.nodeValue = node.__vcOut = raw.replace(trimmed, ph);
     } else {
       recordMissing(trimmed);
     }
