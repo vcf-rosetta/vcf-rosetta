@@ -93,8 +93,14 @@ EOF
   echo "$HR"; ok "安装完成。下一步:bash rosetta.sh register(向 vCenter 注册)"
 }
 
+unit_exists() { systemctl cat "$SVC" >/dev/null 2>&1; }
 cmd_restart() {
-  if [ "$HAS_SYSTEMD" = 1 ]; then sudo systemctl restart "$SVC"; sleep 1; ok "已重启"; cmd_status || true
+  if [ "$HAS_SYSTEMD" = 1 ]; then
+    if ! unit_exists; then
+      warn "服务尚未安装(没有 $SVC.service),先执行 install…"
+      cmd_install; return
+    fi
+    sudo systemctl restart "$SVC"; sleep 1; ok "已重启"; cmd_status || true
   else die "无 systemd:请 stop 后重新 start,或用你的进程管理器重启"; fi
 }
 cmd_stop() {
