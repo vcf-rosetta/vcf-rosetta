@@ -3,32 +3,81 @@
 (function () {
   'use strict';
 
-  // 字典按需加载:仅在确认是 vCenter 页面时 fetch 选定语言的 dict.<lang>.json,
-  // 避免在每个网站注入数 MB。语言由用户在 popup 选择(默认 zh-CN)。
+  // 字典按需加载:扩展包本身不内置数 MB 词典(保持轻量),仅在确认是 vCenter/Aria 页面时,
+  // 按选定语言获取 dict.<lang>.json。三级来源:① 扩展内置(开发/离线时存在才用);
+  // ② 本地缓存(chrome.storage.local,按版本);③ 远程语言包(jsDelivr)→ 下载后缓存。
+  const LANGPACK_BASE = 'https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@langpacks';
   let dict = {};
   let loadedLang = null;
+  let LANGS = {};
+  fetch(chrome.runtime.getURL('langs.json')).then(r => r.json())
+    .then(j => { LANGS = (j && j.languages) || {}; }).catch(() => {});
+
   async function loadDict(lang) {
     lang = lang || 'zh-CN';
     if (loadedLang === lang && Object.keys(dict).length) return true;
-    const url = chrome.runtime.getURL('dict.' + lang + '.json');
+    const ver = (LANGS[lang] && LANGS[lang].version) || '0';
+    const cacheKey = 'dict:' + lang;
+
+    // ① 扩展内置(若打包时附带了 dict.<lang>.json)
+    try {
+      const res = await fetch(chrome.runtime.getURL('dict.' + lang + '.json'));
+      if (res.ok) { dict = await res.json(); loadedLang = lang;
+        console.info('[vcf-rosetta] 内置字典:' + lang + ',' + Object.keys(dict).length + ' 条'); return Object.keys(dict).length > 0; }
+    } catch (e) { /* 未内置,继续 */ }
+
+    // ② 本地缓存(版本一致才用)
+    try {
+      const got = await chrome.storage.local.get(cacheKey);
+      const c = got[cacheKey];
+      if (c && c.version === ver && c.data) { dict = c.data; loadedLang = lang;
+        console.info('[vcf-rosetta] 缓存字典:' + lang + ',' + Object.keys(dict).length + ' 条'); return true; }
+    } catch (e) { /* ignore */ }
+
+    // ③ 远程下载 → 写缓存
+    const url = LANGPACK_BASE + '/dict.' + lang + '.json';
     try {
       const res = await fetch(url);
-      if (!res.ok) { console.warn('[vcf-rosetta] 字典加载失败 HTTP ' + res.status + ' @ ' + url); return false; }
+      if (!res.ok) { console.warn('[vcf-rosetta] 语言包下载失败 HTTP ' + res.status + ' @ ' + url); return false; }
       dict = await res.json();
       loadedLang = lang;
-      console.info('[vcf-rosetta] 字典已加载:' + lang + ',' + Object.keys(dict).length + ' 条');
+      try { await chrome.storage.local.set({ [cacheKey]: { version: ver, data: dict } }); } catch (e) { /* 配额? */ }
+      console.info('[vcf-rosetta] 已下载并缓存语言包:' + lang + ',' + Object.keys(dict).length + ' 条');
       return Object.keys(dict).length > 0;
     } catch (e) {
-      console.warn('[vcf-rosetta] 字典加载异常 @ ' + url + ' : ' + e.message +
-        '(请确认已运行 build-dict.mjs 且扩展已重新加载)');
+      console.warn('[vcf-rosetta] 语言包下载异常 @ ' + url + ' : ' + e.message);
       return false;
     }
   }
 
-  // ── 未翻译词条采集(调试用)──────────────────────────────
-  // 开启后,把所有「未命中字典的英文文本」收集起来,供导出补词。
+  // ── 未翻译词条采集 ──────────────────────────────────────
+  // 开启后,把「未命中字典的英文文本」收集起来供回流。
+  // 持久化到 chrome.storage.local:跨页面/跨会话/跨扩展升级累积,不丢失、不重复采集;
+  // 每次成功加载字典后,会自动剔除「现已翻译」的条目,所以词库覆盖越全、待采集越少。
   let collect = false;
+  const MISSING_KEY = 'missingTerms';
   const missing = window.__vcMissing || (window.__vcMissing = new Set());
+  // 启动时载入已持久化的采集结果
+  try {
+    chrome.storage.local.get(MISSING_KEY, got => {
+      const arr = got && got[MISSING_KEY];
+      if (Array.isArray(arr)) arr.forEach(s => missing.add(s));
+    });
+  } catch (e) { /* ignore */ }
+  let saveTimer = null;
+  function persistMissing() {
+    if (saveTimer) return;
+    saveTimer = setTimeout(() => {
+      saveTimer = null;
+      try { chrome.storage.local.set({ [MISSING_KEY]: Array.from(missing) }); } catch (e) { /* ignore */ }
+    }, 1500); // 防抖,避免频繁写盘
+  }
+  // 字典加载后:剔除已翻译条目(升级/补词后自动收缩待采集集)
+  function pruneMissing() {
+    let changed = false;
+    missing.forEach(s => { if (dict[s] !== undefined) { missing.delete(s); changed = true; } });
+    if (changed) persistMissing();
+  }
   // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文)
   function looksTranslatable(s) {
     if (s.length < 2 || s.length > 120) return false;
@@ -40,7 +89,7 @@
     return true;
   }
   function recordMissing(s) {
-    if (collect && looksTranslatable(s)) missing.add(s);
+    if (collect && looksTranslatable(s) && !missing.has(s)) { missing.add(s); persistMissing(); }
   }
   // 导出:下载 JSON + 打印到控制台
   window.__vcDumpMissing = function () {
@@ -56,18 +105,23 @@
     return list.length;
   };
 
-  // 只翻译 vCenter/VCF 相关页面:① 用户配置的白名单;② 否则自动检测 Clarity UI 特征
+  // 只翻译 VCF 控制台页面:① 用户配置的白名单;② 否则自动检测 Clarity UI 特征。
+  // 覆盖面:vCenter / vSphere Client、SDDC Manager,以及 Aria Operations(VCF Operations)。
   function shouldActivate(cfg) {
     if (!cfg.enabled) return false;
     const hosts = cfg.hosts || [];
     if (hosts.length > 0) {
       return hosts.some(h => h && location.hostname.includes(h));
     }
+    const t = document.title || '';
     return (
       location.pathname.startsWith('/ui') ||
-      document.title.includes('vSphere') ||
-      document.title.includes('vCenter') ||
-      document.title.includes('SDDC Manager') ||
+      t.includes('vSphere') ||
+      t.includes('vCenter') ||
+      t.includes('SDDC Manager') ||
+      t.includes('Aria Operations') ||      // VCF / Aria Operations(原 vROps)
+      t.includes('VCF Operations') ||
+      t.includes('vRealize Operations') ||
       !!document.querySelector('clr-header, .clr-app-container, vsphere-client')
     );
   }
@@ -207,6 +261,7 @@
   async function activateIfNeeded(cfg) {
     if (!shouldActivate(cfg)) return;
     if (!(await loadDict(cfg.lang))) return;   // 仅 vCenter 页面才加载选定语言字典
+    pruneMissing();                            // 剔除现已翻译的旧采集条目
     if (document.body) init();
     else document.addEventListener('DOMContentLoaded', init, { once: true });
   }
@@ -222,5 +277,14 @@
     } else if (msg.type === 'VC_DISABLE') { observer.disconnect(); location.reload(); }
     else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect && Object.keys(dict).length) walkAndTranslate(document.body); }
     else if (msg.type === 'VC_DUMP') { sendResponse({ count: window.__vcDumpMissing() }); }
+    else if (msg.type === 'VC_GET_MISSING') {
+      const list = Array.from(missing).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+      sendResponse({ list: list, lang: loadedLang || 'zh-CN' });
+    }
+    else if (msg.type === 'VC_CLEAR_MISSING') {
+      missing.clear();
+      try { chrome.storage.local.remove(MISSING_KEY); } catch (e) { /* ignore */ }
+      sendResponse({ ok: true });
+    }
   });
 })();

@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <h1>vCenter 中文界面</h1>
+  <h1>vCenter 翻译助手 · Rosetta</h1>
 
   <label class="row">
     <span>启用翻译</span>
@@ -14,11 +14,9 @@
 
   <label class="row">
     <span>翻译语言</span>
-    <select id="lang">
-      <option value="zh-CN">简体中文</option>
-      <option value="de">Deutsch（德文）</option>
-    </select>
+    <select id="lang"><!-- 由 langs.json 动态填充 --></option></select>
   </label>
+  <p class="meta" id="langStatus">首次选择某语言会按需下载对应词库(约数 MB),之后本地缓存,不重复下载。</p>
 
   <div class="field">
     <label for="hosts">仅在这些主机启用(每行一个,留空=自动检测 vCenter 页面)</label>
@@ -33,9 +31,16 @@
     <span>收集未翻译词条(调试)</span>
     <input type="checkbox" id="collect" />
   </label>
-  <button id="dump" class="secondary">导出未翻译词条</button>
-  <p class="meta">浏览缺词页面(任务/告警等)后点导出,把 JSON 发给开发补词。</p>
-  <p class="meta">词表:12,818 条 · 保存后刷新页面生效</p>
+  <div class="field">
+    <label for="region">地区/署名(可选,便于归类)</label>
+    <input type="text" id="region" placeholder="如 CN-华东 / 张三" />
+  </div>
+  <button id="dump" class="secondary">导出 JSON(本地)</button>
+  <button id="contribute" class="secondary">一键贡献到 GitHub</button>
+  <button id="mail" class="secondary">邮件给开发者</button>
+  <button id="clear" class="secondary">清空已采集</button>
+  <p class="meta">浏览缺词页面(任务/告警等)后,三选一回流:① 导出本地备份;② 一键打开预填好的 GitHub Issue;③ 邮件给开发者(正文已填好词条,量大时请把导出的 JSON 作为附件)。维护者会合并入词库。</p>
+  <p class="meta">保存后刷新页面生效 · 贡献内容仅为界面英文词条,不含任何业务数据</p>
 
   <script src="popup.js"></script>
 </body>

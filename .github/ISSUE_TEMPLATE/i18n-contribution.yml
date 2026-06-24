@@ -1,0 +1,19 @@
+name: i18n 词条贡献 / Translation contribution
+description: 提交从 Rosetta 扩展采集到的未翻译界面词条 / Submit untranslated UI strings collected by the Rosetta extension
+title: "[i18n] <语言> 缺词 <数量> 条"
+labels: ["i18n", "translation-contribution"]
+body:
+  - type: input
+    id: lang
+    attributes: { label: 目标语言 / Target language, placeholder: "如 zh-CN / ja / fr / ko" }
+    validations: { required: true }
+  - type: input
+    id: region
+    attributes: { label: 地区或署名 / Region or credit (可选), placeholder: "CN-华东 / Zhang San" }
+  - type: textarea
+    id: terms
+    attributes:
+      label: 未翻译词条 JSON / Untranslated strings (JSON array)
+      description: 扩展「一键贡献」会自动填好;手动提交请贴一个 JSON 字符串数组。
+      render: json
+    validations: { required: true }
