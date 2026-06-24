@@ -26,7 +26,15 @@ ok()   { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 warn() { printf "  \033[33m!\033[0m %s\n" "$1"; }
 die()  { printf "  \033[31m✗ %s\033[0m\n" "$1" >&2; exit 1; }
 
-[ -f r1.env ] && { set -a; . ./r1.env; set +a; }
+# 载入 r1.env,但**已在环境中设置的变量优先**(命令行传入可覆盖 r1.env)
+if [ -f r1.env ]; then
+  while IFS= read -r line; do
+    case "$line" in ''|\#*) continue;; esac
+    key="${line%%=*}"; val="${line#*=}"; key="$(echo "$key" | tr -d ' ')"
+    [ -z "$key" ] && continue
+    [ -z "${!key:-}" ] && export "$key=$val"
+  done < r1.env
+fi
 PORT="${PORT:-8443}"
 PLUGIN_HOST="${PLUGIN_HOST:-$(hostname -f 2>/dev/null || hostname)}"
 HAS_SYSTEMD=0; command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ] && HAS_SYSTEMD=1
@@ -128,6 +136,10 @@ cmd_update() {       # 发版更新:拉代码→重建→重启
 
 cmd_register() {
   : "${VC_HOST:?在 r1.env 设 VC_HOST}"; : "${VC_USER:?在 r1.env 设 VC_USER}"
+  case "$VC_HOST" in *your-domain.com|*example.com)
+    die "VC_HOST 还是占位值($VC_HOST)。请在 r1.env 改成真实 vCenter,如:sed -i 's|^VC_HOST=.*|VC_HOST=vc.knight.com|' r1.env";; esac
+  case "$PLUGIN_HOST" in *your-domain.com|*example.com|localhost)
+    warn "PLUGIN_HOST=$PLUGIN_HOST 可能不可被 vCenter 访问,注册后插件可能不显示。";; esac
   [ -f certs/server.crt ] || die "没有证书,先跑 rosetta.sh install/start 生成"
   THUMB="$(openssl x509 -in certs/server.crt -noout -fingerprint -sha256 | sed 's/.*=//')"
   ok "thumbprint: $THUMB"
