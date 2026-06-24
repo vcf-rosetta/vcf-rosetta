@@ -128,14 +128,24 @@ cmd_update() {       # 发版更新:拉代码→重建→重启
 
 cmd_register() {
   : "${VC_HOST:?在 r1.env 设 VC_HOST}"; : "${VC_USER:?在 r1.env 设 VC_USER}"
-  : "${SDK_TOOL:?在 r1.env 设 SDK_TOOL(vSphere Client SDK 注册工具 jar)}"
-  command -v java >/dev/null || die "缺 java(注册需 Java 17+)"
+  [ -f certs/server.crt ] || die "没有证书,先跑 rosetta.sh install/start 生成"
   THUMB="$(openssl x509 -in certs/server.crt -noout -fingerprint -sha256 | sed 's/.*=//')"
   ok "thumbprint: $THUMB"
-  VC_HOST="$VC_HOST" VC_USER="$VC_USER" \
-    PLUGIN_URL="https://$PLUGIN_HOST:$PORT/plugin.json" \
-    THUMBPRINT="$THUMB" SDK_TOOL="$SDK_TOOL" \
-    bash scripts/register.sh
+  local PURL="https://$PLUGIN_HOST:$PORT/plugin.json"
+
+  if [ -n "${SDK_TOOL:-}" ]; then
+    # 走 Java 版 SDK 注册工具(仅当显式设了 SDK_TOOL)
+    command -v java >/dev/null || die "缺 java(SDK 注册需 Java 17+)"
+    VC_HOST="$VC_HOST" VC_USER="$VC_USER" PLUGIN_URL="$PURL" \
+      THUMBPRINT="$THUMB" SDK_TOOL="$SDK_TOOL" bash scripts/register.sh
+  else
+    # 默认:走 vCenter API 注册(免 Java、免 SDK 下载,用 pyVmomi)
+    command -v python3 >/dev/null || die "缺 python3"
+    python3 -c 'import pyVmomi' 2>/dev/null || { warn "未装 pyVmomi,正在安装…"; pip install pyvmomi 2>/dev/null || pip3 install --user pyvmomi || die "pip 安装 pyvmomi 失败,请手动 pip install pyvmomi"; }
+    ok "用 API 方式注册(无需 SDK)。若 r1.env 未设 VC_PASS 将提示输入密码。"
+    VC_HOST="$VC_HOST" VC_USER="$VC_USER" PLUGIN_URL="$PURL" THUMBPRINT="$THUMB" \
+      python3 scripts/register-api.py register
+  fi
 }
 
 cmd_uninstall() {
