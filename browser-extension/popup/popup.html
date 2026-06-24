@@ -1,49 +1,54 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <h1>vCenter 翻译助手 · Rosetta</h1>
+  <h1 data-i18n="title">vCenter Translator · Rosetta</h1>
 
   <label class="row">
-    <span>启用翻译</span>
+    <span data-i18n="enable">Enable translation</span>
     <input type="checkbox" id="enabled" />
   </label>
 
   <label class="row">
-    <span>翻译语言</span>
-    <select id="lang"><!-- 由 langs.json 动态填充 --></option></select>
+    <span data-i18n="language">Language</span>
+    <select id="lang"><!-- 由 langs.json 动态填充 --></select>
   </label>
-  <p class="meta" id="langStatus">首次选择某语言会按需下载对应词库(约数 MB),之后本地缓存,不重复下载。</p>
+  <p class="meta" id="langStatus" data-i18n="langHint">The first time you pick a language, its dictionary (a few MB) is downloaded on demand, then cached locally — no repeat downloads.</p>
 
   <div class="field">
-    <label for="hosts">强制启用的站点(每行一个;自动检测之外的额外站点。vc / Aria Ops / Log 等)</label>
+    <label for="hosts" data-i18n="hostsLabel">Force-enabled sites (one per line; extra sites beyond auto-detection — vCenter / Aria Ops / Log, etc.)</label>
     <textarea id="hosts" rows="4" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
   </div>
-  <button id="addCurrent" class="secondary">➕ 添加当前站点并启用</button>
-  <p class="meta" id="curHost">当前站点:—</p>
+  <button id="addCurrent" class="secondary" data-i18n="addCurrent">➕ Add current site &amp; enable</button>
+  <button id="removeCurrent" class="secondary" data-i18n="removeCurrent">➖ Remove current site</button>
+  <p class="meta" id="curHost">Current site: —</p>
 
-  <button id="save">保存并应用</button>
+  <button id="save" data-i18n="save">Save &amp; apply</button>
   <p class="hint" id="status"></p>
 
   <hr />
   <label class="row">
-    <span>收集未翻译词条(调试)</span>
+    <span data-i18n="collect">Collect untranslated terms (debug)</span>
     <input type="checkbox" id="collect" />
   </label>
   <div class="field">
-    <label for="region">地区/署名(可选,便于归类)</label>
-    <input type="text" id="region" placeholder="如 CN-华东 / 张三" />
+    <label for="region" data-i18n="regionLabel">Region / signature (optional, for grouping)</label>
+    <input type="text" id="region" placeholder="e.g. CN-East / Alice" />
   </div>
-  <button id="dump" class="secondary">导出 JSON(本地)</button>
-  <button id="contribute" class="secondary">一键贡献到 GitHub</button>
-  <button id="mail" class="secondary">邮件给开发者</button>
-  <button id="clear" class="secondary">清空已采集</button>
-  <p class="meta">浏览缺词页面(任务/告警等)后,三选一回流:① 导出本地备份;② 一键打开预填好的 GitHub Issue;③ 邮件给开发者(正文已填好词条,量大时请把导出的 JSON 作为附件)。维护者会合并入词库。</p>
-  <p class="meta">保存后刷新页面生效 · 贡献内容仅为界面英文词条,不含任何业务数据</p>
+  <button id="dump" class="secondary" data-i18n="dump">Export JSON (local)</button>
+  <button id="contribute" class="secondary" data-i18n="contribute">Contribute to GitHub</button>
+  <button id="mail" class="secondary" data-i18n="mail">Email the developers</button>
+  <button id="clear" class="secondary" data-i18n="clear">Clear collected</button>
+  <p class="meta" data-i18n="contribMeta">After browsing pages with missing terms (tasks, alarms, etc.), pick one to send back: ① export a local backup; ② open a pre-filled GitHub Issue; ③ email the developers. Maintainers will merge them.</p>
+  <p class="meta" data-i18n="footMeta">Refresh the page after saving · Contributions contain only English UI terms, no business data</p>
 
+  <hr />
+  <button id="about" class="secondary" data-i18n="about">ℹ️ About / Contact developers</button>
+
+  <script src="i18n.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

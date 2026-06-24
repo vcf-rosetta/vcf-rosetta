@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>About · vCenter Translator (Rosetta)</title>
+  <link rel="stylesheet" href="popup.css" />
+  <style>
+    body { width: 560px; max-width: 92vw; line-height: 1.6; }
+    h2 { font-size: 14px; margin: 18px 0 8px; }
+    ul { padding-left: 18px; margin: 6px 0; }
+    li { font-size: 13px; margin: 4px 0; }
+    a { color: #1d7a46; }
+    .dev { font-weight: 600; }
+    .note { color: #889; font-size: 12px; }
+    code { background: #f0f3f5; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <!-- English (default) -->
+  <section id="about-en">
+    <h1>vCenter Translator · Rosetta</h1>
+    <p class="note">Real-time, in-browser translation of the VMware vCenter / VCF 9.x console UI into your chosen language — client-side only, no server changes, no business data uploaded.</p>
+
+    <h2>Development team</h2>
+    <p>This extension is the work of the three of us:</p>
+    <ul>
+      <li><span class="dev">Tony Yuan</span> · <a href="mailto:yxl1983123@163.com">yxl1983123@163.com</a></li>
+      <li><span class="dev">Jingsong Yang</span> · <a href="mailto:yjs@tanzu.eu.org">yjs@tanzu.eu.org</a></li>
+      <li><span class="dev">Wei Zhou</span> · <a href="mailto:zhouwei008@gmail.com">zhouwei008@gmail.com</a></li>
+    </ul>
+
+    <h2>Feedback &amp; contributions</h2>
+    <p>Found a bug, an issue, an inaccurate translation, or something to improve — <strong>or want us to add another language</strong>? You're welcome to contact any developer above, or send back missing terms via “Contribute to GitHub / Email the developers” in the popup.</p>
+
+    <h2>License</h2>
+    <p>Released under the <strong>Apache License 2.0</strong>. You may freely use, modify, and distribute it — see the bundled <code>LICENSE</code> and <code>NOTICE</code> files.</p>
+
+    <p class="note">UI terminology is derived from VMware's official localization packs; copyright of those strings remains with their owners. This extension only replaces UI text locally and is not affiliated with VMware/Broadcom.</p>
+  </section>
+
+  <!-- 中文(仅在所选语言为中文时显示) -->
+  <section id="about-zh" hidden>
+    <h1>vCenter 翻译助手 · Rosetta</h1>
+    <p class="note">把 VMware vCenter / VCF 9.x 控制台界面实时翻译为你选择的语言 —— 纯前端、不改服务器、不上传任何业务数据。</p>
+
+    <h2>开发团队</h2>
+    <p>本扩展是我们三个人的开发成果:</p>
+    <ul>
+      <li><span class="dev">Tony Yuan</span> · <a href="mailto:yxl1983123@163.com">yxl1983123@163.com</a></li>
+      <li><span class="dev">Jingsong Yang</span> · <a href="mailto:yjs@tanzu.eu.org">yjs@tanzu.eu.org</a></li>
+      <li><span class="dev">Wei Zhou</span> · <a href="mailto:zhouwei008@gmail.com">zhouwei008@gmail.com</a></li>
+    </ul>
+
+    <h2>反馈与共建</h2>
+    <p>发现 Bug、问题、翻译不准确或可优化之处,<strong>甚至希望我们增加其他语言</strong> —— 都欢迎随时联系上面任一位开发者,或在扩展弹窗里用「一键贡献到 GitHub / 邮件给开发者」回流缺词。</p>
+
+    <h2>许可证</h2>
+    <p>本项目以 <strong>Apache License 2.0</strong> 开源发布。你可以自由使用、修改与分发,详见随附的 <code>LICENSE</code> 与 <code>NOTICE</code> 文件。</p>
+
+    <p class="note">界面词条来源于 VMware 官方语言包的专业翻译,版权归各自所有者;本扩展仅在本地做界面文本替换,与 VMware/Broadcom 无隶属关系。</p>
+  </section>
+
+  <script src="about.js"></script>
+</body>
+</html>

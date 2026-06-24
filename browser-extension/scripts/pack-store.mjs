@@ -21,6 +21,8 @@ const INCLUDE = [
   "content",
   "popup",
   "langs.json",
+  "LICENSE",
+  "NOTICE",
 ];
 
 // 离线包:把已构建的词典内置进包。扩展取词三级(内置→缓存→CDN)的第一级即命中,全程不联网。

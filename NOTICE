@@ -1,0 +1,18 @@
+vcf-rosetta
+Copyright 2026 Tony Yuan, Jingsong Yang, Wei Zhou
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Developers / Contacts:
+  - Tony Yuan      <yxl1983123@163.com>
+  - Jingsong Yang  <yjs@tanzu.eu.org>
+  - Wei Zhou       <zhouwei008@gmail.com>
+
+This software performs client-side, in-browser translation of the VMware
+vCenter / VCF console UI. It does not modify vCenter servers and does not
+transmit page content to any server.
+
+UI terminology is derived from VMware's official localization language packs;
+the copyright of those translated strings remains with their respective owners.
+"VMware", "vCenter", "vSphere", and "VCF" are trademarks of their respective
+owners; this project is not affiliated with or endorsed by VMware/Broadcom.

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "default_locale": "zh_CN",
+  "default_locale": "en",
   "name": "__MSG_extName__",
-  "version": "3.4.5",
+  "version": "3.4.8",
   "description": "__MSG_extDesc__",
   "permissions": [
     "storage",
@@ -43,8 +43,6 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "dict.zh-CN.json",
-        "dict.de.json",
         "dict.*.json"
       ],
       "matches": [

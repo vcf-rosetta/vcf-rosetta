@@ -1,5 +1,0 @@
-{
-  "extName":  { "message": "vCenter 翻译助手 (Rosetta)" },
-  "extTitle": { "message": "vCenter 翻译助手 — 实时本地化 vCenter / VCF 控制台" },
-  "extDesc":  { "message": "将 VMware vCenter / VCF 9.x 控制台界面实时翻译为你选择的语言,纯前端、不改 vCenter 服务器。" }
-}

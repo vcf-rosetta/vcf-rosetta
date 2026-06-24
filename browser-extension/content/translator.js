@@ -14,7 +14,8 @@
     .then(j => { LANGS = (j && j.languages) || {}; }).catch(() => {});
 
   async function loadDict(lang) {
-    lang = lang || 'zh-CN';
+    lang = lang || 'en';
+    if (lang === 'en') { dict = {}; loadedLang = 'en'; return false; } // 英文原文:无词典,不翻译、不联网
     if (loadedLang === lang && Object.keys(dict).length) return true;
     const ver = (LANGS[lang] && LANGS[lang].version) || '0';
     const cacheKey = 'dict:' + lang;
@@ -304,20 +305,20 @@
     else document.addEventListener('DOMContentLoaded', init, { once: true });
   }
 
-  chrome.storage.sync.get({ hosts: [], enabled: true, collect: false, lang: 'zh-CN' }, cfg => {
+  chrome.storage.sync.get({ hosts: [], enabled: true, collect: false, lang: 'en' }, cfg => {
     collect = !!cfg.collect;
     activateIfNeeded(cfg);
   });
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'VC_ENABLE') {
-      chrome.storage.sync.get({ lang: 'zh-CN' }, c => loadDict(c.lang).then(ok => { if (ok) init(); }));
+      chrome.storage.sync.get({ lang: 'en' }, c => loadDict(c.lang).then(ok => { if (ok) init(); }));
     } else if (msg.type === 'VC_DISABLE') { observer.disconnect(); location.reload(); }
     else if (msg.type === 'VC_COLLECT') { collect = !!msg.on; if (collect && Object.keys(dict).length) walkAndTranslate(document.body); }
     else if (msg.type === 'VC_DUMP') { sendResponse({ count: window.__vcDumpMissing() }); }
     else if (msg.type === 'VC_GET_MISSING') {
       const entries = missingEntries();
-      sendResponse({ entries: entries, list: entries.map(e => e.text), lang: loadedLang || 'zh-CN' });
+      sendResponse({ entries: entries, list: entries.map(e => e.text), lang: loadedLang || 'en' });
     }
     else if (msg.type === 'VC_CLEAR_MISSING') {
       missing.clear();

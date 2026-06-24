@@ -1,0 +1,88 @@
+// 弹窗/关于页的界面文案。默认英文;仅当所选翻译语言为中文(zh-CN / zh-TW)时显示中文。
+// 用法:ROSETTA_I18N.uiLang(lang) -> 'zh' | 'en';ROSETTA_I18N.t(uiLang, key, ...args)。
+(function () {
+  'use strict';
+  const S = {
+    en: {
+      title: 'vCenter Translator · Rosetta',
+      enable: 'Enable translation',
+      language: 'Language',
+      langHint: 'The first time you pick a language, its dictionary (a few MB) is downloaded on demand, then cached locally — no repeat downloads.',
+      hostsLabel: 'Force-enabled sites (one per line; extra sites beyond auto-detection — vCenter / Aria Ops / Log, etc.)',
+      addCurrent: '➕ Add current site & enable',
+      removeCurrent: '➖ Remove current site',
+      save: 'Save & apply',
+      collect: 'Collect untranslated terms (debug)',
+      regionLabel: 'Region / signature (optional, for grouping)',
+      dump: 'Export JSON (local)',
+      contribute: 'Contribute to GitHub',
+      mail: 'Email the developers',
+      clear: 'Clear collected',
+      contribMeta: 'After browsing pages with missing terms (tasks, alarms, etc.), pick one to send back: ① export a local backup; ② open a pre-filled GitHub Issue; ③ email the developers (terms pre-filled in the body; attach the exported JSON when large). Maintainers will merge them.',
+      footMeta: 'Refresh the page after saving · Contributions contain only English UI terms, no business data',
+      about: 'ℹ️ About / Contact developers',
+      langOriginal: 'English (original — no translation)',
+      curHost: h => 'Current site: ' + (h || '—'),
+      notTranslatable: 'This page is not a translatable site.',
+      already: h => h + ' is already in the list.',
+      addedEnabled: h => 'Added & enabled ' + h + ', refreshing…',
+      cantIdentify: 'Cannot identify the current site.',
+      notInList: h => h + ' is not in the list.',
+      removed: h => 'Removed ' + h + ', refreshing…',
+      switched: 'Language switched, refreshing the page…',
+      collectOn: 'Collecting started — browse pages with missing terms, then export.',
+      collectOff: 'Collecting stopped.',
+      refreshFirst: 'Refresh the vCenter page first, then export.',
+      exported: n => 'Exported ' + n + ' term(s) (JSON downloaded).',
+      openVcFirst: 'Open a vCenter page first.',
+      refreshAndCollect: 'Refresh the vCenter page and enable “Collect untranslated terms”.',
+      noneCollected: 'No untranslated terms collected yet (enable collecting and browse pages with missing terms).',
+      cleared: 'Cleared the locally collected untranslated terms.',
+      saved: 'Saved.',
+    },
+    zh: {
+      title: 'vCenter 翻译助手 · Rosetta',
+      enable: '启用翻译',
+      language: '翻译语言',
+      langHint: '首次选择某语言会按需下载对应词库(约数 MB),之后本地缓存,不重复下载。',
+      hostsLabel: '强制启用的站点(每行一个;自动检测之外的额外站点。vc / Aria Ops / Log 等)',
+      addCurrent: '➕ 添加当前站点并启用',
+      removeCurrent: '➖ 移除当前站点',
+      save: '保存并应用',
+      collect: '收集未翻译词条(调试)',
+      regionLabel: '地区/署名(可选,便于归类)',
+      dump: '导出 JSON(本地)',
+      contribute: '一键贡献到 GitHub',
+      mail: '邮件给开发者',
+      clear: '清空已采集',
+      contribMeta: '浏览缺词页面(任务/告警等)后,三选一回流:① 导出本地备份;② 一键打开预填好的 GitHub Issue;③ 邮件给开发者(正文已填好词条,量大时请把导出的 JSON 作为附件)。维护者会合并入词库。',
+      footMeta: '保存后刷新页面生效 · 贡献内容仅为界面英文词条,不含任何业务数据',
+      about: 'ℹ️ 关于 / 联系开发者',
+      langOriginal: 'English(原文 — 不翻译)',
+      curHost: h => '当前站点:' + (h || '—'),
+      notTranslatable: '当前页不是可翻译的网站。',
+      already: h => h + ' 已在列表中。',
+      addedEnabled: h => '已添加并启用 ' + h + ',正在刷新…',
+      cantIdentify: '无法识别当前站点。',
+      notInList: h => h + ' 不在列表中。',
+      removed: h => '已移除 ' + h + ',正在刷新…',
+      switched: '已切换语言,正在刷新页面…',
+      collectOn: '已开始收集,浏览缺词页面后点导出。',
+      collectOff: '已停止收集。',
+      refreshFirst: '请先刷新 vCenter 页面再导出。',
+      exported: n => '已导出 ' + n + ' 条(下载 JSON)。',
+      openVcFirst: '请先打开 vCenter 页面。',
+      refreshAndCollect: '请先刷新 vCenter 页面,并开启“收集未翻译词条”。',
+      noneCollected: '当前没有采集到未翻译词条(先开启收集并浏览缺词页面)。',
+      cleared: '已清空本地采集的未翻译词条。',
+      saved: '已保存。',
+    },
+  };
+
+  function uiLang(lang) { return (lang === 'zh-CN' || lang === 'zh-TW') ? 'zh' : 'en'; }
+  function t(ui, key, ...args) {
+    const v = (S[ui] || S.en)[key];
+    return typeof v === 'function' ? v(...args) : (v !== undefined ? v : key);
+  }
+  window.ROSETTA_I18N = { uiLang, t, STRINGS: S };
+})();
