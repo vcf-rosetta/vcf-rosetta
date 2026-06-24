@@ -6,7 +6,7 @@
   // 字典按需加载:扩展包本身不内置数 MB 词典(保持轻量),仅在确认是 vCenter/Aria 页面时,
   // 按选定语言获取 dict.<lang>.json。三级来源:① 扩展内置(开发/离线时存在才用);
   // ② 本地缓存(chrome.storage.local,按版本);③ 远程语言包(jsDelivr)→ 下载后缓存。
-  const LANGPACK_BASE = 'https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@langpacks';
+  const LANGPACK_BASE = 'https://cdn.jsdelivr.net/gh/vcf-rosetta/langpacks@main';
   let dict = {};
   let loadedLang = null;
   let LANGS = {};
