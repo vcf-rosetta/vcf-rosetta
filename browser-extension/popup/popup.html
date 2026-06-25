@@ -5,7 +5,13 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <h1 data-i18n="title">vCenter Translator · Rosetta</h1>
+  <div class="topbar">
+    <h1 data-i18n="title">vCenter Translator · Rosetta</h1>
+    <div class="uitoggle" id="uitoggle" title="Interface language">
+      <button type="button" data-ui="en">EN</button>
+      <button type="button" data-ui="zh">中文</button>
+    </div>
+  </div>
 
   <label class="row">
     <span data-i18n="enable">Enable translation</span>

@@ -1,5 +1,5 @@
-// 关于页语言选择:默认英文,仅当所选语言为中文(zh-CN / zh-TW)时显示中文。
-// 来源优先级:URL ?ui=zh|en(由弹窗传入)→ 否则读 storage.sync.lang。
+// 关于页界面语言:默认英文,跟随独立的界面语言设置(uiLang),与翻译语言包无关。
+// 来源优先级:URL ?ui=zh|en(由弹窗传入)→ 否则读 storage.sync.uiLang。
 (function () {
   'use strict';
   function show(ui) {
@@ -11,8 +11,6 @@
   const q = new URLSearchParams(location.search).get('ui');
   if (q === 'zh' || q === 'en') { show(q); return; }
   try {
-    chrome.storage.sync.get({ lang: 'en' }, cfg => {
-      show((cfg.lang === 'zh-CN' || cfg.lang === 'zh-TW') ? 'zh' : 'en');
-    });
+    chrome.storage.sync.get({ uiLang: 'en' }, cfg => show(cfg.uiLang === 'zh' ? 'zh' : 'en'));
   } catch (e) { show('en'); }
 })();

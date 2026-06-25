@@ -310,6 +310,17 @@
     activateIfNeeded(cfg);
   });
 
+  // 设置变化时即时生效:对「尚未翻译、但现在应当翻译」的页面(如刚记住的站点、刚选好语言)
+  // 立刻激活,无需手动点击或刷新。只做加法激活,不主动 reload —— 语言切换/停用的清屏由弹窗刷新负责,
+  // 且非 vCenter 页面会被 shouldActivate 挡掉,这里对它们是无操作。
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'sync') return;
+    if (changes.collect) collect = !!changes.collect.newValue;
+    if (!started && (changes.enabled || changes.hosts || changes.lang)) {
+      chrome.storage.sync.get({ hosts: [], enabled: true, collect: false, lang: 'en' }, activateIfNeeded);
+    }
+  });
+
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'VC_ENABLE') {
       chrome.storage.sync.get({ lang: 'en' }, c => loadDict(c.lang).then(ok => { if (ok) init(); }));

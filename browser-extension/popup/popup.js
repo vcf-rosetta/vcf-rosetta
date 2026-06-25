@@ -6,19 +6,32 @@ const statusEl = document.getElementById('status');
 const collectEl = document.getElementById('collect');
 const langEl = document.getElementById('lang');
 const curHostEl = document.getElementById('curHost');
-const { uiLang, t } = window.ROSETTA_I18N;
+const { t } = window.ROSETTA_I18N;
 
-let ui = 'en';   // 当前界面语言:'en' | 'zh'
+// 界面语言('en' | 'zh')是独立设置,与「翻译语言包」解耦:用顶部 EN/中文 开关按需切换。
+let ui = 'en';
 
-// 把 [data-i18n] 元素按当前界面语言渲染(默认英文)
+// 把 [data-i18n] 元素按当前界面语言渲染(默认英文),并同步开关高亮
 function applyUi() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(ui, el.getAttribute('data-i18n'));
+  });
+  document.querySelectorAll('#uitoggle button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-ui') === ui);
   });
   const orig = langEl.querySelector('option[value="en"]');
   if (orig) orig.textContent = t(ui, 'langOriginal');   // 「英文原文」选项随界面语言刷新
   currentHostname().then(h => { curHostEl.textContent = t(ui, 'curHost', h); });
 }
+
+// 顶部界面语言开关:按需点击切换 EN / 中文,独立持久化(uiLang),不动翻译语言包
+document.getElementById('uitoggle').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-ui]');
+  if (!btn) return;
+  ui = btn.getAttribute('data-ui');
+  await chrome.storage.sync.set({ uiLang: ui });
+  applyUi();
+});
 
 // 从 langs.json 动态填充语言下拉:首项为「英文原文(不翻译)」,其后为可下载语言(标注是否已缓存)
 async function populateLanguages(selected) {
@@ -45,8 +58,8 @@ async function populateLanguages(selected) {
   langEl.value = selected || 'en';
 }
 
-chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en' }, async cfg => {
-  ui = uiLang(cfg.lang || 'en');
+chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en', uiLang: 'en' }, async cfg => {
+  ui = cfg.uiLang || 'en';
   enabledEl.checked = !!cfg.enabled;
   hostsEl.value = (cfg.hosts || []).join('\n');
   collectEl.checked = !!cfg.collect;
@@ -98,11 +111,9 @@ document.getElementById('about').addEventListener('click', () => {
   chrome.tabs.create({ url: chrome.runtime.getURL('popup/about.html') + '?ui=' + ui });
 });
 
-// 切换语言:保存、即时切换界面文案、并刷新当前页生效
+// 切换「翻译语言包」:保存并刷新当前页生效。界面语言不受影响(由顶部开关单独控制)。
 langEl.addEventListener('change', async () => {
   await chrome.storage.sync.set({ lang: langEl.value });
-  ui = uiLang(langEl.value);
-  applyUi();
   const tab = await activeTab();
   if (tab && tab.id != null) chrome.tabs.reload(tab.id);
   statusEl.textContent = t(ui, 'switched');

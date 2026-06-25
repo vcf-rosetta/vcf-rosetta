@@ -5,7 +5,17 @@ body {
   padding: 14px 16px;
   color: #1b2a32;
 }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.topbar h1 { margin: 0; }
 h1 { font-size: 15px; margin: 0 0 12px; }
+/* 界面语言开关:独立于翻译语言包,按需点击切换 */
+.uitoggle { display: inline-flex; border: 1px solid #ccd; border-radius: 6px; overflow: hidden; flex: none; }
+.uitoggle button {
+  width: auto; padding: 3px 10px; font-size: 12px; line-height: 1.4;
+  color: #33424c; background: #eef1f3; border: none; border-radius: 0; cursor: pointer;
+}
+.uitoggle button.active { background: #1d7a46; color: #fff; }
+.uitoggle button:hover:not(.active) { background: #e2e7ea; }
 .row {
   display: flex;
   align-items: center;
