@@ -21,7 +21,17 @@ function applyUi() {
   });
   const orig = langEl.querySelector('option[value="en"]');
   if (orig) orig.textContent = t(ui, 'langOriginal');   // 「英文原文」选项随界面语言刷新
+  const tog = document.getElementById('uitoggle');
+  if (tog) tog.title = t(ui, 'uiTip');
+  refreshOffHint();
   currentHostname().then(h => { curHostEl.textContent = t(ui, 'curHost', h); });
+}
+
+// 翻译语言为 en(原文/不翻译)时,给出醒目提示,消除「记住了站点却没翻译」的困惑
+function refreshOffHint() {
+  const el = document.getElementById('offHint');
+  if (!el) return;
+  el.hidden = langEl.value !== 'en';
 }
 
 // 顶部界面语言开关:按需点击切换 EN / 中文,独立持久化(uiLang),不动翻译语言包
@@ -89,7 +99,8 @@ document.getElementById('addCurrent').addEventListener('click', async () => {
   enabledEl.checked = true;
   const tab = await activeTab();
   if (tab && tab.id != null) chrome.tabs.reload(tab.id);   // 重载让内容脚本在此站点激活
-  statusEl.textContent = t(ui, 'addedEnabled', host);
+  // 若翻译语言仍为「英文原文/不翻译」,加站点也不会翻 —— 明确引导用户先选语言
+  statusEl.textContent = langEl.value === 'en' ? t(ui, 'addedOff', host) : t(ui, 'addedEnabled', host);
 });
 
 // ➖ 移除当前站点:从强制启用列表删除当前页地址(不可变:filter 出新数组)
@@ -114,6 +125,7 @@ document.getElementById('about').addEventListener('click', () => {
 // 切换「翻译语言包」:保存并刷新当前页生效。界面语言不受影响(由顶部开关单独控制)。
 langEl.addEventListener('change', async () => {
   await chrome.storage.sync.set({ lang: langEl.value });
+  refreshOffHint();
   const tab = await activeTab();
   if (tab && tab.id != null) chrome.tabs.reload(tab.id);
   statusEl.textContent = t(ui, 'switched');

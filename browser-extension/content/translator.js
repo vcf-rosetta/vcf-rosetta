@@ -279,7 +279,8 @@
   const observer = new MutationObserver(mutations => {
     for (const m of mutations) {
       if (m.type === 'childList') m.addedNodes.forEach(schedule);
-      else if (m.type === 'characterData') schedule(m.target);
+      // 跳过我们自己写回的文本节点(避免在指标实时刷新的页面上空转处理一遍又早退)
+      else if (m.type === 'characterData') { if (m.target.__vcOut !== m.target.nodeValue) schedule(m.target); }
       else if (m.type === 'attributes' && m.target.nodeType === Node.ELEMENT_NODE) translateAttrs(m.target);
     }
   });

@@ -51,3 +51,5 @@ button.secondary:hover { background: #3a4951; }
 hr { border: none; border-top: 1px solid #e3e8ec; margin: 14px 0 10px; }
 .hint { color: #1d7a46; font-size: 12px; min-height: 14px; margin: 8px 0 0; }
 .meta { color: #889; font-size: 11px; margin: 6px 0 0; }
+/* 翻译关闭提示:醒目但不刺眼 */
+.offhint { color: #8a5a00; background: #fff7e6; border: 1px solid #ffe1a8; border-radius: 4px; font-size: 12px; margin: 6px 0 0; padding: 6px 8px; }
