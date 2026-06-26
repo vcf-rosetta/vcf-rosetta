@@ -1,6 +1,5 @@
 // Popup: 读取/保存配置(启用开关 + 主机白名单 + 语言),并通知当前标签页应用。
 // 界面文案默认英文,仅当所选语言为中文(zh-CN / zh-TW)时切换为中文(见 i18n.js)。
-const enabledEl = document.getElementById('enabled');
 const hostsEl = document.getElementById('hosts');
 const statusEl = document.getElementById('status');
 const collectEl = document.getElementById('collect');
@@ -43,7 +42,18 @@ document.getElementById('uitoggle').addEventListener('click', async (e) => {
   applyUi();
 });
 
-// 从 langs.json 动态填充语言下拉:首项为「英文原文(不翻译)」,其后为可下载语言(标注是否已缓存)
+// 检测某语言词库是否扩展内置(离线包):本地资源 fetch 命中即“现成可用”,无需联网下载。
+// 只读响应头、不消费 body(本地资源,几乎零开销)。
+async function isBundled(code) {
+  try {
+    const r = await fetch(chrome.runtime.getURL('dict.' + code + '.json'));
+    if (r.body && r.body.cancel) try { r.body.cancel(); } catch (e) { /* ignore */ }
+    return r.ok;
+  } catch (e) { return false; }
+}
+
+// 从 langs.json 填充语言下拉:首项为「英文原文(不翻译)」。已具备(内置/已缓存)的语言直接列出;
+// 仅“联网包里尚未下载”的语言才标 ⬇。离线部署因词库已内置,全部干净无下载标记,界面更简洁。
 async function populateLanguages(selected) {
   let langs = {};
   try {
@@ -51,6 +61,8 @@ async function populateLanguages(selected) {
     if (j && j.languages) langs = j.languages;
   } catch (e) { /* 用兜底 */ }
   const cached = await chrome.storage.local.get(null);
+  const codes = Object.keys(langs);
+  const bundled = await Promise.all(codes.map(isBundled));   // 离线包:全部命中
   langEl.innerHTML = '';
 
   const orig = document.createElement('option');
@@ -58,19 +70,19 @@ async function populateLanguages(selected) {
   orig.textContent = t(ui, 'langOriginal');
   langEl.appendChild(orig);
 
-  for (const [code, meta] of Object.entries(langs)) {
+  codes.forEach((code, i) => {
+    const meta = langs[code];
+    const have = bundled[i] || !!cached['dict:' + code];     // 内置 或 已缓存 = 现成可用
     const opt = document.createElement('option');
-    const isCached = !!cached['dict:' + code];
     opt.value = code;
-    opt.textContent = `${meta.name}${meta.english ? '(' + meta.english + ')' : ''}${isCached ? ' ✓' : ' ⬇'}`;
+    opt.textContent = `${meta.name}${meta.english ? '(' + meta.english + ')' : ''}${have ? '' : ' ⬇'}`;
     langEl.appendChild(opt);
-  }
+  });
   langEl.value = selected || 'en';
 }
 
 chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en', uiLang: 'en' }, async cfg => {
   ui = cfg.uiLang || 'en';
-  enabledEl.checked = !!cfg.enabled;
   hostsEl.value = (cfg.hosts || []).join('\n');
   collectEl.checked = !!cfg.collect;
   await populateLanguages(cfg.lang || 'en');
@@ -96,7 +108,6 @@ document.getElementById('addCurrent').addEventListener('click', async () => {
   const next = [...list, host];
   hostsEl.value = next.join('\n');
   await chrome.storage.sync.set({ enabled: true, hosts: next });
-  enabledEl.checked = true;
   const tab = await activeTab();
   if (tab && tab.id != null) chrome.tabs.reload(tab.id);   // 重载让内容脚本在此站点激活
   // 若翻译语言仍为「英文原文/不翻译」,加站点也不会翻 —— 明确引导用户先选语言
@@ -215,18 +226,18 @@ document.getElementById('clear').addEventListener('click', async () => {
 });
 
 document.getElementById('save').addEventListener('click', async () => {
-  const enabled = enabledEl.checked;
+  // 翻译开关由「翻译语言」承担(选 English 原文 = 不翻译);保存只持久化手工编辑的站点列表并应用。
   const hosts = hostsEl.value
     .split('\n')
     .map(s => s.trim())
     .filter(Boolean);
 
-  await chrome.storage.sync.set({ enabled, hosts });
+  await chrome.storage.sync.set({ enabled: true, hosts });
   statusEl.textContent = t(ui, 'saved');
 
   // 通知当前标签页立即生效
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab && tab.id != null) {
-    chrome.tabs.sendMessage(tab.id, { type: enabled ? 'VC_ENABLE' : 'VC_DISABLE' }, () => void chrome.runtime.lastError);
+    chrome.tabs.sendMessage(tab.id, { type: 'VC_ENABLE' }, () => void chrome.runtime.lastError);
   }
 });

@@ -14,11 +14,6 @@
   </div>
 
   <label class="row">
-    <span data-i18n="enable">Enable translation</span>
-    <input type="checkbox" id="enabled" />
-  </label>
-
-  <label class="row">
     <span data-i18n="language">Language</span>
     <select id="lang"><!-- 由 langs.json 动态填充 --></select>
   </label>
@@ -29,8 +24,10 @@
     <label for="hosts" data-i18n="hostsLabel">Force-enabled sites (one per line; extra sites beyond auto-detection — vCenter / Aria Ops / Log, etc.)</label>
     <textarea id="hosts" rows="3" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
   </div>
-  <button id="addCurrent" class="secondary" data-i18n="addCurrent">➕ Add current site &amp; enable</button>
-  <button id="removeCurrent" class="secondary" data-i18n="removeCurrent">➖ Remove current site</button>
+  <div class="btn-grid">
+    <button id="addCurrent" class="secondary" data-i18n="addCurrent">➕ Add current site</button>
+    <button id="removeCurrent" class="secondary" data-i18n="removeCurrent">➖ Remove current site</button>
+  </div>
   <p class="meta" id="curHost">Current site: —</p>
 
   <button id="save" data-i18n="save">Save &amp; apply</button>
