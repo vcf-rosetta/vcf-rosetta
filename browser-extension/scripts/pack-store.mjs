@@ -14,6 +14,7 @@ const ver = manifest.version;
 const OFFLINE = process.argv.includes("--offline");
 
 // 上传包白名单:保持轻量 —— 只放代码与清单。词典运行时按需从语言包源下载并本地缓存。
+// 注:cwd=browser-extension/,白名单只含本目录文件;同级的 plugin/(暂缓 POC)绝不入包。
 const INCLUDE = [
   "manifest.json",
   "_locales",
