@@ -27,7 +27,7 @@
 
   <div class="field">
     <label for="hosts" data-i18n="hostsLabel">Force-enabled sites (one per line; extra sites beyond auto-detection — vCenter / Aria Ops / Log, etc.)</label>
-    <textarea id="hosts" rows="4" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
+    <textarea id="hosts" rows="3" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
   </div>
   <button id="addCurrent" class="secondary" data-i18n="addCurrent">➕ Add current site &amp; enable</button>
   <button id="removeCurrent" class="secondary" data-i18n="removeCurrent">➖ Remove current site</button>
@@ -45,15 +45,26 @@
     <label for="region" data-i18n="regionLabel">Region / signature (optional, for grouping)</label>
     <input type="text" id="region" placeholder="e.g. CN-East / Alice" />
   </div>
-  <button id="dump" class="secondary" data-i18n="dump">Export JSON (local)</button>
-  <button id="contribute" class="secondary" data-i18n="contribute">Contribute to GitHub</button>
-  <button id="mail" class="secondary" data-i18n="mail">Email the developers</button>
-  <button id="clear" class="secondary" data-i18n="clear">Clear collected</button>
-  <p class="meta" data-i18n="contribMeta">After browsing pages with missing terms (tasks, alarms, etc.), pick one to send back: ① export a local backup; ② open a pre-filled GitHub Issue; ③ email the developers. Maintainers will merge them.</p>
+  <div class="btn-grid">
+    <button id="dump" class="secondary" data-i18n="dump">Export JSON</button>
+    <button id="contribute" class="secondary" data-i18n="contribute">Contribute</button>
+    <button id="mail" class="secondary" data-i18n="mail">Email</button>
+    <button id="clear" class="secondary" data-i18n="clear">Clear</button>
+  </div>
+  <p class="meta" data-i18n="contribMeta">Browse pages with missing terms, then send them back: export a backup, open a pre-filled GitHub Issue, or email us.</p>
   <p class="meta" data-i18n="footMeta">Refresh the page after saving · Contributions contain only English UI terms, no business data</p>
 
   <hr />
-  <button id="about" class="secondary" data-i18n="about">ℹ️ About / Contact developers</button>
+  <button id="about" class="secondary" data-i18n="about">ℹ️ About / Contact</button>
+  <div id="aboutPanel" class="aboutpanel" hidden>
+    <p class="ap-team" data-i18n="aboutTeam">Developers — questions or a new language? Email any of us:</p>
+    <ul>
+      <li>Tony Yuan · <a href="mailto:mycloud2015@126.com">mycloud2015@126.com</a></li>
+      <li>Jingsong Yang · <a href="mailto:yjs@tanzu.eu.org">yjs@tanzu.eu.org</a></li>
+      <li>Wei Zhou · <a href="mailto:zhouwei008@gmail.com">zhouwei008@gmail.com</a></li>
+    </ul>
+    <p class="ap-note" data-i18n="aboutNote">License: Apache-2.0 · local UI-text replacement only, not affiliated with VMware/Broadcom.</p>
+  </div>
 
   <script src="i18n.js"></script>
   <script src="popup.js"></script>

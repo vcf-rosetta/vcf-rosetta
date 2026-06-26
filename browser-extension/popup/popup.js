@@ -117,9 +117,10 @@ document.getElementById('removeCurrent').addEventListener('click', async () => {
   statusEl.textContent = t(ui, 'removed', host);
 });
 
-// ℹ️ 关于页:在新标签打开开发者与许可证信息(随当前语言显示)
+// ℹ️ 关于:就地展开/收起内联小窗口(开发者联系方式 + 许可证),不另开页面,更轻量友好
 document.getElementById('about').addEventListener('click', () => {
-  chrome.tabs.create({ url: chrome.runtime.getURL('popup/about.html') + '?ui=' + ui });
+  const panel = document.getElementById('aboutPanel');
+  if (panel) panel.hidden = !panel.hidden;
 });
 
 // 切换「翻译语言包」:保存并刷新当前页生效。界面语言不受影响(由顶部开关单独控制)。
