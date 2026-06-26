@@ -263,18 +263,42 @@
   }
 
   // ── 遍历节点树 ────────────────────────────────────────────
+  // VCF Operations / Aria 等控制台大量用 Web Component(Clarity / 自研),正文(数据网格列头、
+  // 仪表板小组件)渲染在 open shadow DOM 里;部分内嵌同源 iframe。普通 TreeWalker 不跨 shadow/
+  // iframe 边界 —— 这正是「词库里有 Health/Memory 等词、界面却仍是英文」的根因。故改为递归下降,
+  // 主动穿透 open shadow root 与同源 iframe(闭合 shadow / 跨源 iframe 无法访问,自动跳过)。
+  const SKIP_TAGS = ['script', 'style', 'noscript', 'code', 'pre', 'textarea'];
+  const observedRoots = new WeakSet();   // 已挂监听的 shadow root / iframe 文档,避免重复 observe
+  function observeRoot(root) {
+    if (!root || observedRoots.has(root)) return;
+    observedRoots.add(root);
+    try {
+      observer.observe(root, {
+        childList: true, subtree: true, characterData: true,
+        attributes: true, attributeFilter: TRANSLATE_ATTRS,
+      });
+    } catch (e) { /* 个别 root 不可监听,忽略 */ }
+  }
   function walkAndTranslate(root) {
     if (!root) return;
-    if (root.nodeType === Node.TEXT_NODE) { translateText(root); return; }
-    if (root.nodeType !== Node.ELEMENT_NODE) return;
-
-    const tag = root.tagName ? root.tagName.toLowerCase() : '';
-    if (['script', 'style', 'noscript', 'code', 'pre', 'textarea'].includes(tag)) return;
-
-    translateAttrs(root);
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
-    let node;
-    while ((node = walker.nextNode())) translateText(node);
+    const type = root.nodeType;
+    if (type === Node.TEXT_NODE) { translateText(root); return; }
+    if (type === Node.ELEMENT_NODE) {
+      const tag = root.tagName ? root.tagName.toLowerCase() : '';
+      if (SKIP_TAGS.includes(tag)) return;
+      translateAttrs(root);
+      if (tag === 'iframe' || tag === 'frame') {        // 同源 iframe:进入其文档(跨源抛错 -> 跳过)
+        let doc = null;
+        try { doc = root.contentDocument; } catch (e) { doc = null; }
+        if (doc && doc.body) { observeRoot(doc.body); walkAndTranslate(doc.body); }
+        return;
+      }
+      if (root.shadowRoot) { observeRoot(root.shadowRoot); walkAndTranslate(root.shadowRoot); }  // open shadow DOM
+    } else if (type !== Node.DOCUMENT_FRAGMENT_NODE && type !== Node.DOCUMENT_NODE) {
+      return;
+    }
+    const kids = root.childNodes;                       // 元素 / shadowRoot / document 的子节点
+    if (kids) for (let i = 0; i < kids.length; i++) walkAndTranslate(kids[i]);
   }
 
   // ── MutationObserver(Angular SPA 路由切换 / 数据加载) ──────

@@ -1,0 +1,30 @@
+{
+  "_note": "VCF Operations (Aria Ops) 主页/仪表板:顶部分区、标签页、数据网格列头、小组件标题。来源:实采截图 2026-06。注:Operate/Protect 为最佳推断译法。",
+
+  "Operate": "运行",
+  "Protect": "保护",
+
+  "VCF Overview": "VCF 概览",
+  "Launchpad": "启动板",
+  "Troubleshooting VMs v4": "虚拟机故障排除 v4",
+
+  "VMs (select a VM to populate widgets)": "虚拟机(选择一个虚拟机以填充小组件)",
+  "Type here to apply filters": "在此输入以应用筛选器",
+
+  "Scoreboard (for selected VM)": "记分板(针对所选虚拟机)",
+  "Disk Usage (for selected VM)": "磁盘使用率(针对所选虚拟机)",
+  "CPU Usage (for selected VM)": "CPU 使用率(针对所选虚拟机)",
+  "Memory Usage (for selected VM)": "内存使用率(针对所选虚拟机)",
+  "Network Usage Rate (for selected VM)": "网络使用率(针对所选虚拟机)",
+
+  "CPU Usage %": "CPU 使用率 %",
+  "Memory Usage %": "内存使用率 %",
+  "File System | Drive": "文件系统 | 驱动器",
+  "Space Used (%)": "已用空间(%)",
+
+  "Workbench": "工作台",
+  "Metrics": "指标",
+  "Findings": "发现",
+  "Automation Central": "自动化中心",
+  "Workloads": "工作负载"
+}
