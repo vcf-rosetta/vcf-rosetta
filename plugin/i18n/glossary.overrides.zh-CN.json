@@ -1,5 +1,6 @@
 {
   "_note": "审定覆盖表:628 条跨领域冲突的规范裁决 + 项目核心补充。优先级最高。合并顺序:glossary.zh-CN.json(原始合并)-> 本文件(覆盖)。审定原则见 README。",
+  "Build": "构建",
   "Recommendation": "建议操作",
   "Recommendations": "建议操作",
   "Issue": "问题",

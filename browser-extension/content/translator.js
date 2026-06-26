@@ -80,15 +80,17 @@
     missing.forEach((_, k) => { if (dict[k] !== undefined) { missing.delete(k); changed = true; } });
     if (changed) persistMissing();
   }
-  // 来源工具页识别(给采集词条标来源,便于按工具补词)
+  // 来源套件识别(给采集词条标来源,便于按套件补词)。
+  // 关键:VCF 套件多为 SPA,document.title 常为空或加载晚 —— 只认 title 会全部退到
+  // 裸 hostname(如 fleet-ops.knight.com),套件分不开。故合并 title + hostname + path 一起判。
   function detectTool() {
-    const t = document.title || '';
-    if (/Operations for Logs|Log Insight|vRealize Log/.test(t)) return 'log';
-    if (/Aria Operations|VCF Operations|vRealize Operations/.test(t)) return 'aria-ops';
-    if (/Aria Automation|vRealize Automation/.test(t)) return 'aria-automation';
-    if (/\bNSX\b/.test(t)) return 'nsx';
-    if (/SDDC Manager/.test(t)) return 'sddc';
-    if (/vSphere|vCenter/.test(t)) return 'vcenter';
+    const hay = ((document.title || '') + ' ' + (location.hostname || '') + ' ' + (location.pathname || '')).toLowerCase();
+    if (/log\s*insight|operations for logs|vrealize log|loginsight/.test(hay)) return 'log';
+    if (/aria.?operations|vcf.?operations|vrops|vrealize.?operations|fleet.?ops|\bops\b/.test(hay)) return 'aria-ops';
+    if (/aria.?automation|vrealize.?automation|\bvra\b/.test(hay)) return 'aria-automation';
+    if (/\bnsx\b/.test(hay)) return 'nsx';
+    if (/sddc.?manager|\bsddc\b/.test(hay)) return 'sddc';
+    if (/vsphere|vcenter|\bvcsa\b/.test(hay)) return 'vcenter';
     return location.hostname || 'other';
   }
   // 异常标记:帮助维护者快速判断该条该怎么处理
@@ -102,7 +104,15 @@
     if (/[A-Za-z][\w.]*(\.[A-Za-z][\w]*){2,}/.test(s)) f.push('疑标识符');  // 点分 key
     return f;
   }
-  // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文)
+  // 动态数据:随时间/实例变化,混进词库只会污染对齐,采集阶段就剔除。
+  // (日期 05/03/2026 / 时钟 11:42:09 PM / MAC 00:50:56:.. / 纯数值±单位 "0 MB"、"0 free")
+  const DYNAMIC_RE = [
+    /\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/,                                                            // 日期
+    /\b\d{1,2}:\d{2}(:\d{2})?\b/,                                                               // 时钟(也覆盖 MAC 冒号段)
+    /\b([0-9a-f]{2}:){2,}[0-9a-f]{2}\b/i,                                                       // MAC 地址
+    /^[\s\d.,:%()|/_-]*\d[\s\d.,:%()|/_-]*(MB|GB|KB|TB|PB|MHz|GHz|kHz|Hz|ms|bps|free|used)?\s*$/i, // 纯数值±单位
+  ];
+  // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文/动态值)
   function looksTranslatable(s) {
     if (s.length < 2 || s.length > 120) return false;
     if (/[一-鿿]/.test(s)) return false;          // 已含中文
@@ -110,13 +120,21 @@
     if (/^[0-9.\-:/\s%]+$/.test(s)) return false;         // 纯数字/时间/百分比
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(s)) return false; // GUID
     if ((s.match(/[A-Za-z]/g) || []).length < 2) return false;
+    if (DYNAMIC_RE.some(re => re.test(s))) return false;  // 日期/时间/MAC/数值-单位:动态值,跳过
     return true;
   }
   function recordMissing(s) {
     if (!collect || !looksTranslatable(s)) return;
     const m = missing.get(s);
-    if (m) { m.n = (m.n || 1) + 1; }
-    else { missing.set(s, { n: 1, tool: detectTool(), title: (document.title || '').slice(0, 80), flags: classifyFlags(s) }); }
+    if (m) {
+      m.n = (m.n || 1) + 1;
+      if (!m.tool || m.tool === '?') {          // 回填旧版遗留/未知来源,让历史数据也能按套件归位
+        m.tool = detectTool();
+        m.title = (document.title || '').slice(0, 80);
+      }
+    } else {
+      missing.set(s, { n: 1, tool: detectTool(), title: (document.title || '').slice(0, 80), flags: classifyFlags(s) });
+    }
     persistMissing();
   }
   // 导出条目(带标记),按 工具→出现次数降序→字母 排序
