@@ -23,7 +23,7 @@ const cands = p => [p.replace("/" + dirTok + "/", "/en/"), p.replace("/" + dirTo
 const map = {}; let pairs = 0;
 for (const lf of locFiles) { const en = cands(lf).find(c => c !== lf && fs.existsSync(c)); if (!en) continue; pairs++; const ez = parseAny(en), lz = parseAny(lf); for (const k in lz) { const e = ez[k], z = lz[k]; if (!e || !z || e === z || !/[A-Za-z]/.test(e)) continue; if (map[e] === undefined) map[e] = z; } }
 const PH = /\{\d+\}|%[sd@]|%\d+\$|\$\{|<\w+>/;
-const out = {}; for (const e in map) { if (e.length < 2 || e.length > 160 || PH.test(e) || !/[A-Za-z]/.test(e)) continue; out[e] = map[e]; }
+const out = {}; for (const e in map) { if (e.length < 2 || e.length > 400 || PH.test(e) || !/[A-Za-z]/.test(e)) continue; out[e] = map[e]; }
 const sorted = Object.keys(out).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1).reduce((o, k) => { o[k] = out[k]; return o; }, {});
 const tag = LOC.replace("_", "-");
 const outPath = path.join(here, `glossary.${tag}.json`);

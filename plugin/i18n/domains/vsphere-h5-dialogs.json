@@ -1,0 +1,13 @@
+{
+  "_note": "vSphere Client (H5) 对话框长描述。这些串来自 vsphere-ui webapp 资源包,不在 VCSA 语言包(vsphere-lang/l10n.tgz)内,需手工补。来源:实采截图 2026-06。",
+
+  "Rescanning a cluster might take a long time. During this time, vMotion might not be operable and some datastore operations might be disallowed.": "重新扫描集群可能需要较长时间。在此期间,vMotion 可能无法操作,某些数据存储操作可能被禁止。",
+  "Rescan all host bus adapters for new storage devices. Rescanning all adapters can be slow.": "重新扫描所有主机总线适配器以查找新存储设备。重新扫描所有适配器可能较慢。",
+  "Rescan all known storage devices for new VMFS volumes that have been added since the last scan. Rescanning known storage for new file systems is faster than rescanning for new storage.": "重新扫描所有已知存储设备,以查找自上次扫描以来新增的 VMFS 卷。针对新文件系统重新扫描已知存储比重新扫描新存储更快。",
+
+  "Create a new resource pool": "创建新资源池",
+  "Scale Descendant's Shares": "扩展子级份额",
+  "Yes, make them scalable": "是,使其可扩展",
+
+  "This option guides you through creating a new virtual machine. You will be able to customize processors, memory, network connections, and storage. You will need to install a guest operating system after creation.": "此选项将引导您完成新建虚拟机的过程。您可以自定义处理器、内存、网络连接和存储。创建后需要安装客户机操作系统。"
+}
