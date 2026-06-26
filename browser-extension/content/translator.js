@@ -115,7 +115,26 @@
     /\b([0-9a-f]{2}:){2,}[0-9a-f]{2}\b/i,                                                       // MAC 地址
     /^[\s\d.,:%()|/_-]*\d[\s\d.,:%()|/_-]*(MB|GB|KB|TB|PB|MHz|GHz|kHz|Hz|ms|bps|free|used)?\s*$/i, // 纯数值±单位
   ];
-  // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文/动态值)
+  // 机器标识/代码/无障碍文本:不是给人读的 UI 串,采集阶段直接剔除(高精度,实测零误杀)。
+  // 命中的典型噪声:API 路径、URN、点分标识符、主机名、snake/驼峰类名、快捷键、图表无障碍、动态数值。
+  const NOISE_RE = [
+    /^[a-z][\w.]*(\/[\w.{}-]+)+$/i,                  // 斜杠路径(REST API):token/token,无空格
+    /^urn:|:\/\//,                                   // urn:... 或含 ://(URL)
+    /^[a-z][\w-]*(\.[a-z][\w-]*){2,}$/i,             // 点分标识符 com.vmware.cns(无空格)
+    /^[\w-]+(\.[\w-]+)+(:\d+)?$/,                    // 主机名/FQDN(可带 :端口),无空格
+    /^[a-z0-9]+(_[a-z0-9]+)+$/i,                     // snake_case 单 token
+    /^[A-Za-z][a-z0-9]+([A-Z][a-z0-9]+){2,}$/,       // 驼峰类名 CisTaskProgress(≥3 段,无空格)
+    /\b(ctrl|alt|shift|cmd)\b\s*\+/i,               // 键盘快捷键
+    /\b(pie|bar|line|donut)?\s*chart\b.*\b(slices?|data series|axis|graphic)\b/i, // 图表无障碍
+    /\baxis displaying\b|\bdata series\b|created with (highcharts|highstock)/i,   // 图表无障碍
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-/i,         // GUID(任意位置)
+    /\b\d[\d.,]*\s*(KBps|Bps|Mbps|Bytes?|vCPUs?|CPU\(s\)|MHz|GHz)/i, // 动态:速率/字节/vCPU
+    /^\d[\d.,]*\s*(GB|MB|KB|TB|PB|B)\b/i,            // 数字开头的容量行 "12 GB, 0 GB..."
+    /^[\w-]+\.\.\.$/,                                // 单 token 省略截断 "lic..."(无空格)
+    /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}$/,  // 月 日 "Jun 20"
+    /^(?=.*\d)[a-z][\w]*([-_][\w]+){2,}$/i,          // 实例/对象名:≥2 分隔符且含数字,无空格(如 knight-md-cl01)
+  ];
+  // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文/动态值/机器标识)
   function looksTranslatable(s) {
     if (s.length < 2 || s.length > 120) return false;
     if (/[一-鿿]/.test(s)) return false;          // 已含中文
@@ -124,6 +143,7 @@
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(s)) return false; // GUID
     if ((s.match(/[A-Za-z]/g) || []).length < 2) return false;
     if (DYNAMIC_RE.some(re => re.test(s))) return false;  // 日期/时间/MAC/数值-单位:动态值,跳过
+    if (NOISE_RE.some(re => re.test(s))) return false;    // 机器标识/代码/无障碍:非 UI 文本,跳过
     return true;
   }
   function recordMissing(s) {
