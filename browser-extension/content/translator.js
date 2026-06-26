@@ -9,39 +9,42 @@
   const LANGPACK_BASE = 'https://cdn.jsdelivr.net/gh/vcf-rosetta/langpacks@main';
   let dict = {};
   let loadedLang = null;
+  let loadedFrom = null;   // 'bundled' | 'cache' | 'cdn' —— 词典来源,供弹窗显示
+  let loadedVer = null;    // 已加载词典对应的版本号
   let LANGS = {};
   fetch(chrome.runtime.getURL('langs.json')).then(r => r.json())
     .then(j => { LANGS = (j && j.languages) || {}; }).catch(() => {});
 
-  async function loadDict(lang) {
+  async function loadDict(lang, opts) {
     lang = lang || 'en';
-    if (lang === 'en') { dict = {}; loadedLang = 'en'; return false; } // 英文原文:无词典,不翻译、不联网
-    if (loadedLang === lang && Object.keys(dict).length) return true;
+    const force = opts && opts.force;   // 刷新词典:跳过「已加载」短路与本地缓存,强制取最新
+    if (lang === 'en') { dict = {}; loadedLang = 'en'; loadedFrom = null; loadedVer = null; return false; } // 英文原文:无词典
+    if (!force && loadedLang === lang && Object.keys(dict).length) return true;
     const ver = (LANGS[lang] && LANGS[lang].version) || '0';
     const cacheKey = 'dict:' + lang;
 
-    // ① 扩展内置(若打包时附带了 dict.<lang>.json)
+    // ① 扩展内置(若打包时附带了 dict.<lang>.json;离线包即走这条)
     try {
       const res = await fetch(chrome.runtime.getURL('dict.' + lang + '.json'));
-      if (res.ok) { dict = await res.json(); loadedLang = lang;
+      if (res.ok) { dict = await res.json(); loadedLang = lang; loadedFrom = 'bundled'; loadedVer = ver;
         console.info('[vcf-rosetta] 内置字典:' + lang + ',' + Object.keys(dict).length + ' 条'); return Object.keys(dict).length > 0; }
     } catch (e) { /* 未内置,继续 */ }
 
-    // ② 本地缓存(版本一致才用)
-    try {
+    // ② 本地缓存(版本一致才用;force 刷新时跳过,以便重新下载)
+    if (!force) try {
       const got = await chrome.storage.local.get(cacheKey);
       const c = got[cacheKey];
-      if (c && c.version === ver && c.data) { dict = c.data; loadedLang = lang;
+      if (c && c.version === ver && c.data) { dict = c.data; loadedLang = lang; loadedFrom = 'cache'; loadedVer = c.version;
         console.info('[vcf-rosetta] 缓存字典:' + lang + ',' + Object.keys(dict).length + ' 条'); return true; }
     } catch (e) { /* ignore */ }
 
     // ③ 远程下载 → 写缓存
     const url = LANGPACK_BASE + '/dict.' + lang + '.json';
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, force ? { cache: 'reload' } : undefined);
       if (!res.ok) { console.warn('[vcf-rosetta] 语言包下载失败 HTTP ' + res.status + ' @ ' + url); return false; }
       dict = await res.json();
-      loadedLang = lang;
+      loadedLang = lang; loadedFrom = 'cdn'; loadedVer = ver;
       try { await chrome.storage.local.set({ [cacheKey]: { version: ver, data: dict } }); } catch (e) { /* 配额? */ }
       console.info('[vcf-rosetta] 已下载并缓存语言包:' + lang + ',' + Object.keys(dict).length + ' 条');
       return Object.keys(dict).length > 0;
@@ -378,6 +381,21 @@
       missing.clear();
       try { chrome.storage.local.remove(MISSING_KEY); } catch (e) { /* ignore */ }
       sendResponse({ ok: true });
+    }
+    // 当前页加载的词典信息(语言/版本/条数/来源)—— 供弹窗显示「我在用哪版」
+    else if (msg.type === 'VC_DICT_INFO') {
+      sendResponse({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom });
+    }
+    // 刷新词典:清掉本地缓存,强制重取(内置→重读文件;联网→绕缓存重下),再整页重翻
+    else if (msg.type === 'VC_REFRESH_DICT') {
+      const lang = loadedLang && loadedLang !== 'en' ? loadedLang : (msg.lang || 'en');
+      const done = info => sendResponse(info);
+      if (lang === 'en') { done({ lang: 'en', version: null, count: 0, from: null }); return true; }
+      chrome.storage.local.remove('dict:' + lang).catch(() => {}).then(() => loadDict(lang, { force: true })).then(ok => {
+        if (ok) walkAndTranslate(document.body);
+        done({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom, ok: ok });
+      });
+      return true;   // 异步 sendResponse
     }
   });
 })();

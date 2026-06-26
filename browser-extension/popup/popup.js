@@ -23,7 +23,30 @@ function applyUi() {
   const tog = document.getElementById('uitoggle');
   if (tog) tog.title = t(ui, 'uiTip');
   refreshOffHint();
+  showDict(lastDictInfo);   // 语言切换时用最近一次信息重渲(来源词本地化)
   currentHostname().then(h => { curHostEl.textContent = t(ui, 'curHost', h); });
+}
+
+// 当前页词典信息(语言·版本·条数·来源),供测试机确认「在用哪版词典」
+let lastDictInfo = null;
+function srcLabel(from) {
+  return from === 'bundled' ? t(ui, 'srcBundled') : from === 'cache' ? t(ui, 'srcCache') : from === 'cdn' ? t(ui, 'srcCdn') : '—';
+}
+function showDict(info) {
+  lastDictInfo = info;
+  const el = document.getElementById('dictInfo');
+  if (!el) return;
+  if (!info || !info.lang || info.lang === 'en' || !info.count) { el.textContent = t(ui, 'dictNone'); return; }
+  el.textContent = `${info.lang} v${info.version || '?'} · ${info.count} ${t(ui, 'dictTerms')} · ${srcLabel(info.from)}`;
+}
+function queryDict() {
+  activeTab().then(tab => {
+    if (!tab || tab.id == null) { showDict(null); return; }
+    chrome.tabs.sendMessage(tab.id, { type: 'VC_DICT_INFO' }, info => {
+      if (chrome.runtime.lastError) { showDict(null); return; }   // 非 VCF 页 / 内容脚本未注入
+      showDict(info);
+    });
+  });
 }
 
 // 翻译语言为 en(原文/不翻译)时,给出醒目提示,消除「记住了站点却没翻译」的困惑
@@ -87,6 +110,19 @@ chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en', 
   collectEl.checked = !!cfg.collect;
   await populateLanguages(cfg.lang || 'en');
   applyUi();
+  queryDict();   // 拉取当前页正在用的词典信息
+});
+
+// ↻ 刷新词典:让当前页内容脚本清缓存、强制重取最新词典并整页重翻
+document.getElementById('refreshDict').addEventListener('click', async () => {
+  const tab = await activeTab();
+  if (!tab || tab.id == null) { statusEl.textContent = t(ui, 'openVcFirst'); return; }
+  statusEl.textContent = t(ui, 'dictRefreshing');
+  chrome.tabs.sendMessage(tab.id, { type: 'VC_REFRESH_DICT' }, info => {
+    if (chrome.runtime.lastError) { statusEl.textContent = t(ui, 'refreshFirst'); return; }
+    showDict(info);
+    statusEl.textContent = t(ui, 'dictRefreshed');
+  });
 });
 
 async function activeTab() {

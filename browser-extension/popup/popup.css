@@ -48,6 +48,11 @@ button {
 button:hover { background: #18633a; }
 button.secondary { background: #4a5b66; margin-top: 6px; }
 button.secondary:hover { background: #3a4951; }
+/* 词典信息行:左显「语言·版本·条数·来源」,右一个轻量刷新按钮 */
+.dictrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
+.dictrow .meta { margin: 0; }
+.linklike { width: auto; flex: none; background: none; color: #1d7a46; padding: 2px 6px; font-size: 12px; border-radius: 4px; }
+.linklike:hover { background: #eef4f0; }
 /* 回流四按钮:2×2 紧凑网格,凝练为两行 */
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
 .btn-grid button.secondary { margin-top: 0; padding: 6px 4px; font-size: 12px; }

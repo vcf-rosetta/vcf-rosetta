@@ -36,3 +36,4 @@ vsphere-l10n-all.tgz
 
 # 生成的字典(从 plugin/i18n/glossary.*.json 构建,勿入库)
 browser-extension/dict.*.json
+*.tgz
