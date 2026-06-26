@@ -1,4 +1,4 @@
-# Chrome Web Store — Listing copy (v3.4.8)
+# Chrome Web Store — Listing copy (v3.4.17)
 
 > Paste into the Chrome Developer Dashboard "Store listing". Summary ≤132 chars. UI is English-default now (`_locales/en` only); Chinese appears only when the user picks a Chinese language inside the popup.
 

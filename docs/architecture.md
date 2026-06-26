@@ -1,6 +1,8 @@
 # vcf-rosetta 架构设计
 
-> 状态:设计阶段 · 最后更新 2026-06-19
+> 状态:**早期设计快照**(2026-06-19)。本文档围绕 remote plug-in 形态,而该插件现已 ⏸️ 暂缓(见
+> [`../plugin/README.md`](../plugin/README.md))。**实际出货形态是浏览器扩展**;最新架构以
+> [`../browser-extension/README.md`](../browser-extension/README.md) 为准。本文留作设计留档。
 
 ## 1. 背景与目标
 
@@ -14,7 +16,7 @@ VCF 9.0 / 9.1 官方 UI 公开支持的语言为 English / Français / Español 
 | 形态 | vSphere Client **remote plug-in**(非 local plug-in) | 9.x 官方推荐;进程隔离,不污染宿主 |
 | 是否做独立 Web App | **否** | 浏览器自带翻译已覆盖只读阅读需求;独立 App 维护成本高 |
 | 是否替换宿主语言包 | **否** | 平台未公开支持 `zh-CN` locale,配错 localization bundle 会导致插件部署异常 |
-| 首发语言 | `en-US` + `zh-CN` | 兼容英文宿主;中文为第一目标 |
+| 语言范围 | VCF9 原生 en/ja/es/fr 不做;补已放弃的 zh-CN/zh-TW/de/it/ko(zh-CN 审定) | 中文为第一目标 |
 | 语言选择来源 | 插件**自行**判定(读浏览器语言 → fallback) | 不依赖宿主是否识别 `zh-CN` |
 
 ## 3. 范围边界

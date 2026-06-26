@@ -1,44 +1,53 @@
-# plugin/i18n — vCenter / VCF 9 术语词表(英→中)
+# plugin/i18n — VCF / vCenter 术语词库(英→多语言)
 
-本目录是 vcf-rosetta 的**简体中文术语资产**,从前期 Chrome 翻译扩展的领域词典收编、合并、
-去重而来(原扩展目录已弃用)。它既是插件 i18n 的**术语来源**,也是保证全产品中文用词一致的
-**规范词表**。
+> ⚠️ 路径里虽带 `plugin/`,但本目录**不属于**那个⏸️暂缓的远程插件,而是**全项目活跃的核心资产**:
+> 浏览器扩展的所有 `dict.<locale>.json` 都从这里构建。它是英文 UI 串 → 各语言的**权威词库**。
+
+## 语言范围(标准)
+
+VCF 9 原生只支持 4 种界面语言(English / 日本語 / Español / Français),用户在 VCF 9 里直接切即可,
+**本项目不为这 4 种做词库**。只补 VCF 9 **已放弃**的语言:
+
+| 文件 | 语言 | 条数 | 来源 |
+|------|------|------|------|
+| `glossary.zh-CN.json` | 简体中文 | **49,950** | 官方 + 审定 + 域补词(**唯一审定/curated 的语言**) |
+| `glossary.zh-TW.json` | 繁體中文 | ~35k | 官方 |
+| `glossary.de.json` | 德文 | ~37k | 官方 |
+| `glossary.it.json` | 意大利文 | ~37k | 官方 |
+| `glossary.ko.json` | 韩文 | ~37k | 官方 |
+
+> 官方语言包里 ja/es/fr 也有专业翻译,但因 VCF 9 原生支持,**故意不纳入**。详见 `build-all-locales.mjs` 头注。
 
 ## 文件
 
-| 文件 | 内容 |
+| 文件 / 目录 | 内容 |
 |------|------|
-| `glossary.zh-CN.json` | **最终权威词表**,12,818 条唯一英→中映射,按英文键排序。已合并 73 个领域词典并**应用审定覆盖**,直接使用此文件即可 |
-| `glossary.overrides.zh-CN.json` | **审定覆盖表**(634 条):628 条跨领域冲突的规范裁决 + 核心补充。记录每个冲突最终选了哪个译法,已合入主词表 |
-| `glossary.conflicts.json` | 冲突**原始记录**(628 条,同英文多译法),审定前快照,留档备查 |
-| `domains/<domain>.json` | 73 个**按领域**拆分的词典(NSX / vSAN / DRS / 存储 / 权限 / 自动化…),保留原始分类,未应用审定覆盖 |
+| `glossary.<tag>.json` | 各语言**权威词表**(英→该语言),按英文键排序。`build-dict.mjs` 直接消费 |
+| `glossary.overrides.zh-CN.json` | zh-CN **审定覆盖表**:跨领域冲突裁决 + 核心补充(如 `Build`→构建),已合入主词表 |
+| `glossary.conflicts.json` | 冲突原始记录(同英文多译法),审定前快照,留档 |
+| `domains/<domain>.json` | 84 个**按领域**拆分的补词(NSX / vSAN / 存储 / 权限 / Aria Ops / H5 对话框…),增量并入主词表 |
 
-## 状态:✅ 628 条冲突已全部审定
+## 脚本
 
-`glossary.zh-CN.json` 已是定稿,审定覆盖已应用。如需重新生成:`master(domains) → overrides`。
+| 脚本 | 用途 |
+|------|------|
+| `build-locale.mjs <LOC> <pack>` | 从官方语言包提取**单个**语言 → `glossary.<tag>.json`(en↔LOC 按 key join) |
+| `build-all-locales.mjs <pack>` | **批量**提取,但只建 VCF9 已放弃的语言;已存在的文件视为权威,**不覆盖**,只补缺失 |
+| `enrich-from-pack.mjs <pack>` | **增量丰富**已有 glossary:只加包内新发现的 en→loc 词条,**绝不覆盖**已有/审定译法 |
 
-## 审定原则(摘要)
+> `<pack>` = 解压后的官方语言包目录。语言包 `.tgz` **不入库**(放仓库外的 `tmp/`),按需传路径即可。
+> 改词库后,跑 `node browser-extension/build-dict.mjs` 重建 `dict.*.json`。
 
-- **移除/删除** = Remove/Delete 区分用词
-- **故障转移** = Failover(不再混用"故障切换")
-- **映像** = Image;**基准** = Baseline;**标记** = Tag;**份额** = Shares
-- **入站/出站** = Ingress/Egress;**来宾 + 内省** = Guest / Introspection
-- **软件库** = Depot;**专用** = Private;**账户** = Account;**详细信息** = Details
-- **纳管/下架** = Commission/Decommission;**身份验证** = Authentication
-- 纯缩写(BGP/MTU/APD/LUN…)保留裸缩写;生僻缩写(SCIM/TEP/NSSA…)带简注
-- 产品名保留原文(vSphere Replication / Traceflow / SRM…)
+## 审定原则(摘要,zh-CN)
+
+- **移除/删除** = Remove/Delete 区分;**故障转移** = Failover
+- **映像**=Image;**基准**=Baseline;**标记**=Tag;**份额**=Shares;**构建**=Build(菜单/动作)
+- **入站/出站**=Ingress/Egress;**软件库**=Depot;**账户**=Account(非"帐户");**来宾**=Guest(非"客户机")
+- 纯缩写(BGP/MTU/APD/LUN)保留;生僻缩写(SCIM/TEP/NSSA)带简注;产品名保留原文
+- 标签型 `xxx:` 用半角冒号
 
 ## 说明
 
-- **"英文==中文"不是漏译**:大量专有名词(vSphere Client、vMotion、CPU、UUID、VMXNET3…)
-  按惯例保留英文,属正常。
-- 词表是 **vCenter 自身 UI 术语**的英→中映射,作用有二:
-  1. 作为本项目插件自身 i18n 的**用词规范**(避免"映像/镜像"这类不一致)
-  2. 未来若做 DOM 级翻译,可直接作为数据源
-- 与插件 manifest 的 i18n(`definitions.i18n.definitions[key][locale]`)不同:那是**消息键→各语言**,
-  本词表是**英文 UI 串→中文**。生产插件取词时,以本词表的规范译法填 manifest 的 zh-CN 值。
-
-## 待办(术语定稿)
-
-- [ ] 人工审 `glossary.conflicts.json` 628 条,定稿后并入 supplement
-- [ ] 随产品迭代补充新词条
+- **"英文==中文"不是漏译**:专有名词(vSphere Client、vMotion、CPU、UUID…)按惯例保留英文,属正常。
+- **覆盖缺口**:官方语言包是 vCenter 自身 UI 术语;**H5 客户端对话框长描述、VCF 9 / Aria Ops 新界面**官方包未必有,
+  这部分靠扩展的**采集回流**(见 `../../contrib/`)+ 人工补译,放进 `domains/` 增量并入。

@@ -21,7 +21,8 @@
    # 移到 plugin/i18n/domains/ 下(命名如 contrib-zh-CN-2026-06.json),并入 glossary 后:
    node browser-extension/build-dict.mjs
    ```
-4. 发布:`bash plugin/rosetta.sh update`(或商店上传新版本)。
+4. 发布:`bash browser-extension/scripts/publish-langpacks.sh`(推词典到 CDN,联网包用户自动更新);
+   或重打离线包 `node browser-extension/scripts/pack-store.mjs --offline`;商店则上传新版本。
 
 ## 目录
 | 路径 | 用途 |
@@ -30,7 +31,8 @@
 | `plugin/i18n/domains/` | 已译领域词典(构建词库的源) |
 | `.github/ISSUE_TEMPLATE/i18n-contribution.yml` | 贡献 Issue 模板 |
 
-> 语言种子:官方语言包覆盖 fr/es/ja/de(+ 本项目 zh-CN);其余小语种主要靠社区在此回流。
+> 语言范围:本项目只做 VCF 9 **已放弃**的 5 种(zh-CN/zh-TW/de/it/ko);VCF 9 原生支持的 en/ja/es/fr 不做。
+> 官方语言包覆盖经典 vCenter UI,**回流主要补**官方包没有的新界面(H5 对话框、Aria Ops 仪表板)的缺词。
 
 ## 审定红线(翻译/审校必须遵守)
 

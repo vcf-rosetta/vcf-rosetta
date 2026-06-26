@@ -5,8 +5,8 @@
 
 ## 规模
 
-- **最终权威词表**:12,818 条唯一英→中映射(`plugin/i18n/glossary.zh-CN.json`),已定稿
-- **领域拆分**:73 个领域词典(`plugin/i18n/domains/`)
+- **最终权威词表**:zh-CN **49,950 条**唯一英→中映射(`plugin/i18n/glossary.zh-CN.json`);另有 zh-TW/de/it/ko 各约 35–37k
+- **领域拆分**:84 个领域词典(`plugin/i18n/domains/`)
 - **审定覆盖**:634 条裁决(`plugin/i18n/glossary.overrides.zh-CN.json`),628 条冲突 ✅ 全部审定完成
 - **冲突原始记录**:留档(`plugin/i18n/glossary.conflicts.json`)
 
