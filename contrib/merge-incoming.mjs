@@ -33,7 +33,7 @@ const translated = new Set(Object.keys(glossary).filter(k => glossary[k] && glos
 
 // 运行时数据 / 标识符过滤(与扩展 looksTranslatable 同口径,从严)
 function isData(s) {
-  if (s.length < 2 || s.length > 160) return true;
+  if (s.length < 2) return true;                              // 不设长度上限(与扩展 looksTranslatable 同口径):容纳段落级长描述
   if (!/[A-Za-z]/.test(s)) return true;                       // 无字母
   if (/^[0-9.\-:/\s%|]+$/.test(s)) return true;               // 纯数字/时间/百分比
   if (/^[\d.,]+\s*(B|KB|MB|GB|TB|Hz|MHz|GHz|ms|%)/.test(s)) return true;

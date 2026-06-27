@@ -1,0 +1,10 @@
+{
+  "_note": "实采回流(vc.knight.com 2026-06,截图)。H5 客户端长描述/标签:vSAN 服务页(Data Reduction and Encryption)、选择创建类型对话框(将模板转换为虚拟机描述)。这些串长度此前超过采集器 120 字符上限,从未被采集;本次连同上限上调一并补译。",
+
+  "Data Reduction and Encryption": "数据缩减和加密",
+  "Data reduction": "数据缩减",
+
+  "Some services may not provide the complete feature set.": "某些服务可能无法提供完整的功能集。",
+
+  "This option guides you through the process of converting a template into a virtual machine. Converting a template to a virtual machine allows you to update the virtual machine software and settings. After doing this, you can convert the virtual machine back to a template, or keep it as a virtual machine if you no longer need it as a golden image.": "此选项将引导您完成将模板转换为虚拟机的过程。将模板转换为虚拟机后，您可以更新虚拟机软件和设置。完成此操作后，您可以将虚拟机转换回模板；如果您不再需要将其用作黄金映像，也可将其保留为虚拟机。"
+}

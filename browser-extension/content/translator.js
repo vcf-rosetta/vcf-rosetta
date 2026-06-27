@@ -136,7 +136,9 @@
   ];
   // 判断一段文本是否"值得翻译的英文"(过滤数字/GUID/纯符号/已含中文/动态值/机器标识)
   function looksTranslatable(s) {
-    if (s.length < 2 || s.length > 120) return false;
+    // 不设长度上限:H5 客户端的段落级长描述(vSAN/创建虚拟机/升级说明)动辄 200–400 字甚至更长,
+    // 旧的 120 上限会把它们整段丢弃 -> 这类长描述「永远采集不到、永远翻不了」。动态/噪声仍由下方正则拦。
+    if (s.length < 2) return false;
     if (/[一-鿿]/.test(s)) return false;          // 已含中文
     if (!/[A-Za-z]/.test(s)) return false;                // 无字母
     if (/^[0-9.\-:/\s%]+$/.test(s)) return false;         // 纯数字/时间/百分比
@@ -228,6 +230,10 @@
     [/^The license expires in\s+(\d+)\s+days?\.$/i, '许可证将在 $1 天后过期。'],
     [/^(.+?)\s+task running on target\s+(.+?)\s+finished with status SUCCESS$/i,
       '在目标 $2 上运行的“$1”任务已完成,状态为 SUCCESS'],
+    [/^All (\d+) disks on version ([\d.]+)\. Some services may not provide the complete feature set\.$/i,
+      '所有 $1 个磁盘均为 $2 版本。某些服务可能无法提供完整的功能集。'],
+    [/^Ready to upgrade - pre-check completed successfully on (.+)\.$/i,
+      '准备升级 - 预检查已于 $1 成功完成。'],
     [/^Last updated at\b/i, '最后更新于'],
     [/^Updated\b/i, '已更新'],
     [/^(\d+)\s+days?$/i, '$1 天'],
