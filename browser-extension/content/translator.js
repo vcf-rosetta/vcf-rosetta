@@ -284,6 +284,13 @@
       return;
     }
     if (zh) return; // 命中但译文==原文(专有名词),不动
+    // 分级描述:形如 "(3) 描述文本" 的串(DRS 迁移阈值 / DPM 电源管理滑块,每档一段),
+    // 剥离前导 "(N) " 再查词典命中后回填 —— 档位数字不影响匹配,且对所有分级描述通用。
+    const nm = trimmed.match(/^(\(\d+\)\s*)([\s\S]+)$/);
+    if (nm) {
+      const body = dict[nm[2]];
+      if (body && body !== nm[2]) { node.nodeValue = node.__vcOut = raw.replace(trimmed, nm[1] + body); return; }
+    }
     // 精确未命中:试受控模式替换
     const ph = applyPhrases(trimmed);
     if (ph !== trimmed) {

@@ -1,0 +1,12 @@
+{
+  "_note": "实采回流(vc.knight.com 2026-06,截图)。DRS 自动化级别描述、DRS 迁移阈值与 DPM 电源管理滑块的分级描述。滑块每档一段(1–5),界面以 \"(N) 描述\" 渲染;translator.js 会剥离前导 \"(N) \" 再查此处的描述正文。当前补 Fully Automated 描述与第 3 档(Default)。其余档位待采集精确原文后补。\"(Default)\" 既可能并入正文、也可能独立节点,故正文带/不带后缀各存一份并单列 \"(Default)\"。",
+
+  "(Default)": "(默认)",
+
+  "DRS automatically places virtual machines onto hosts at VM power-on, and virtual machines are automatically migrated from one host to another to optimize resource utilization.": "DRS 在虚拟机打开电源时自动将其放置到主机上，并在主机之间自动迁移虚拟机以优化资源利用率。",
+
+  "DRS provides recommendations when workloads are moderately imbalanced. This threshold is suggested for environments with stable workloads. (Default)": "当工作负载中度不均衡时，DRS 会提供建议。此阈值适用于工作负载稳定的环境。(默认)",
+  "DRS provides recommendations when workloads are moderately imbalanced. This threshold is suggested for environments with stable workloads.": "当工作负载中度不均衡时，DRS 会提供建议。此阈值适用于工作负载稳定的环境。",
+
+  "vCenter Server will apply power-on recommendations produced to meet vSphere HA requirements or user-specified capacity requirements. Power-on recommendations will also be applied if host resource utilization becomes higher than the target utilization range. Power-off recommendations will be applied if host resource utilization becomes very low in comparison to the target utilization range.": "vCenter Server 将应用所生成的开机建议，以满足 vSphere HA 要求或用户指定的容量要求。如果主机资源利用率高于目标利用率范围，也将应用开机建议。如果主机资源利用率与目标利用率范围相比变得非常低，将应用关机建议。"
+}
