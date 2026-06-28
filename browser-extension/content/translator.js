@@ -210,63 +210,72 @@
   // ── 受控模式替换 ──────────────────────────────────────────
   // 用于"数字动态、后缀固定"的场景(如 "267.45 GHz free")。仅匹配高度具体的
   // 安全模式,避免误翻别处的同名词。精确匹配未命中时才尝试。
+  // 译文按 locale 分表:{ 'zh-CN','zh-TW','de','it','ko' }。某语言缺该条目 -> 退英文原串
+  // (返回 s),绝不把一种语言的译文漏到另一种页面。zh-TW 由 zh-CN 经 OpenCC s2twp 转换并
+  // 人工修正(量词「台」不转臺、Datastore=資料存放區、Instance=執行個體、Task=工作);de/it 取
+  // glossary 权威词;ko 仅填语序安全项(量词 개/대),长尾整句缺译则退英文。
   const PHRASES = [
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+free$/i, '$1 空闲'],
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+used$/i, '$1 已用'],
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+capacity$/i, '$1 容量'],
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+available$/i, '$1 可用'],
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+allocated$/i, '$1 已分配'],
-    [/^([\d.,]+\s*[A-Za-z%/]+)\s+total$/i, '$1 总计'],
-    [/^(.+?)\s+used\s*\|\s*(.+?)\s+total$/i, '$1 已用 | $2 总计'],
-    [/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)\s+items?$/i, '第 $1 - $2 项,共 $3 项'],
-    [/^(\d+)\s+of\s+(\d+)\s+items?$/i, '共 $2 项中的 $1 项'],
-    [/^(\d+)\s+items?$/i, '$1 项'],
-    [/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)\s+users?$/i, '第 $1 - $2 个,共 $3 个用户'],
-    [/^(\d+)\s+of\s+(\d+)\s+users?$/i, '共 $2 个用户中的 $1 个'],
-    [/^(\d+)\s+Datastore\(s\)$/i, '$1 个数据存储'],
-    [/^(\d+)\s+Network\(s\)$/i, '$1 个网络'],
-    [/^(\d+)\s+tasks?$/i, '$1 个任务'],
-    [/^(\d+)\s+CPU\(s\)\s+x\s+(.+)$/i, '$1 个 CPU x $2'],
-    [/^The license expires in\s+(\d+)\s+days?\.$/i, '许可证将在 $1 天后过期。'],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+free$/i, { 'zh-CN': '$1 空闲', 'zh-TW': '$1 可用', de: '$1 frei', it: '$1 liberi', ko: '$1 사용 가능' }],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+used$/i, { 'zh-CN': '$1 已用', 'zh-TW': '$1 已使用', de: '$1 belegt', it: '$1 utilizzati', ko: '$1 사용됨' }],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+capacity$/i, { 'zh-CN': '$1 容量', 'zh-TW': '$1 容量', de: '$1 Kapazität', it: '$1 capacità', ko: '$1 용량' }],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+available$/i, { 'zh-CN': '$1 可用', 'zh-TW': '$1 可用', de: '$1 verfügbar', it: '$1 disponibili', ko: '$1 사용 가능' }],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+allocated$/i, { 'zh-CN': '$1 已分配', 'zh-TW': '$1 已分配', de: '$1 zugewiesen', it: '$1 allocati', ko: '$1 할당됨' }],
+    [/^([\d.,]+\s*[A-Za-z%/]+)\s+total$/i, { 'zh-CN': '$1 总计', 'zh-TW': '$1 總計', de: '$1 gesamt', it: '$1 totali', ko: '$1 합계' }],
+    [/^(.+?)\s+used\s*\|\s*(.+?)\s+total$/i, { 'zh-CN': '$1 已用 | $2 总计', 'zh-TW': '$1 已使用 | $2 總計', de: '$1 belegt | $2 gesamt', it: '$1 utilizzati | $2 totali', ko: '$1 사용됨 | $2 합계' }],
+    [/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)\s+items?$/i, { 'zh-CN': '第 $1 - $2 项,共 $3 项', 'zh-TW': '第 $1 - $2 項,共 $3 項', de: '$1–$2 von $3 Elementen', it: '$1-$2 di $3 elementi', ko: '$3개 중 $1-$2개 항목' }],
+    [/^(\d+)\s+of\s+(\d+)\s+items?$/i, { 'zh-CN': '共 $2 项中的 $1 项', 'zh-TW': '共 $2 項中的 $1 項', de: '$1 von $2 Elementen', it: '$1 di $2 elementi', ko: '$2개 중 $1개 항목' }],
+    [/^(\d+)\s+items?$/i, { 'zh-CN': '$1 项', 'zh-TW': '$1 項', de: '$1 Elemente', it: '$1 elementi', ko: '$1개 항목' }],
+    [/^(\d+)\s*-\s*(\d+)\s+of\s+(\d+)\s+users?$/i, { 'zh-CN': '第 $1 - $2 个,共 $3 个用户', 'zh-TW': '第 $1 - $2 個,共 $3 個使用者', de: '$1–$2 von $3 Benutzern', it: '$1-$2 di $3 utenti', ko: '$3명 중 $1-$2명 사용자' }],
+    [/^(\d+)\s+of\s+(\d+)\s+users?$/i, { 'zh-CN': '共 $2 个用户中的 $1 个', 'zh-TW': '共 $2 個使用者中的 $1 個', de: '$1 von $2 Benutzern', it: '$1 di $2 utenti', ko: '$2명 중 $1명 사용자' }],
+    [/^(\d+)\s+Datastore\(s\)$/i, { 'zh-CN': '$1 个数据存储', 'zh-TW': '$1 個資料存放區', de: '$1 Datenspeicher', it: '$1 datastore', ko: '$1개 데이터스토어' }],
+    [/^(\d+)\s+Network\(s\)$/i, { 'zh-CN': '$1 个网络', 'zh-TW': '$1 個網路', de: '$1 Netzwerke', it: '$1 reti', ko: '$1개 네트워크' }],
+    [/^(\d+)\s+tasks?$/i, { 'zh-CN': '$1 个任务', 'zh-TW': '$1 個工作', de: '$1 Aufgaben', it: '$1 attività', ko: '$1개 작업' }],
+    [/^(\d+)\s+CPU\(s\)\s+x\s+(.+)$/i, { 'zh-CN': '$1 个 CPU x $2', 'zh-TW': '$1 個 CPU x $2', de: '$1 CPUs x $2', it: '$1 CPU x $2', ko: 'CPU $1개 x $2' }],
+    [/^The license expires in\s+(\d+)\s+days?\.$/i, { 'zh-CN': '许可证将在 $1 天后过期。', 'zh-TW': '授權將在 $1 天後到期。', de: 'Die Lizenz läuft in $1 Tagen ab.', it: 'La licenza scade tra $1 giorni.', ko: '라이센스가 $1일 후에 만료됩니다.' }],
     [/^(.+?)\s+task running on target\s+(.+?)\s+finished with status SUCCESS$/i,
-      '在目标 $2 上运行的“$1”任务已完成,状态为 SUCCESS'],
+      { 'zh-CN': '在目标 $2 上运行的“$1”任务已完成,状态为 SUCCESS', 'zh-TW': '在目標 $2 上執行的「$1」工作已完成,狀態為 SUCCESS', de: 'Aufgabe „$1“ auf Ziel $2 mit Status SUCCESS abgeschlossen', it: 'Attività "$1" sulla destinazione $2 completata con stato SUCCESS' }],
     [/^Total capacity (.+?)\. Usage breakdown: Used capacity (.+?) \(([\d.]+%)\), Free (.+?) \(([\d.]+%)\)$/i,
-      '总容量 $1。用量明细: 已用容量 $2 ($3)，可用 $4 ($5)'],
+      { 'zh-CN': '总容量 $1。用量明细: 已用容量 $2 ($3)，可用 $4 ($5)', 'zh-TW': '總容量 $1。使用明細: 已使用容量 $2 ($3)，可用 $4 ($5)', de: 'Gesamtkapazität $1. Nutzung: belegt $2 ($3), frei $4 ($5)', it: 'Capacità totale $1. Utilizzo: usato $2 ($3), libero $4 ($5)' }],
     [/^Total capacity (.+?)\. Usage breakdown: Free (.+?) \((100%)\)$/i,
-      '总容量 $1。用量明细: 可用 $2 ($3)'],
-    [/^Active sessions:\s*(\d+)$/i, '活动会话: $1'],
-    [/^Idle sessions:\s*(\d+)$/i, '空闲会话: $1'],
-    [/^Standalone Hosts \((\d+)\)$/i, '独立主机 ($1)'],
-    [/^Idle for (\d+) day\(s\) (\d+) hour\(s\) (\d+) minute\(s\)$/i, '已空闲 $1 天 $2 小时 $3 分钟'],
-    [/^Idle for (\d+) hour\(s\) (\d+) minute\(s\)$/i, '已空闲 $1 小时 $2 分钟'],
-    [/^Idle for (\d+) minute\(s\)$/i, '已空闲 $1 分钟'],
-    [/^(\d+)\s+events?$/i, '$1 个事件'],
-    [/^(\d+)\s+[Hh]osts?$/i, '$1 台主机'],
-    [/^(\d+)\s+VMs?$/i, '$1 个虚拟机'],
-    [/^(\d+)\s+Instances?$/i, '$1 个实例'],
-    [/^(\d+)\s+Clusters?$/i, '$1 个集群'],
+      { 'zh-CN': '总容量 $1。用量明细: 可用 $2 ($3)', 'zh-TW': '總容量 $1。使用明細: 可用 $2 ($3)', de: 'Gesamtkapazität $1. Nutzung: frei $2 ($3)', it: 'Capacità totale $1. Utilizzo: libero $2 ($3)' }],
+    [/^Active sessions:\s*(\d+)$/i, { 'zh-CN': '活动会话: $1', 'zh-TW': '使用中工作階段: $1', de: 'Aktive Sitzungen: $1', it: 'Sessioni attive: $1', ko: '활성 세션: $1' }],
+    [/^Idle sessions:\s*(\d+)$/i, { 'zh-CN': '空闲会话: $1', 'zh-TW': '閒置工作階段: $1', de: 'Inaktive Sitzungen: $1', it: 'Sessioni inattive: $1', ko: '유휴 세션: $1' }],
+    [/^Standalone Hosts \((\d+)\)$/i, { 'zh-CN': '独立主机 ($1)', 'zh-TW': '獨立主機 ($1)', de: 'Eigenständige Hosts ($1)', it: 'Host autonomi ($1)', ko: '독립 실행형 호스트 ($1)' }],
+    [/^Idle for (\d+) day\(s\) (\d+) hour\(s\) (\d+) minute\(s\)$/i, { 'zh-CN': '已空闲 $1 天 $2 小时 $3 分钟', 'zh-TW': '已閒置 $1 天 $2 小時 $3 分鐘', de: '$1 Tage $2 Stunden $3 Minuten inaktiv', it: 'Inattivo da $1 giorni $2 ore $3 minuti', ko: '$1일 $2시간 $3분 동안 유휴' }],
+    [/^Idle for (\d+) hour\(s\) (\d+) minute\(s\)$/i, { 'zh-CN': '已空闲 $1 小时 $2 分钟', 'zh-TW': '已閒置 $1 小時 $2 分鐘', de: '$1 Stunden $2 Minuten inaktiv', it: 'Inattivo da $1 ore $2 minuti', ko: '$1시간 $2분 동안 유휴' }],
+    [/^Idle for (\d+) minute\(s\)$/i, { 'zh-CN': '已空闲 $1 分钟', 'zh-TW': '已閒置 $1 分鐘', de: '$1 Minuten inaktiv', it: 'Inattivo da $1 minuti', ko: '$1분 동안 유휴' }],
+    [/^(\d+)\s+events?$/i, { 'zh-CN': '$1 个事件', 'zh-TW': '$1 個事件', de: '$1 Ereignisse', it: '$1 eventi', ko: '$1개 이벤트' }],
+    [/^(\d+)\s+[Hh]osts?$/i, { 'zh-CN': '$1 台主机', 'zh-TW': '$1 台主機', de: '$1 Hosts', it: '$1 host', ko: '호스트 $1대' }],
+    [/^(\d+)\s+VMs?$/i, { 'zh-CN': '$1 个虚拟机', 'zh-TW': '$1 個虛擬機器', de: '$1 VMs', it: '$1 VM', ko: 'VM $1개' }],
+    [/^(\d+)\s+Instances?$/i, { 'zh-CN': '$1 个实例', 'zh-TW': '$1 個執行個體', de: '$1 Instanzen', it: '$1 istanze', ko: '$1개 인스턴스' }],
+    [/^(\d+)\s+Clusters?$/i, { 'zh-CN': '$1 个集群', 'zh-TW': '$1 個叢集', de: '$1 Cluster', it: '$1 cluster', ko: '$1개 클러스터' }],
     [/^All (\d+) disks on version ([\d.]+)\. Some services may not provide the complete feature set\.$/i,
-      '所有 $1 个磁盘均为 $2 版本。某些服务可能无法提供完整的功能集。'],
+      { 'zh-CN': '所有 $1 个磁盘均为 $2 版本。某些服务可能无法提供完整的功能集。', 'zh-TW': '所有 $1 個磁碟均為 $2 版本。某些服務可能無法提供完整的功能集。', de: 'Alle $1 Datenträger auf Version $2. Einige Dienste bieten möglicherweise nicht den vollständigen Funktionsumfang.', it: 'Tutti i $1 dischi sulla versione $2. Alcuni servizi potrebbero non fornire il set completo di funzionalità.' }],
     [/^Ready to upgrade - pre-check completed successfully on (.+)\.$/i,
-      '准备升级 - 预检查已于 $1 成功完成。'],
-    [/^Last updated at\b/i, '最后更新于'],
-    [/^Updated\b/i, '已更新'],
-    [/^(\d+)\s+days?$/i, '$1 天'],
-    [/^(\d+)\s+hours?$/i, '$1 小时'],
-    [/^(\d+)\s+minutes?$/i, '$1 分钟'],
-    [/^(\d+)\s+seconds?$/i, '$1 秒'],
-    [/^(\d+)\s+days?\s+ago$/i, '$1 天前'],
-    [/^(\d+)\s+hours?\s+ago$/i, '$1 小时前'],
-    [/^(\d+)\s+minutes?\s+ago$/i, '$1 分钟前'],
-    [/^a few seconds ago$/i, '几秒前'],
+      { 'zh-CN': '准备升级 - 预检查已于 $1 成功完成。', 'zh-TW': '準備升級 - 預先檢查已於 $1 成功完成。', de: 'Bereit zum Upgrade – Vorprüfung auf $1 erfolgreich abgeschlossen.', it: "Pronto per l'aggiornamento - controllo preliminare completato su $1." }],
+    [/^Last updated at\b/i, { 'zh-CN': '最后更新于', 'zh-TW': '最後更新於', de: 'Zuletzt aktualisiert um', it: 'Ultimo aggiornamento alle', ko: '마지막 업데이트:' }],
+    [/^Updated\b/i, { 'zh-CN': '已更新', 'zh-TW': '已更新', de: 'Aktualisiert', it: 'Aggiornato', ko: '업데이트됨' }],
+    [/^(\d+)\s+days?$/i, { 'zh-CN': '$1 天', 'zh-TW': '$1 天', de: '$1 Tage', it: '$1 giorni', ko: '$1일' }],
+    [/^(\d+)\s+hours?$/i, { 'zh-CN': '$1 小时', 'zh-TW': '$1 小時', de: '$1 Stunden', it: '$1 ore', ko: '$1시간' }],
+    [/^(\d+)\s+minutes?$/i, { 'zh-CN': '$1 分钟', 'zh-TW': '$1 分鐘', de: '$1 Minuten', it: '$1 minuti', ko: '$1분' }],
+    [/^(\d+)\s+seconds?$/i, { 'zh-CN': '$1 秒', 'zh-TW': '$1 秒', de: '$1 Sekunden', it: '$1 secondi', ko: '$1초' }],
+    [/^(\d+)\s+days?\s+ago$/i, { 'zh-CN': '$1 天前', 'zh-TW': '$1 天前', de: 'vor $1 Tagen', it: '$1 giorni fa', ko: '$1일 전' }],
+    [/^(\d+)\s+hours?\s+ago$/i, { 'zh-CN': '$1 小时前', 'zh-TW': '$1 小時前', de: 'vor $1 Stunden', it: '$1 ore fa', ko: '$1시간 전' }],
+    [/^(\d+)\s+minutes?\s+ago$/i, { 'zh-CN': '$1 分钟前', 'zh-TW': '$1 分鐘前', de: 'vor $1 Minuten', it: '$1 minuti fa', ko: '$1분 전' }],
+    [/^a few seconds ago$/i, { 'zh-CN': '几秒前', 'zh-TW': '幾秒前', de: 'vor wenigen Sekunden', it: 'pochi secondi fa', ko: '몇 초 전' }],
   ];
-  // PHRASES 的译文是【写死的简体中文】,尚未本地化到 de/it/ko/zh-TW。
-  // 因此只在简体中文下启用 —— 否则会把中文漏进德文/意文/韩文/繁体页面(见 issue:选德文出现中文)。
-  // 其它语言宁可保留英文 fallback,也绝不污染。待 PHRASES 改为按 locale 分表后可放开。
+  // 受控模式替换:精确查典未命中时才尝试。译文按 loadedLang 取;缺该语言条目则退英文,
+  // 永不跨语言污染(历史 bug:写死简体的 PHRASES 漏进德文页)。
   function applyPhrases(s) {
-    if (loadedLang !== 'zh-CN') return s;
+    const lang = loadedLang;
+    if (!lang || lang === 'en') return s;
+    // 廉价预筛:绝大多数模式要求串内含数字;其余仅少数固定前缀。先挡掉,免去逐条 ~40 次正则。
+    if (!/\d/.test(s) && !/^(Updated|Last updated|Active sessions|Idle sessions|Ready to upgrade|a few seconds)/i.test(s)) return s;
     for (var i = 0; i < PHRASES.length; i++) {
-      if (PHRASES[i][0].test(s)) return s.replace(PHRASES[i][0], PHRASES[i][1]);
+      if (PHRASES[i][0].test(s)) {
+        const rep = PHRASES[i][1][lang];
+        return rep === undefined ? s : s.replace(PHRASES[i][0], rep);
+      }
     }
     return s;
   }
