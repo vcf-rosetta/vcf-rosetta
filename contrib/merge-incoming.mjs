@@ -31,6 +31,10 @@ const glossary = existsSync(glossaryPath) ? JSON.parse(readFileSync(glossaryPath
 const hasCJK = s => /[一-鿿]/.test(s);
 const translated = new Set(Object.keys(glossary).filter(k => glossary[k] && glossary[k] !== k && hasCJK(glossary[k])));
 
+// 中文是目前最全的语言:为其它小语种附上 zh-CN 参考译文,翻译时可直接对照(见 contrib/gap-from-zh.mjs)。
+const zhPath = join(root, "plugin/i18n", "glossary.zh-CN.json");
+const zhRef = lang !== "zh-CN" && existsSync(zhPath) ? JSON.parse(readFileSync(zhPath, "utf8")) : {};
+
 // 运行时数据 / 标识符过滤(与扩展 looksTranslatable 同口径,从严)
 function isData(s) {
   if (s.length < 2) return true;                              // 不设长度上限(与扩展 looksTranslatable 同口径):容纳段落级长描述
@@ -56,14 +60,24 @@ for (const raw of terms) {
   candidates[s] = "";
 }
 
-const sorted = Object.keys(candidates).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1)
-  .reduce((o, k) => (o[k] = "", o), {});
+const keys = Object.keys(candidates).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+const sorted = keys.reduce((o, k) => (o[k] = "", o), {});
 const outDir = join(root, "contrib/incoming", lang);
 mkdirSync(outDir, { recursive: true });
-const outPath = join(outDir, `candidates-${Object.keys(sorted).length}.json`);
+const outPath = join(outDir, `candidates-${keys.length}.json`);
 writeFileSync(outPath, JSON.stringify(sorted, null, 2) + "\n");
 
-console.log(`输入 ${terms.length} 条 → 候选 ${Object.keys(sorted).length} 条待译`);
+// 参考伴随文件:英文 → zh-CN 译文,供翻译时对照(中文最全)。仅在有可用参考时写出。
+const refPairs = keys.filter(k => zhRef[k] && hasCJK(zhRef[k]));
+let refPath = null;
+if (refPairs.length) {
+  const ref = refPairs.reduce((o, k) => (o[k] = zhRef[k], o), {});
+  refPath = join(outDir, `candidates-${keys.length}.ref.json`);
+  writeFileSync(refPath, JSON.stringify(ref, null, 2) + "\n");
+}
+
+console.log(`输入 ${terms.length} 条 → 候选 ${keys.length} 条待译`);
 console.log(`  跳过已翻译 ${dropTranslated} · 跳过运行时数据 ${dropData}`);
-console.log(`写出:${outPath}`);
-console.log(`下一步:补全译文后,移动/合并到 plugin/i18n/domains/,再 node browser-extension/build-dict.mjs`);
+console.log(`写出骨架:${outPath}`);
+if (refPath) console.log(`写出 zh-CN 参考:${refPath}(${refPairs.length} 条可对照)`);
+console.log(`下一步:对照参考补全译文后,移动/合并到 plugin/i18n/domains/,再 node browser-extension/build-dict.mjs`);

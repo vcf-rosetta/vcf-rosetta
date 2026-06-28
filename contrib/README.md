@@ -43,3 +43,20 @@
 - **映像**=Image(VM/ISO/模板);**镜像**=Mirroring(数据/磁盘镜像)——勿混
 - 标签型 `xxx:` 用半角冒号,与全表一致(不要改全角 `：`)
 完整原则见 `plugin/i18n/README.md` 的「审定原则」。
+
+## 以中文为参考补齐小语种(zh-CN 最全)
+
+zh-CN 词库目前最全(策展 UI 词条约 1.5 万),de/it/ko/zh-TW 各缺约 1.3 万条,
+且其中约 1.3 万条**都有 zh-CN 译文可直接对照**。两条工具路径:
+
+1. **现场采集回流**(`merge-incoming.mjs`):非 zh-CN 语言会自动多写一个
+   `candidates-<n>.ref.json`(英文→中文参考),翻译时与骨架 `candidates-<n>.json` 对照填译。
+2. **直接用中文反推worklist**(`gap-from-zh.mjs`,无需等采集):
+   ```bash
+   node contrib/gap-from-zh.mjs de        # 默认:策展 UI 领域词缺口(排除 zh 专属官方TM)
+   node contrib/gap-from-zh.mjs ko --all  # 整个 zh-CN(含官方TM)缺口
+   # → contrib/incoming/<lang>/from-zh-<n>.json      骨架(值留空,补译后并入 domains/)
+   # → contrib/incoming/<lang>/from-zh-<n>.ref.json  zh-CN 参考(对照翻译)
+   ```
+   > zh-TW 多数可由 zh-CN 繁简+台湾用词转换得到,`.ref.json` 基本即答案。
+   > 产品名/功能名按策略保持英文(见 `plugin/i18n/domains/` 既有 overlay)。
