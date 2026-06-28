@@ -263,6 +263,16 @@
     [/^(\d+)\s+hours?\s+ago$/i, { 'zh-CN': '$1 小时前', 'zh-TW': '$1 小時前', de: 'vor $1 Stunden', it: '$1 ore fa', ko: '$1시간 전' }],
     [/^(\d+)\s+minutes?\s+ago$/i, { 'zh-CN': '$1 分钟前', 'zh-TW': '$1 分鐘前', de: 'vor $1 Minuten', it: '$1 minuti fa', ko: '$1분 전' }],
     [/^a few seconds ago$/i, { 'zh-CN': '几秒前', 'zh-TW': '幾秒前', de: 'vor wenigen Sekunden', it: 'pochi secondi fa', ko: '몇 초 전' }],
+    // VM 摘要页常见动态串(数字/版本/状态混排,精确查典命不中)
+    [/^Last updated:/i, { 'zh-CN': '上次更新:', 'zh-TW': '上次更新:', de: 'Zuletzt aktualisiert:', it: 'Ultimo aggiornamento:', ko: '마지막 업데이트:' }],
+    [/^(\d+)\s+CPU\(s\),\s*(.+?)\s+used$/i, { 'zh-CN': '$1 个 CPU,$2 已使用', 'zh-TW': '$1 個 CPU,$2 已使用', de: '$1 CPUs, $2 belegt', it: '$1 CPU, $2 utilizzati', ko: 'CPU $1개, $2 사용됨' }],
+    [/^(.+?),\s*(.+?)\s+memory active$/i, { 'zh-CN': '$1,$2 活动内存', 'zh-TW': '$1，$2 作用中記憶體', de: '$1, $2 aktiver Speicher', it: '$1, $2 memoria attiva' }],
+    [/^Not running, version:(\S+)\s*\(Guest Managed\)$/i, { 'zh-CN': '未运行,版本:$1 (客户机托管)', 'zh-TW': '不在執行中,版本:$1 (受管理的客體)', de: 'Wird nicht ausgeführt, Version:$1 (gastverwaltet)', it: 'Non in esecuzione, versione:$1 (gestito dal guest)' }],
+    [/^Running, version:(\S+)\s*\(Guest Managed\)$/i, { 'zh-CN': '运行中,版本:$1 (客户机托管)', 'zh-TW': '執行中,版本:$1 (受管理的客體)', de: 'Wird ausgeführt, Version:$1 (gastverwaltet)', it: 'In esecuzione, versione:$1 (gestito dal guest)' }],
+    [/^\(disconnected\)$/i, { 'zh-CN': '(已断开连接)', 'zh-TW': '(已中斷連線)', de: '(getrennt)', it: '(disconnesso)', ko: '(연결 끊김)' }],
+    [/^\(connected\)$/i, { 'zh-CN': '(已连接)', 'zh-TW': '(已連線)', de: '(verbunden)', it: '(connesso)', ko: '(연결됨)' }],
+    [/^used$/i, { 'zh-CN': '已使用', 'zh-TW': '已使用', de: 'belegt', it: 'utilizzati', ko: '사용됨' }],
+    [/^active$/i, { 'zh-CN': '活动', 'zh-TW': '作用中', de: 'aktiv', it: 'attivo', ko: '활성' }],
   ];
   // 受控模式替换:精确查典未命中时才尝试。译文按 loadedLang 取;缺该语言条目则退英文,
   // 永不跨语言污染(历史 bug:写死简体的 PHRASES 漏进德文页)。
@@ -270,7 +280,7 @@
     const lang = loadedLang;
     if (!lang || lang === 'en') return s;
     // 廉价预筛:绝大多数模式要求串内含数字;其余仅少数固定前缀。先挡掉,免去逐条 ~40 次正则。
-    if (!/\d/.test(s) && !/^(Updated|Last updated|Active sessions|Idle sessions|Ready to upgrade|a few seconds)/i.test(s)) return s;
+    if (!/\d/.test(s) && !/^(Updated|Last updated|Active sessions|Idle sessions|Ready to upgrade|a few seconds|used$|active$|\(disconnected\)|\(connected\)|Not running|Running)/i.test(s)) return s;
     for (var i = 0; i < PHRASES.length; i++) {
       if (PHRASES[i][0].test(s)) {
         const rep = PHRASES[i][1][lang];

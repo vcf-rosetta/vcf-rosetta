@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "en",
   "name": "__MSG_extName__",
-  "version": "3.4.25",
+  "version": "3.4.26",
   "description": "__MSG_extDesc__",
   "permissions": [
     "storage",
