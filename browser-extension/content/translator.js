@@ -260,7 +260,11 @@
     [/^(\d+)\s+minutes?\s+ago$/i, '$1 分钟前'],
     [/^a few seconds ago$/i, '几秒前'],
   ];
+  // PHRASES 的译文是【写死的简体中文】,尚未本地化到 de/it/ko/zh-TW。
+  // 因此只在简体中文下启用 —— 否则会把中文漏进德文/意文/韩文/繁体页面(见 issue:选德文出现中文)。
+  // 其它语言宁可保留英文 fallback,也绝不污染。待 PHRASES 改为按 locale 分表后可放开。
   function applyPhrases(s) {
+    if (loadedLang !== 'zh-CN') return s;
     for (var i = 0; i < PHRASES.length; i++) {
       if (PHRASES[i][0].test(s)) return s.replace(PHRASES[i][0], PHRASES[i][1]);
     }
