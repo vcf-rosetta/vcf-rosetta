@@ -341,6 +341,7 @@
     if (type === Node.ELEMENT_NODE) {
       const tag = root.tagName ? root.tagName.toLowerCase() : '';
       if (SKIP_TAGS.includes(tag)) return;
+      if (root.isContentEditable) return;   // 用户可编辑区:改写文本会破坏输入内容与光标位置
       translateAttrs(root);
       if (tag === 'iframe' || tag === 'frame') {        // 同源 iframe:进入其文档(跨源抛错 -> 跳过)
         let doc = null;
@@ -361,24 +362,41 @@
   // (旧版 busy 标志会丢弃繁忙期的变更 -> 漏翻)。
   let pending = new Set();
   let scheduled = false;
+  // 关键:原生 requestAnimationFrame 必须以 window 为 this 调用。strict 模式下
+  // `(window.requestAnimationFrame || window.setTimeout)(flush,0)` 会以 this=undefined
+  // 调用 -> 抛 "Illegal invocation";而此前 scheduled 已置 true -> 之后永不再调度 ->
+  // 首屏之后的动态内容(SPA 路由切换 / 懒加载组件)全部漏翻。故先 bind。
+  const raf = window.requestAnimationFrame
+    ? window.requestAnimationFrame.bind(window)
+    : (cb) => window.setTimeout(cb, 0);
   function flush() {
     scheduled = false;
     const roots = pending; pending = new Set();
-    roots.forEach(walkAndTranslate);
+    const list = [];
+    roots.forEach(n => { if (n && n.isConnected !== false) list.push(n); }); // 跳过已移除节点(Clarity 行回收)
+    // 同批去重:若某节点的祖先也在本批,祖先遍历已覆盖它,跳过以免重复下降大子树。
+    // 批量很大时(罕见)跳过 O(n²) 去重,直接全走,避免预筛本身成为瓶颈。
+    const dedup = list.length <= 200;
+    for (const n of list) {
+      if (dedup && list.some(o => o !== n && o.contains && o.contains(n))) continue;
+      try { walkAndTranslate(n); } catch (e) { /* 单节点失败不拖垮整批 */ }
+    }
   }
   function schedule(node) {
     pending.add(node);
     if (!scheduled) {
       scheduled = true;
-      (window.requestAnimationFrame || window.setTimeout)(flush, 0);
+      raf(flush);
     }
   }
   const observer = new MutationObserver(mutations => {
     for (const m of mutations) {
-      if (m.type === 'childList') m.addedNodes.forEach(schedule);
-      // 跳过我们自己写回的文本节点(避免在指标实时刷新的页面上空转处理一遍又早退)
-      else if (m.type === 'characterData') { if (m.target.__vcOut !== m.target.nodeValue) schedule(m.target); }
-      else if (m.type === 'attributes' && m.target.nodeType === Node.ELEMENT_NODE) translateAttrs(m.target);
+      try {
+        if (m.type === 'childList') m.addedNodes.forEach(schedule);
+        // 跳过我们自己写回的文本节点(避免在指标实时刷新的页面上空转处理一遍又早退)
+        else if (m.type === 'characterData') { if (m.target.__vcOut !== m.target.nodeValue) schedule(m.target); }
+        else if (m.type === 'attributes' && m.target.nodeType === Node.ELEMENT_NODE) translateAttrs(m.target);
+      } catch (e) { /* 单条 mutation 失败不影响同批其余 */ }
     }
   });
 
