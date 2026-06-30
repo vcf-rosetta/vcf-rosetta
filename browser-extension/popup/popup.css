@@ -41,7 +41,7 @@ textarea {
 button {
   width: 100%;
   padding: 7px 8px;
-  font-size: 13px;
+  font-size: 12px;
   color: #fff;
   border: 1.5px solid #fff;
   border-radius: 6px;
@@ -55,8 +55,8 @@ button {
 button:hover { filter: brightness(1.06); }
 button:active { transform: translateY(1px); filter: brightness(.96); }
 
-/* 组一 · 站点管理(上):翡翠绿 */
-.grp-site, .btn-grid.grp-site button {
+/* 组一 · 站点管理(上):翡翠绿 —— 只给按钮上色,容器不上色(避免间隙透出底色) */
+button.grp-site, .btn-grid.grp-site button {
   background: radial-gradient(120% 130% at 50% 50%, #36b873 0%, #1f8a4e 62%, #14663a 100%);
 }
 /* 组二 · 词条回流(中):宝蓝 */
@@ -64,7 +64,7 @@ button:active { transform: translateY(1px); filter: brightness(.96); }
   background: radial-gradient(120% 130% at 50% 50%, #5b93f0 0%, #3a64c8 62%, #2a489f 100%);
 }
 /* 组三 · 关于(下):紫罗兰 */
-.grp-about {
+button.grp-about {
   background: radial-gradient(120% 160% at 50% 50%, #9183de 0%, #6a59bd 62%, #4d4191 100%);
 }
 
@@ -81,9 +81,9 @@ button:active { transform: translateY(1px); filter: brightness(.96); }
 
 /* 两列网格(站点增删) */
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
-.btn-grid button { margin-top: 0; padding: 6px 4px; font-size: 12px; }
-/* 回流四按钮:更紧凑 */
-.btn-grid.quad button { padding: 5px 4px; font-size: 11px; }
+.btn-grid button { margin-top: 0; padding: 6px 4px; }
+/* 回流四按钮:更紧凑(字号与其余按钮统一) */
+.btn-grid.quad button { padding: 5px 4px; }
 
 /* 当前站点 + 保存按钮同一行:左信息右按钮 */
 .saverow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
