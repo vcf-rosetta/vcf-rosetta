@@ -43,7 +43,7 @@ button {
   padding: 7px 8px;
   font-size: 13px;
   color: #fff;
-  border: none;
+  border: 1.5px solid #fff;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
@@ -72,7 +72,7 @@ button:active { transform: translateY(1px); filter: brightness(.96); }
 .dictrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
 .dictrow .meta { margin: 0; }
 .linklike {
-  width: auto; flex: none; background: none; color: #1d7a46;
+  width: auto; flex: none; background: none; color: #1d7a46; border: none;
   padding: 2px 6px; font-size: 12px; border-radius: 4px;
   font-weight: 500; text-shadow: none; box-shadow: none;
 }
@@ -80,7 +80,7 @@ button:active { transform: translateY(1px); filter: brightness(.96); }
 .linklike:active { transform: none; }
 
 /* 两列网格(站点增删) */
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
 .btn-grid button { margin-top: 0; padding: 6px 4px; font-size: 12px; }
 /* 回流四按钮:更紧凑 */
 .btn-grid.quad button { padding: 5px 4px; font-size: 11px; }
