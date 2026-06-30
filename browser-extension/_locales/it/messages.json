@@ -1,0 +1,5 @@
+{
+  "extName":  { "message": "VCF 9 UI Translator" },
+  "extTitle": { "message": "VCF 9 UI Translator — traduce in tempo reale la console vCenter / VCF" },
+  "extDesc":  { "message": "Traduzione in tempo reale dell'interfaccia della console VMware vCenter / VCF 9.x nella lingua scelta. Solo lato client, nessuna modifica al server." }
+}

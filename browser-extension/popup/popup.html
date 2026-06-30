@@ -6,35 +6,39 @@
 </head>
 <body>
   <div class="topbar">
-    <h1 data-i18n="title">vCenter Translator · Rosetta</h1>
-    <div class="uitoggle" id="uitoggle" title="Interface language">
-      <button type="button" data-ui="en">EN</button>
-      <button type="button" data-ui="zh">中文</button>
-    </div>
+    <h1 data-i18n="title">VCF 9 UI Translator</h1>
+    <select class="uilang" id="uilang" title="Interface language">
+      <option value="en">EN</option>
+      <option value="zh-CN">简中</option>
+      <option value="zh-TW">繁中</option>
+      <option value="de">DE</option>
+      <option value="it">IT</option>
+      <option value="ko">KO</option>
+    </select>
   </div>
 
   <label class="row">
     <span data-i18n="language">Language</span>
     <select id="lang"><!-- 由 langs.json 动态填充 --></select>
   </label>
-  <p class="meta" id="langStatus" data-i18n="langHint">The first time you pick a language, its dictionary (a few MB) is downloaded on demand, then cached locally — no repeat downloads.</p>
-  <p class="offhint" id="offHint" data-i18n="offHint" hidden>Translation is off — choose a language above to start.</p>
+  <p class="offhint" id="offHint" data-i18n="offHint" hidden>Translation is off — pick a language above to start.</p>
   <div class="dictrow">
     <span class="meta" id="dictInfo">Dict: —</span>
-    <button id="refreshDict" class="linklike" data-i18n="refreshDict">↻ Refresh dict</button>
+    <button id="refreshDict" class="linklike" data-i18n="refreshDict">↻ Refresh</button>
   </div>
 
   <div class="field">
-    <label for="hosts" data-i18n="hostsLabel">Force-enabled sites (one per line; extra sites beyond auto-detection — vCenter / Aria Ops / Log, etc.)</label>
+    <label for="hosts" data-i18n="hostsLabel">Enabled sites (one per line)</label>
     <textarea id="hosts" rows="3" placeholder="vc.example.com&#10;ops.example.com&#10;172.20.10.50"></textarea>
   </div>
-  <div class="btn-grid">
-    <button id="addCurrent" class="secondary" data-i18n="addCurrent">➕ Add current site</button>
-    <button id="removeCurrent" class="secondary" data-i18n="removeCurrent">➖ Remove current site</button>
+  <div class="btn-grid grp-site">
+    <button id="addCurrent" data-i18n="addCurrent">➕ Add current site</button>
+    <button id="removeCurrent" data-i18n="removeCurrent">➖ Remove current site</button>
   </div>
-  <p class="meta" id="curHost">Current site: —</p>
-
-  <button id="save" data-i18n="save">Save &amp; apply</button>
+  <div class="saverow">
+    <span class="meta" id="curHost">Current site: —</span>
+    <button id="save" class="grp-site" data-i18n="save">Save &amp; apply</button>
+  </div>
   <p class="hint" id="status"></p>
 
   <hr />
@@ -43,20 +47,20 @@
     <input type="checkbox" id="collect" />
   </label>
   <div class="field">
-    <label for="region" data-i18n="regionLabel">Region / signature (optional, for grouping)</label>
+    <label for="region" data-i18n="regionLabel">Region / signature (optional)</label>
     <input type="text" id="region" placeholder="e.g. CN-East / Alice" />
   </div>
-  <div class="btn-grid">
-    <button id="dump" class="secondary" data-i18n="dump">Export JSON</button>
-    <button id="contribute" class="secondary" data-i18n="contribute">Contribute</button>
-    <button id="mail" class="secondary" data-i18n="mail">Email</button>
-    <button id="clear" class="secondary" data-i18n="clear">Clear</button>
+  <div class="btn-grid quad grp-contrib">
+    <button id="dump" data-i18n="dump">Export JSON</button>
+    <button id="contribute" data-i18n="contribute">Contribute</button>
+    <button id="mail" data-i18n="mail">Email</button>
+    <button id="clear" data-i18n="clear">Clear</button>
   </div>
-  <p class="meta" data-i18n="contribMeta">Browse pages with missing terms, then send them back: export a backup, open a pre-filled GitHub Issue, or email us.</p>
-  <p class="meta" data-i18n="footMeta">Refresh the page after saving · Contributions contain only English UI terms, no business data</p>
+  <p class="meta" data-i18n="contribMeta">Missing terms? Send them back via backup, GitHub Issue, or email.</p>
+  <p class="meta" data-i18n="footMeta">Reload to apply · UI terms only, no business data.</p>
 
   <hr />
-  <button id="about" class="secondary" data-i18n="about">ℹ️ About / Contact</button>
+  <button id="about" class="grp-about" data-i18n="about">ℹ️ About / Contact</button>
   <div id="aboutPanel" class="aboutpanel" hidden>
     <p class="ap-team" data-i18n="aboutTeam">Developers — questions or a new language? Email any of us:</p>
     <ul>

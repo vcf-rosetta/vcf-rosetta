@@ -8,14 +8,12 @@ body {
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
 .topbar h1 { margin: 0; }
 h1 { font-size: 14px; margin: 0 0 10px; }
-/* 界面语言开关:独立于翻译语言包,按需点击切换 */
-.uitoggle { display: inline-flex; border: 1px solid #ccd; border-radius: 6px; overflow: hidden; flex: none; }
-.uitoggle button {
-  width: auto; padding: 3px 10px; font-size: 12px; line-height: 1.4;
-  color: #33424c; background: #eef1f3; border: none; border-radius: 0; cursor: pointer;
+/* 界面语言选择器:右上角紧凑下拉,独立于翻译语言包 */
+.uilang {
+  flex: none; font-size: 12px; color: #33424c;
+  border: 1px solid #ccd; border-radius: 6px; background: #eef1f3;
+  padding: 3px 6px; cursor: pointer;
 }
-.uitoggle button.active { background: #1d7a46; color: #fff; }
-.uitoggle button:hover:not(.active) { background: #e2e7ea; }
 .row {
   display: flex;
   align-items: center;
@@ -23,6 +21,9 @@ h1 { font-size: 14px; margin: 0 0 10px; }
   margin-bottom: 8px;
   font-size: 13px;
 }
+/* 翻译语言下拉:选项字体略小,容纳「中文名(English)」更紧凑 */
+#lang { font-size: 12px; max-width: 200px; }
+#lang option { font-size: 12px; }
 .field { margin-bottom: 8px; }
 .field label { display: block; font-size: 12px; color: #586; margin-bottom: 4px; }
 textarea {
@@ -35,27 +36,60 @@ textarea {
   padding: 5px 6px;
   resize: vertical;
 }
+
+/* ── 按钮:统一为高级射线渐变(中间浅、两边深),按位置分三组配色 ── */
 button {
   width: 100%;
-  padding: 6px;
+  padding: 7px 8px;
   font-size: 13px;
   color: #fff;
-  background: #1d7a46;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .18);
+  box-shadow: 0 1px 2px rgba(20, 40, 30, .18), inset 0 1px 0 rgba(255, 255, 255, .22);
+  transition: filter .12s ease, transform .05s ease;
 }
-button:hover { background: #18633a; }
-button.secondary { background: #4a5b66; margin-top: 6px; }
-button.secondary:hover { background: #3a4951; }
+button:hover { filter: brightness(1.06); }
+button:active { transform: translateY(1px); filter: brightness(.96); }
+
+/* 组一 · 站点管理(上):翡翠绿 */
+.grp-site, .btn-grid.grp-site button {
+  background: radial-gradient(120% 130% at 50% 50%, #36b873 0%, #1f8a4e 62%, #14663a 100%);
+}
+/* 组二 · 词条回流(中):宝蓝 */
+.btn-grid.grp-contrib button {
+  background: radial-gradient(120% 130% at 50% 50%, #5b93f0 0%, #3a64c8 62%, #2a489f 100%);
+}
+/* 组三 · 关于(下):紫罗兰 */
+.grp-about {
+  background: radial-gradient(120% 160% at 50% 50%, #9183de 0%, #6a59bd 62%, #4d4191 100%);
+}
+
 /* 词典信息行:左显「语言·版本·条数·来源」,右一个轻量刷新按钮 */
 .dictrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
 .dictrow .meta { margin: 0; }
-.linklike { width: auto; flex: none; background: none; color: #1d7a46; padding: 2px 6px; font-size: 12px; border-radius: 4px; }
-.linklike:hover { background: #eef4f0; }
-/* 回流四按钮:2×2 紧凑网格,凝练为两行 */
+.linklike {
+  width: auto; flex: none; background: none; color: #1d7a46;
+  padding: 2px 6px; font-size: 12px; border-radius: 4px;
+  font-weight: 500; text-shadow: none; box-shadow: none;
+}
+.linklike:hover { background: #eef4f0; filter: none; }
+.linklike:active { transform: none; }
+
+/* 两列网格(站点增删) */
 .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
-.btn-grid button.secondary { margin-top: 0; padding: 6px 4px; font-size: 12px; }
+.btn-grid button { margin-top: 0; padding: 6px 4px; font-size: 12px; }
+/* 回流四按钮:更紧凑 */
+.btn-grid.quad button { padding: 5px 4px; font-size: 11px; }
+
+/* 当前站点 + 保存按钮同一行:左信息右按钮 */
+.saverow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
+.saverow .meta { margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saverow button { width: auto; flex: none; padding: 6px 14px; }
+
 /* 关于:内联小窗口,默认收起,点击展开,不另开页面 */
 .aboutpanel { margin-top: 6px; padding: 8px 10px; background: #f6f8f9; border: 1px solid #e3e8ec; border-radius: 6px; font-size: 12px; line-height: 1.5; }
 .aboutpanel ul { padding-left: 16px; margin: 4px 0; }

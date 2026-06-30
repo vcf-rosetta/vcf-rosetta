@@ -1,0 +1,5 @@
+{
+  "extName":  { "message": "VCF 9 UI Translator" },
+  "extTitle": { "message": "VCF 9 UI Translator — 实时翻译 vCenter / VCF 控制台界面" },
+  "extDesc":  { "message": "把 VMware vCenter / VCF 9.x 控制台界面实时翻译成你选择的语言。纯本地运行,不改动服务器。" }
+}

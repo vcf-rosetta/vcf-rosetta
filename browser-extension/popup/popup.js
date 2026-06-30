@@ -5,23 +5,21 @@ const statusEl = document.getElementById('status');
 const collectEl = document.getElementById('collect');
 const langEl = document.getElementById('lang');
 const curHostEl = document.getElementById('curHost');
-const { t } = window.ROSETTA_I18N;
+const { t, resolve } = window.ROSETTA_I18N;
+const uiLangEl = document.getElementById('uilang');
 
-// 界面语言('en' | 'zh')是独立设置,与「翻译语言包」解耦:用顶部 EN/中文 开关按需切换。
+// 界面语言是独立设置,与「翻译语言包」解耦:用右上角选择器切换(en / zh-CN / zh-TW / de / it / ko)。
+// 首次打开默认跟随浏览器语言,无匹配则英文。
 let ui = 'en';
 
-// 把 [data-i18n] 元素按当前界面语言渲染(默认英文),并同步开关高亮
+// 把 [data-i18n] 元素按当前界面语言渲染,并同步选择器与原文选项
 function applyUi() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(ui, el.getAttribute('data-i18n'));
   });
-  document.querySelectorAll('#uitoggle button').forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-ui') === ui);
-  });
+  if (uiLangEl) { uiLangEl.value = ui; uiLangEl.title = t(ui, 'uiTip'); }
   const orig = langEl.querySelector('option[value="en"]');
   if (orig) orig.textContent = t(ui, 'langOriginal');   // 「英文原文」选项随界面语言刷新
-  const tog = document.getElementById('uitoggle');
-  if (tog) tog.title = t(ui, 'uiTip');
   refreshOffHint();
   showDict(lastDictInfo);   // 语言切换时用最近一次信息重渲(来源词本地化)
   currentHostname().then(h => { curHostEl.textContent = t(ui, 'curHost', h); });
@@ -56,11 +54,9 @@ function refreshOffHint() {
   el.hidden = langEl.value !== 'en';
 }
 
-// 顶部界面语言开关:按需点击切换 EN / 中文,独立持久化(uiLang),不动翻译语言包
-document.getElementById('uitoggle').addEventListener('click', async (e) => {
-  const btn = e.target.closest('button[data-ui]');
-  if (!btn) return;
-  ui = btn.getAttribute('data-ui');
+// 右上角界面语言选择器:切换 en / zh-CN / zh-TW / de / it / ko,独立持久化(uiLang),不动翻译语言包
+uiLangEl.addEventListener('change', async () => {
+  ui = resolve(uiLangEl.value);
   await chrome.storage.sync.set({ uiLang: ui });
   applyUi();
 });
@@ -104,8 +100,9 @@ async function populateLanguages(selected) {
   langEl.value = selected || 'en';
 }
 
-chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en', uiLang: 'en' }, async cfg => {
-  ui = cfg.uiLang || 'en';
+chrome.storage.sync.get({ enabled: true, hosts: [], collect: false, lang: 'en', uiLang: '' }, async cfg => {
+  // 已保存则用保存值(归一化),否则首次跟随浏览器语言
+  ui = cfg.uiLang ? resolve(cfg.uiLang) : window.ROSETTA_I18N.detect();
   hostsEl.value = (cfg.hosts || []).join('\n');
   collectEl.checked = !!cfg.collect;
   await populateLanguages(cfg.lang || 'en');
