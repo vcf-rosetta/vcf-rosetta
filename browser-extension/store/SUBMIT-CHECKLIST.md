@@ -2,16 +2,16 @@
 
 ## 0. 一次性准备
 - [ ] 注册 Chrome Web Store 开发者账号(一次性 **$5** 注册费)。
-- [ ] 准备一个公开的隐私政策 URL(把 `store/PRIVACY.md` 发布到 GitHub Pages 或仓库 raw 链接)。
+- [ ] 准备一个公开的隐私政策 URL(把 `store/PRIVACY.md` 发布到 GitHub Pages,或用主仓库 raw 链接)。
 
 ## 1. 先发布语言包,再构建上传包
-扩展包**不内置词典**(仅 ~26KB),运行时按需从**公开数据仓库 `vcf-rosetta/langpacks`** 经 jsDelivr 下载(主仓库保持私有)。**所以上架前必须先发语言包**,否则用户装上后下不到词典、无法翻译。
+扩展包**不内置词典**(仅 ~26KB),运行时按需从**公开主仓库 `vcf-rosetta/vcf-rosetta`**(`browser-extension/dict.*.json`)经 jsDelivr 下载。**所以上架前必须先把最新词典入库主仓库并刷 jsDelivr**,否则用户装上后下不到词典、无法翻译。
 ```bash
 node  browser-extension/build-dict.mjs            # 由 glossary.*.json 生成 dict.*.json
-bash  browser-extension/scripts/publish-langpacks.sh   # 推到公开 langpacks 仓库 + 刷 jsDelivr
+bash  browser-extension/scripts/publish-langpacks.sh   # 提交词典到主仓库 + 刷 jsDelivr
 node  browser-extension/scripts/pack-store.mjs    # 产出轻量上传包 dist/vcf-rosetta-<version>.zip
 ```
-- 验证 CDN 可访问:`curl -I https://cdn.jsdelivr.net/gh/vcf-rosetta/langpacks@main/dict.zh-CN.json` 返回 200。
+- 验证 CDN 可访问:`curl -I https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/browser-extension/dict.zh-CN.json` 返回 200。
 - 新增语种:在 `langs.json` 登记 → 准备好 `dict.<lang>.json` → 重跑上面三步。
 
 ## 2. 素材(开发者后台要求)

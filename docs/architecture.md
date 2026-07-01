@@ -1,8 +1,40 @@
 # vcf-rosetta 架构设计
 
-> 状态:**早期设计快照**(2026-06-19)。本文档围绕 remote plug-in 形态,而该插件现已 ⏸️ 暂缓(见
-> [`../plugin/README.md`](../plugin/README.md))。**实际出货形态是浏览器扩展**;最新架构以
-> [`../browser-extension/README.md`](../browser-extension/README.md) 为准。本文留作设计留档。
+> 状态:**早期设计快照**(2026-06-19)。第 1 节起是围绕 remote plug-in 形态的原始设计,而该插件现已 ⏸️ 暂缓
+> (见 [`../plugin/README.md`](../plugin/README.md))。**实际出货形态是浏览器扩展**——下方「第 0 节」是当前真实架构,
+> 其余各节留作设计留档;扩展的实现细节以 [`../browser-extension/README.md`](../browser-extension/README.md) 为准。
+
+## 0. 当前出货架构(浏览器扩展)
+
+```
+┌────────────────────────────────────────────────────────────┐
+│ 浏览器(Chrome / Edge, MV3 扩展 VCF Rosetta)                │
+│  content/translator.js  注入每个 frame,穿透 shadow DOM /    │
+│                         同源 iframe,实时替换 vCenter/VCF/   │
+│                         Aria Ops 原生 UI 文本                │
+│         │ 按需取词典(三级:内置 → 本地缓存 → CDN)          │
+└─────────┼──────────────────────────────────────────────────┘
+          ▼
+   cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/browser-extension/dict.<lang>.json
+          ▲
+          │(jsDelivr 直接从公开主仓库分发,无独立数据仓库)
+   ┌──────┴───────────────────────────────────────────────┐
+   │ 公开主仓库 vcf-rosetta/vcf-rosetta                     │
+   │  plugin/i18n/glossary.*.json ──build-dict.mjs──▶       │
+   │  browser-extension/dict.*.json(已入库,50k+ 条)      │
+   └───────────────────────────────────────────────────────┘
+```
+
+**关键点:**
+
+- **单一公开仓库**:2026-07 起主仓库公开,词典 `dict.*.json` 随仓库入库,直接经 jsDelivr 从主仓库分发;
+  不再维护独立的 `langpacks` 数据仓库(历史遗留,已退役)。
+- **纯前端**:翻译全程在浏览器本地完成,**不改 vCenter 服务器、不上传任何页面/业务数据**;仅偏好设置存 `chrome.storage`。
+- **两种分发**:
+  - *轻量包 / Chrome 商店版*(~63KB)—— 运行时从 CDN 按需下词典并本地缓存;
+  - *离线包*(~6MB)—— 词典内置,零联网,经 **GitHub Releases** 分发,供隔离网 / 客户现场。
+- **词库来源**:`plugin/i18n/glossary.*.json`(官方语言包 + 人工审定),`build-dict.mjs` 构建为运行时词典。
+- **语言范围**:只补 VCF 9 已放弃的 zh-CN/zh-TW/de/it/ko;原生 en/ja/es/fr 不做。
 
 ## 1. 背景与目标
 

@@ -198,7 +198,7 @@ document.getElementById('dump').addEventListener('click', async () => {
 });
 
 // 词条回流:两条通道(GitHub Issue / 邮件),共用采集结果
-const REPO = 'vcf-rosetta/langpacks';   // 公开仓库:外部用户可见可提 Issue(主仓库私有)
+const REPO = 'vcf-rosetta/vcf-rosetta';   // 公开主仓库:外部用户可见可提 Issue
 const DEV_EMAIL = 'zhouwei008@gmail.com'; // 词条贡献接收邮箱
 const URL_BUDGET = 7000; // GitHub/mailto URL 实测安全上限,超出则截断并提示附本地文件
 

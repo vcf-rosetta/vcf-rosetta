@@ -13,7 +13,7 @@ Real-time UI translation for the **VMware vCenter Server / VCF 9.x** web console
 - **Translates the console as you browse** — client-side DOM text replacement, in real time.
 - **5 languages:** 简体中文 · 繁體中文 · Deutsch · Italiano · 한국어. The popup interface itself is localized into 6 languages and follows your browser language by default.
 - **Only on vCenter/VCF pages** — the content script first checks for vCenter console markers; on any other page it loads nothing and does nothing. You can narrow scope further with a per-host allow-list.
-- **Dictionaries** are built from VMware's official localization packs plus curated terminology (48k+ terms) and fetched on demand from this public data repo via CDN, then cached locally.
+- **Dictionaries** are built from VMware's official localization packs plus curated terminology (48k+ terms) and fetched on demand from this public repo via CDN, then cached locally.
 
 > 浏览即翻译;支持 5 种翻译语言、6 种界面语言;仅在识别为 vCenter/VCF 的页面生效,其他网站不加载、不处理;词典基于官方语言包 + 人工校订(4.8 万+ 词条),按需经 CDN 下载并本地缓存。
 
@@ -34,14 +34,14 @@ Found UI text that isn't translated yet? In the popup, enable **"Collect untrans
 
 > 发现未翻译的界面词?在弹窗里开启「收集未翻译词条」,浏览相关页面后点「导出 JSON」或「贡献 GitHub」(会在本仓库打开预填的 Issue)。只回传英文界面词条,不含业务数据。
 
-- Issues / new-language requests: <https://github.com/vcf-rosetta/langpacks/issues>
+- Issues / new-language requests: <https://github.com/vcf-rosetta/vcf-rosetta/issues>
 
 ## This repository · 关于本仓库
 
-This is the **public language-pack data repo**: it holds the built dictionaries (`dict.<lang>.json`) and the language catalog (`langs.json`) that the extension downloads at runtime via jsDelivr:
+This is the **public source repo**: extension source, the terminology/build pipeline, and the built dictionaries (`browser-extension/dict.<lang>.json`) plus the language catalog (`langs.json`) that the extension downloads at runtime via jsDelivr:
 
 ```
-https://cdn.jsdelivr.net/gh/vcf-rosetta/langpacks@main/dict.zh-CN.json
+https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/browser-extension/dict.zh-CN.json
 ```
 
 The extension package itself stays lightweight (~65 KB) and pulls dictionaries on demand.

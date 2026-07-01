@@ -44,4 +44,4 @@ The extension's sole purpose: localize (translate) the VMware vCenter / VCF web 
 ## Privacy practices (required — fill truthfully)
 - Collects user data: **No**.
 - No PII collected or transmitted, no remote analytics. All processing is local.
-- Privacy policy URL: host `store/PRIVACY.md` as a public URL (e.g. GitHub Pages, or the public `vcf-rosetta/langpacks` repo) before submitting.
+- Privacy policy URL: host `store/PRIVACY.md` as a public URL (e.g. GitHub Pages, or a raw link in the public `vcf-rosetta/vcf-rosetta` repo) before submitting.

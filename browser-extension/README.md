@@ -29,14 +29,14 @@ VCF 9 原生只公开支持 **4 种**界面语言:English / 日本語 / Español
 browser-extension/
 ├── manifest.json            MV3 清单(默认英文界面)
 ├── langs.json               可下载语言目录 + 各语言版本号(驱动下拉框与缓存刷新)
-├── dict.<locale>.json       各语言词典(自动生成,gitignore,不入库)
+├── dict.<locale>.json       各语言词典(build-dict 生成,已入库;经 jsDelivr 从主仓库分发)
 ├── build-dict.mjs           从 ../plugin/i18n/glossary.<locale>.json 生成 dict.<locale>.json
 ├── content/translator.js    翻译引擎:递归遍历(穿透 shadow DOM/同源 iframe)+ MutationObserver
 ├── popup/                   语言选择 / 站点白名单 / 词条采集 / 词典版本与刷新 / 关于
 ├── _locales/en/             扩展自身界面文案(英文)
 ├── scripts/
 │   ├── pack-store.mjs        打包:轻量包(CDN 取词典)/ 离线包(--offline,内置词典)
-│   └── publish-langpacks.sh  把 dict.*.json 发布到公开 langpacks 仓库 + 刷 jsDelivr 缓存
+│   └── publish-langpacks.sh  提交 dict.*.json 到主仓库 + 刷 jsDelivr 缓存
 └── store/                   Chrome 应用商店上架物料
 ```
 
@@ -45,26 +45,29 @@ browser-extension/
 ```bash
 git clone https://github.com/vcf-rosetta/vcf-rosetta.git
 cd vcf-rosetta
-node browser-extension/build-dict.mjs    # 从 glossary 生成 dict.<locale>.json(首次必跑;dict 不入库)
+# dict.*.json 已随仓库入库,clone 即有,无需构建即可加载。
+# 仅当你改了词库源(glossary.*.json)才需重建:
+node browser-extension/build-dict.mjs    # 从 glossary 重新生成 dict.<locale>.json
 ```
 1. Chrome/Edge 打开 `chrome://extensions`,开启「开发者模式」
 2. 「加载已解压的扩展程序」→ 选 `browser-extension/` 目录
 3. 打开 vCenter / VCF / Aria Ops 页面 → 点扩展图标 → 选语言 → 自动翻译
 
-> `dict.*.json` 由 `glossary.*.json` 生成(较大,gitignore 不入库)。clone 或词表更新后重跑 `build-dict.mjs`。
+> `dict.*.json` 已入库(仓库已公开,直接经 jsDelivr 从主仓库分发)。只有改动 `glossary.*.json` 后才需重跑 `build-dict.mjs` 重建。
 
 ## 🔁 更新词典(已经装过的人**必看**)
 
-词库更新后,**只 `git pull` 不会让你的扩展变新**——因为 `dict.*.json` 是 gitignore 的构建产物,**不在仓库里**,`pull` 只更新词库源(`glossary` / `domains`)。少跑一步,字典永远是旧的。
+`dict.*.json` 现已入库,`git pull` 会直接把最新词典拉下来——但 **Chrome 不会自动重读**磁盘上换过的文件,必须手动「重新加载」扩展。
 
-**正确顺序(缺一不可):**
+**正确顺序:**
 
 ```bash
-git pull                                  # ① 拉最新词库源(不含 dict)
-node browser-extension/build-dict.mjs     # ② ★从最新词库重建 dict.<locale>.json —— 最容易漏的一步
+git pull                                  # ① 拉最新词典(dict 已入库,一步到位)
+# 如果你本地改了词库源 glossary.*.json,才需重建:
+# node browser-extension/build-dict.mjs
 ```
 
-③ **Chrome 里「重新加载」扩展**(不是刷新页面!):
+② **Chrome 里「重新加载」扩展**(不是刷新页面!):
 `chrome://extensions` → 找到 VCF Rosetta → 点 **↻ 重新加载** → 回 vCenter **硬刷新**(Cmd/Ctrl+Shift+R)。
 
 > ⚠️ Chrome「加载已解压」是在**加载那一刻**把文件读进内存的。你 `build-dict` 改了磁盘上的 `dict.zh-CN.json` 后,**必须点扩展的「重新加载」**才会重读新文件;光刷新网页没用。
@@ -79,36 +82,41 @@ node browser-extension/build-dict.mjs     # ② ★从最新词库重建 dict.<l
 弹窗选语言后,内容脚本按优先级取词典:
 1. **扩展内置** `chrome-extension://…/dict.<lang>.json` —— 离线包走这条,零联网。
 2. **本地缓存**(`chrome.storage.local`,版本一致才用)。
-3. **远程下载** —— 从公开数据仓库 [`vcf-rosetta/langpacks`](https://github.com/vcf-rosetta/langpacks) 经 jsDelivr 下载并写缓存。
+3. **远程下载** —— 从公开主仓库 [`vcf-rosetta/vcf-rosetta`](https://github.com/vcf-rosetta/vcf-rosetta)(`browser-extension/dict.*.json`)经 jsDelivr 下载并写缓存。
 
 弹窗的「词典」行会显示当前用的是哪一级(`内置/缓存/在线`)、语言、版本号、条数;旁边 **↻ 刷新词典** 可清缓存强制重取最新。
 
 ## 打包(两种)
 
 ```bash
-node browser-extension/scripts/pack-store.mjs            # 轻量包(~28KB):运行时按需从 CDN 下词典
-node browser-extension/scripts/pack-store.mjs --offline  # 离线包(~5MB):词典内置,隔离网/客户现场零联网
+node browser-extension/scripts/pack-store.mjs            # 轻量包(~63KB):运行时按需从 CDN 下词典
+node browser-extension/scripts/pack-store.mjs --offline  # 离线包(~6MB):词典内置,隔离网/客户现场零联网
 ```
 - **离线部署**:装离线包(`-offline.zip`)→ 词典已内置,弹窗里 5 种语言全部"现成可用"(无下载标记),选语言即用。
-- **商店/联网**:装轻量包 → 选语言 → 自动从 CDN 下载并缓存。上架前须先 `publish-langpacks.sh` 发词典,见 `store/SUBMIT-CHECKLIST.md`。
+- **商店/联网**:装轻量包 → 选语言 → 自动从 CDN 下载并缓存。上架前确保最新词典已入库主仓库并刷了 jsDelivr(`publish-langpacks.sh`),见 `store/SUBMIT-CHECKLIST.md`。
 
 ## 📦 离线包:制作 + 导入安装(隔离网 / 客户现场零联网)
 
 离线包把**最新词典内置**进扩展,装上选语言即用、**全程不联网**,适合内网隔离环境和客户现场。
-> 目前**不发 GitHub Release**:`dist/` 不入库,离线包由维护者本地构建后,通过内网共享 / U 盘 / IM 发给使用者。
+> 分发渠道:**[GitHub Releases](https://github.com/vcf-rosetta/vcf-rosetta/releases/latest)** 附带每个版本的
+> `vcf-rosetta-<版本>-offline.zip`(词典内置)与 `vcf-rosetta-<版本>.zip`(轻量,联网取词典)。
+> 隔离网也可由维护者下载后经内网共享 / U 盘 / IM 转交。`dist/` 本身不入库。
 
-### A. 维护者:产出离线包
+### A. 维护者:产出并发布离线包
 
 ```bash
 git pull                                                 # 取最新词库
 node browser-extension/build-dict.mjs                    # 从 glossary 重建内置词典(★勿漏)
 node browser-extension/scripts/pack-store.mjs --offline  # 产出 dist/vcf-rosetta-<版本>-offline.zip(~6MB)
+node browser-extension/scripts/pack-store.mjs            # 产出 dist/vcf-rosetta-<版本>.zip(轻量,~63KB)
+# 发布到 GitHub Releases(版本号取 manifest.json):
+gh release create v<版本> browser-extension/dist/vcf-rosetta-<版本>*.zip -t "v<版本>" -n "离线包 + 轻量包"
 ```
-产物在 `browser-extension/dist/vcf-rosetta-<版本>-offline.zip`(如 `vcf-rosetta-3.4.23-offline.zip`)。把这个 **zip 文件**发给使用者即可。
+产物在 `browser-extension/dist/`。附到对应 tag 的 Release 即可,普通使用者从 Releases 页面下载。
 
-### B. 使用者:导入安装(Chrome / Edge,一步步)
+### B. 使用者:下载 + 导入安装(Chrome / Edge,一步步)
 
-1. **拿到并解压** `vcf-rosetta-<版本>-offline.zip` → 得到一个文件夹(如 `vcf-rosetta-3.4.23-offline/`)。
+1. 到 **[Releases](https://github.com/vcf-rosetta/vcf-rosetta/releases/latest)** 下载并解压 `vcf-rosetta-<版本>-offline.zip` → 得到一个文件夹(如 `vcf-rosetta-3.4.31-offline/`)。
    > 放到一个**固定、不会删**的目录(扩展加载后会一直引用此文件夹,删了扩展就失效)。
 2. 浏览器地址栏输入 **`chrome://extensions`**(Edge 是 `edge://extensions`)回车。
 3. 打开右上角 **「开发者模式 / Developer mode」** 开关。

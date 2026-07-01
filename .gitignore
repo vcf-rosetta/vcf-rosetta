@@ -34,6 +34,6 @@ vsphere-lang.tgz
 vsphere-l10n.tgz
 vsphere-l10n-all.tgz
 
-# 生成的字典(从 plugin/i18n/glossary.*.json 构建,勿入库)
-browser-extension/dict.*.json
+# 生成的字典(dict.*.json)现随主仓库入库,直接经 jsDelivr 从主仓库分发
+# (仓库已公开,不再拆单独的 langpacks 数据仓库)。构建源见 plugin/i18n/glossary.*.json。
 *.tgz

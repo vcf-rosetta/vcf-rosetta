@@ -1,5 +1,5 @@
 {
-  "_note": "可下载语言包目录。扩展据此显示语言选择器并按需下载 dict.<code>.json。version 变更即触发重新下载缓存。新增语种:在此登记一行,并把 dict.<code>.json 发布到 langpack base(见 scripts/publish-langpacks.mjs)。",
+  "_note": "可下载语言包目录。扩展据此显示语言选择器并按需下载 dict.<code>.json。version 变更即触发重新下载缓存。新增语种:在此登记一行,把 dict.<code>.json 入库到 browser-extension/,再跑 scripts/publish-langpacks.sh 刷新 jsDelivr。",
   "version": "3.4.25",
   "languages": {
     "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.25", "source": "official+curated", "status": "stable" },
