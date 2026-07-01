@@ -11,11 +11,13 @@ cd "$(git rev-parse --show-toplevel)"
 EXT=browser-extension
 ls "$EXT"/dict.*.json >/dev/null 2>&1 || { echo "没有 dict.*.json,先跑 node $EXT/build-dict.mjs"; exit 1; }
 
-git add "$EXT"/dict.*.json "$EXT"/langs.json
-if git diff --cached --quiet; then
+PATHS=("$EXT"/dict.*.json "$EXT"/langs.json)
+git add "${PATHS[@]}"
+# 只针对词典/目录这几条路径判断变化与提交,避免把维护者其它已暂存的改动一起卷进来
+if git diff --cached --quiet -- "${PATHS[@]}"; then
   echo "词典无变化,跳过提交"
 else
-  git commit -q -m "publish langpacks: $(cd "$EXT" && ls dict.*.json | tr '\n' ' ')"
+  git commit -q -m "publish langpacks: $(cd "$EXT" && ls dict.*.json | tr '\n' ' ')" -- "${PATHS[@]}"
   git push -q origin HEAD
   echo "已提交并推送词典到主仓库。"
 fi
