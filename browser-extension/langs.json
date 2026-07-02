@@ -3,9 +3,9 @@
   "version": "3.4.25",
   "languages": {
     "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.25", "source": "official+curated", "status": "stable" },
-    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.25", "source": "official", "status": "stable" },
+    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.31", "source": "official+draft", "status": "stable" },
     "zh-TW": { "name": "繁體中文", "english": "Traditional Chinese", "version": "3.4.25", "source": "official", "status": "stable" },
     "it":    { "name": "Italiano", "english": "Italian", "version": "3.4.31", "source": "official+draft", "status": "stable" },
-    "ko":    { "name": "한국어", "english": "Korean", "version": "3.4.25", "source": "official", "status": "stable" }
+    "ko":    { "name": "한국어", "english": "Korean", "version": "3.4.31", "source": "official+draft", "status": "stable" }
   }
 }
