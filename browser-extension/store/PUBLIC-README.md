@@ -19,7 +19,7 @@ Real-time UI translation for the **VMware vCenter Server / VCF 9.x** web console
 
 ## Install · 安装
 
-- **Chrome Web Store:** **[VCF 9 UI Translator](https://chromewebstore.google.com/detail/vcf-9-ui-translator/)** — or search "VCF 9 UI Translator" in the store.
+- **Chrome Web Store:** **[VCF 9 UI Translator](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)** — or search "VCF 9 UI Translator" in the store.
 - **Manual / offline:** download the latest `.zip` from Releases → `chrome://extensions` → enable Developer mode → "Load unpacked" (or drag the zip in). Suitable for air-gapped / customer sites.
 
 ## Privacy · 隐私
