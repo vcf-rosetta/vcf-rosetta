@@ -15,6 +15,9 @@ build/
 .vscode/
 *.swp
 
+# Scratch / working assets (screenshots, article drafts, store-asset exports)
+tmp/
+
 # R1 test certs
 plugin/certs/
 

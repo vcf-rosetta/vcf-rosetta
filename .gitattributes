@@ -1,0 +1,21 @@
+# Normalize line endings for text files (checked in as LF)
+* text=auto eol=lf
+
+# Binary assets — never diff/merge as text
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.tgz binary
+*.gz binary
+
+# Generated dictionaries — keep in repo (served via CDN) but hide from diffs
+# and exclude from language stats so GitHub reports source languages, not data.
+browser-extension/dict.*.json linguist-generated=true
+browser-extension/langs.json  linguist-generated=true
+
+# Vendored/large data shouldn't skew repo language stats
+plugin/i18n/**    linguist-language=JSON
+docs/*.html       linguist-detectable=false
