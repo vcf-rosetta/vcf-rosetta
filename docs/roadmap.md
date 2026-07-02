@@ -1,85 +1,59 @@
-# vcf-rosetta — 整体架构与路线图
+# vcf-rosetta — 路线图与待办
 
-> 状态:草案 v0.1 · 2026-06-19 · 汇总 [HLD.md](HLD.md) + [requirements-and-monetization.md](requirements-and-monetization.md)
+> 2026-07-02 全面改写:**主线 = 浏览器扩展**(已上架 Chrome 应用商店,持续迭代)。
+> 旧版路线图围绕 vSphere remote plug-in 展开,该方向已**暂缓**且不在本路线图内
+> (代码保留于 `plugin/`,其中 `plugin/i18n/` 词库是扩展的活跃数据源,不随插件暂缓)。
 
-## 一图看全架构
+## 已交付(现状)
 
-```
-                    ┌───────────────────────────────────────────────┐
-   运维人员 ───────▶ │ vSphere Client 9.0/9.1 (宿主, EN/ES/FR/JA)     │
-                    │   └─ vcf-rosetta remote plug-in (中文 UI)       │
-                    │        Angular 19 + Clarity 17 + i18n runtime   │
-                    └───────────────────┬───────────────────────────┘
-                                        │ HTTPS (SAN+SHA256 thumbprint)
-                                        ▼
-                    ┌───────────────────────────────────────────────┐
-                    │ Plug-in Server (Java 17)                       │
-   License 文件 ───▶ │  ├─ License/Paywall 校验 (node-locked→vC GUID) │
-   (离线签名)        │  ├─ Manifest + i18n 资源托管                    │
-                    │  ├─ BFF 聚合 API                               │
-                    │  └─ 中文语义层 (告警解释/根因/术语)             │
-                    └───────────┬───────────────────────────────────┘
-                                │ 不让前端直连产品 API · 二次鉴权
-              ┌─────────────────┼──────────────────┐
-              ▼                 ▼                  ▼
-       vSphere Automation   VCF Operations     (后续) Aria Ops
-            API              (Aria Ops)         Networks/Logs
-```
+- **v3.4.33**:vCenter / VCF / Aria Operations 原生 UI 实时翻译(Chrome/Edge MV3)
+- 5 种翻译语言(zh-CN / zh-TW / de / it / ko,VCF 9 已放弃的语言),词库 5 万+ 条/语言
+- 6 语言弹窗界面;轻量包(CDN 取词典)/ 离线包(词典内置,隔离网可用)双形态
+- **已上架 [Chrome 应用商店](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)**;离线包经 GitHub Releases 固定直链分发
+- 词典分发管线:URL 钉发布 tag + `@main` 目录发现新版本 → 已装用户自动更新词库
+- 多 CDN 回退(jsDelivr 主域 + fastly/gcore 镜像)、下载失败弹窗明确告警
+- 归一化二级查找(大小写 / 尾部 `:`/`…` 漂移自动命中)—— 缓解跨 VCF 版本措辞差异
+- 缺词采集 → 导出 / 一键 GitHub Issue → `contrib/` 合并回流的众包闭环
 
-三条贯穿原则:**只读优先 · 服务端强制收费 · 失败软降级**。
-
-## 战略决策(2026-06-22)
-
-**界面翻译不与浏览器自带翻译(Google/Edge)竞争。** 纯 UI 翻译,浏览器自带的更全、零维护;
-我们的字典扩展只在 **air-gapped / 数据合规**(谷歌翻译用不了)场景有不可替代性 —— 故
-`browser-extension/` **冻结为隔离网兜底工具**,不再追覆盖率。
-
-**主线 = 远程插件的中文增值功能**(谷歌翻译永远做不到):告警中文解释/根因、巡检、Runbook、
-AI 助手。这是有护城河、可收费的方向。语义层数据资产见 `plugin/semantics/`。
-
-## 路线图
-
-```
-┌─ R1 验证 (地基, 本周) ──────────────────────────────────────┐
-│  最小插件 + 注册脚本 → 真机回答"宿主能否渲染自带 zh-CN"      │
-│  ✅ 脚手架已生成   ⬜ 真机执行(需 vCenter 9.0/9.1)           │
-└────────────────────────────────────────────────────────────┘
-        ↓ R1 结论决定是否需要 locale 兜底
-┌─ 第一步:简体中文插件 (免费层) ─────────────────────────────┐
-│  Angular+Clarity 5 视图(只读) + en/zh-CN 资源(由字符库生成)│
-│  资产总览 · 中文搜索 · 告警解释 · 对象详情 · 上下文跳转       │
-│  交付:9.0/9.1 注册渲染冒烟通过                              │
-└────────────────────────────────────────────────────────────┘
-        ↓
-┌─ 第二步:语义层加深 (付费层启动) ───────────────────────────┐
-│  巡检 · 容量趋势 · 根因 · Runbook · 只读 AI 助手             │
-│  + 收费墙上线(离线签名 license + 服务端 gating + 软降级)    │
-└────────────────────────────────────────────────────────────┘
-        ↓
-┌─ 第三步:写操作 + 多语言 ───────────────────────────────────┐
-│  审批流 · 一键执行 · 变更留痕 · RBAC                         │
-│  + de-DE(P1)语言包,验证"加语言=加资源包"可复制性          │
-└────────────────────────────────────────────────────────────┘
-```
-
-## 当前进度
+## 进行中
 
 | 项 | 状态 |
 |----|------|
-| org + repo + 脚手架 | ✅ |
-| HLD | ✅ |
-| 官方要求 / 市场语言 / 收费墙设计 | ✅ |
-| R1 验证插件 + 脚本 + 方案 | ✅(待真机执行) |
-| 术语词表 `docs/glossary.md` | ⬜(用户补) |
-| 第一步生产插件脚手架(Angular+Clarity) | ⬜ |
+| 商店版 3.4.33 提审 | ⬜ 维护者上传 `dist/vcf-rosetta-3.4.33.zip` |
+| VCF 9.0.2 / SDDC Manager 词表回流 | ⬜ 等现场用户导出缺词 JSON(SDDC Manager 词条目前任何来源都没有) |
 
-## 关键依赖与阻塞
+## 待开发(backlog,按优先级)
 
-- **R1 真机**:需要一套 vCenter 9.0/9.1 + Java 17 + SDK 注册工具(阻塞第一步定型)
-- **plugin.json 精确 schema**:对照官方 9.0 sample 校准(R1 时一并确认)
-- **字符库 → 资源包**:术语词表就位后生成 en/zh-CN JSON
+### 代码 — 翻译引擎
+- [ ] 同源 iframe 内部导航后重新挂观察器(嵌入式控制台失翻;review M5)
+- [ ] 词典下载/持有移入 service worker,各 frame 共享一份(内存 ×N → ×1;review M6)
+- [ ] 激活检测失败后延迟重试 2-3 次(慢渲染 SPA / iframe 竞态)
+- [ ] `translateAttrs` 走 PHRASES 模式 + 记录缺词(tooltip/placeholder 覆盖;review L5)
+- [ ] SPA 标题变更后重译 `<title>`(review L6)
+- [ ] `web_accessible_resources` 加 `use_dynamic_url`,防任意网站探测扩展指纹(review L2)
+- [ ] 观察器批量去重降为 O(n·depth)(祖先链 + Set;review L1)
+- [ ] popup「添加当前站点」按协议而非 hostname 判断浏览器内部页(review L3)
+
+### 代码 — 构建与数据
+- [ ] `build-dict.mjs` 过滤:丢非字符串值 / `_note` / key===value 死条目,缩包体(review L7)
+- [ ] (评估)商店版内置 zh-CN 词典(+~1.4MB),中文主力用户零依赖 CDN
+
+### 运营与生态
+- [ ] 商店 listing 描述修正:`48k+ terms` → 按语言 39k–52k 的真实口径;Homepage/Support URL 从 langpacks 旧仓库换成主仓库(同步 `store/LISTING.md`)
+- [ ] 归档旧 `vcf-rosetta/langpacks` 仓库,README 指向主仓库
+- [ ] Edge Add-ons 上架(同一 zip 提审,vSphere 运维大量用 Edge)
+- [ ] Aria Operations(VCF Operations)界面词条专项采集(仪表板/告警页覆盖仍薄)
+
+## 词库运营(常态化)
+
+```
+用户开「收集未翻译词条」→ 导出 JSON / 一键 Issue
+  → contrib/merge-incoming.mjs 去重合并 → 人工翻译入 plugin/i18n/domains/
+  → build-dict.mjs 重建 → publish-langpacks.sh(强制 bump 版本)→ 已装用户自动收到
+```
 
 ## 文档索引
-- [HLD.md](HLD.md) — 高层设计
-- [requirements-and-monetization.md](requirements-and-monetization.md) — 官方要求 / 市场 / 收费墙
-- [R1-verification-plan.md](R1-verification-plan.md) — R1 真机验证步骤
+
+- [architecture.md](architecture.md) — 架构
+- [glossary.md](glossary.md) — 术语词表
+- 安装/使用指南 — [index.html](index.html)(GitHub Pages 首页,6 语言)

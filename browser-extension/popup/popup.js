@@ -30,10 +30,23 @@ let lastDictInfo = null;
 function srcLabel(from) {
   return from === 'bundled' ? t(ui, 'srcBundled') : from === 'cache' ? t(ui, 'srcCache') : from === 'cdn' ? t(ui, 'srcCdn') : '—';
 }
+const OFFLINE_PACK_URL = 'https://github.com/vcf-rosetta/vcf-rosetta/releases/latest/download/vcf-rosetta-offline.zip';
 function showDict(info) {
   lastDictInfo = info;
   const el = document.getElementById('dictInfo');
   if (!el) return;
+  // 词典彻底取不到(所有 CDN 不可达且无缓存):明确告知 + 给出离线包出路,不再静默显示"—"
+  if (info && info.failed && !info.count) {
+    el.textContent = '';
+    el.append(document.createTextNode(t(ui, 'dictFailed') + ' '));
+    const a = document.createElement('a');
+    a.href = OFFLINE_PACK_URL;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = t(ui, 'dictFailedLink');
+    el.append(a);
+    return;
+  }
   if (!info || !info.lang || info.lang === 'en' || !info.count) { el.textContent = t(ui, 'dictNone'); return; }
   el.textContent = `${info.lang} v${info.version || '?'} · ${info.count} ${t(ui, 'dictTerms')} · ${srcLabel(info.from)}`;
 }

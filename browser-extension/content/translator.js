@@ -9,14 +9,35 @@
   // 词典 URL 按 langs.json 里的版本号钉到发布 tag(@v<版本>,内容不可变,免 purge 免"版本
   // 与内容不一致");语言目录 langs.json 自身走 @main 浮动引用(小文件),让已装用户不升级
   // 扩展也能发现并拉到新版词典。
-  const REPO_REF = 'https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta';
-  const EXT_PATH = '/browser-extension';
+  // 多 CDN 回退:jsDelivr 主域在部分网络(中国大陆/严格企业代理)不可达,
+  // fastly/gcore 镜像可达性好得多。所有远程请求按此顺序逐个尝试。
+  const CDN_HOSTS = ['cdn.jsdelivr.net', 'fastly.jsdelivr.net', 'gcore.jsdelivr.net'];
+  const ghUrl = (host, ref, file) => 'https://' + host + '/gh/vcf-rosetta/vcf-rosetta@' + ref + '/browser-extension/' + file;
+  // 依次尝试各 CDN 主机,返回第一个 HTTP 200 的 Response;全部失败返回 null。
+  // 每次尝试带超时(被墙的域名常是"挂住"而非快速失败,不设超时会拖死整条加载链)。
+  async function fetchFirst(ref, file, init, timeoutMs) {
+    for (const host of CDN_HOSTS) {
+      const url = ghUrl(host, ref, file);
+      try {
+        const ctl = new AbortController();
+        const timer = setTimeout(() => ctl.abort(), timeoutMs);
+        const r = await fetch(url, Object.assign({ signal: ctl.signal }, init || {}));
+        clearTimeout(timer);
+        if (r.ok) return r;
+        console.warn('[vcf-rosetta] HTTP ' + r.status + ' @ ' + url);
+      } catch (e) {
+        console.warn('[vcf-rosetta] 请求失败 @ ' + url + ' : ' + e.message);
+      }
+    }
+    return null;
+  }
   let dict = Object.create(null);
   let loadedLang = null;
   let loadedFrom = null;   // 'bundled' | 'cache' | 'cdn' —— 词典来源,供弹窗显示
   let loadedVer = null;    // 已加载词典对应的版本号
+  let loadFailed = false;  // 所有来源(内置/缓存/全部 CDN)都取不到词典 —— 供弹窗明确告知用户
   let LANGS = {};
-  // 语言目录:先读内置(必定可用),再用 CDN 上的最新目录覆盖(4s 超时,失败无害)。
+  // 语言目录:先读内置(必定可用),再用 CDN 上的最新目录覆盖(带超时,失败无害)。
   // 走缓存/CDN 取词典前必须 await 它 —— 修复竞态:LANGS 未就绪时 ver 取到 '0',缓存版本
   // 永远不匹配 → 每次页面加载都重下数 MB 词典,还把缓存写成 version:'0' 造成永久抖动。
   const LANGS_READY = (async () => {
@@ -25,11 +46,8 @@
       if (j && j.languages) LANGS = j.languages;
     } catch (e) { /* ignore */ }
     try {
-      const ctl = new AbortController();
-      const timer = setTimeout(() => ctl.abort(), 4000);
-      const r = await fetch(REPO_REF + '@main' + EXT_PATH + '/langs.json', { signal: ctl.signal });
-      clearTimeout(timer);
-      if (r.ok) {
+      const r = await fetchFirst('main', 'langs.json', null, 4000);
+      if (r) {
         const j = await r.json();
         if (j && j.languages && typeof j.languages === 'object') LANGS = j.languages;
       }
@@ -49,10 +67,35 @@
     return n > 0 ? out : null;
   }
 
+  // ── 归一化二级索引 ─────────────────────────────────────────
+  // 词典键与页面文本常只差大小写 / 尾部 ":"、"…"、"..."(不同版本控制台的措辞漂移,
+  // 如 9.0.x 与 9.1 同一标签一个带冒号一个不带)。精确匹配 miss 后按归一化形式再查一次,
+  // 命中后把页面端的尾部标点原样带回译文。
+  const TAIL_RE = /\s*(\.{3}|…|:|:)$/;
+  function normTerm(s) {
+    return s.toLowerCase().replace(TAIL_RE, '').replace(/[\s ]+/g, ' ').trim();
+  }
+  let dictAux = Object.create(null);   // normTerm(词典键) -> 词典键
+  function buildAux(d) {
+    const aux = Object.create(null);
+    for (const k in d) {
+      const n = normTerm(k);
+      if (!n) continue;
+      // 同归一形冲突时取更短的键(裸形优先于带冒号/省略号的变体)
+      if (aux[n] === undefined || k.length < aux[n].length) aux[n] = k;
+    }
+    return aux;
+  }
+  function setDict(d) {
+    dict = d;
+    dictAux = buildAux(d);
+  }
+
   async function loadDict(lang, opts) {
     lang = lang || 'en';
     const force = opts && opts.force;   // 刷新词典:跳过「已加载」短路与本地缓存,强制取最新
-    if (lang === 'en') { dict = Object.create(null); loadedLang = 'en'; loadedFrom = null; loadedVer = null; return false; } // 英文原文:无词典
+    loadFailed = false;
+    if (lang === 'en') { setDict(Object.create(null)); loadedLang = 'en'; loadedFrom = null; loadedVer = null; return false; } // 英文原文:无词典
     if (!force && loadedLang === lang && Object.keys(dict).length) return true;
     const cacheKey = 'dict:' + lang;
 
@@ -62,7 +105,7 @@
       if (res.ok) {
         const d = sanitizeDict(await res.json());
         if (d) {
-          dict = d; loadedLang = lang; loadedFrom = 'bundled';
+          setDict(d); loadedLang = lang; loadedFrom = 'bundled';
           loadedVer = (LANGS[lang] && LANGS[lang].version) || chrome.runtime.getManifest().version;
           console.info('[vcf-rosetta] 内置字典:' + lang + ',' + Object.keys(dict).length + ' 条');
           return true;
@@ -70,12 +113,12 @@
       }
     } catch (e) { /* 未内置,继续 */ }
 
-    await LANGS_READY;                       // ②③ 依赖目录里的版本号,等它就绪(含 4s 超时)
+    await LANGS_READY;                       // ②③ 依赖目录里的版本号,等它就绪(含超时)
     if (force) {
       // 手动刷新:绕过 HTTP 缓存重取语言目录,立即发现刚发布的新词典版本
       try {
-        const r = await fetch(REPO_REF + '@main' + EXT_PATH + '/langs.json', { cache: 'reload' });
-        if (r.ok) { const j = await r.json(); if (j && j.languages) LANGS = j.languages; }
+        const r = await fetchFirst('main', 'langs.json', { cache: 'reload' }, 4000);
+        if (r) { const j = await r.json(); if (j && j.languages) LANGS = j.languages; }
       } catch (e) { /* ignore */ }
     }
     const ver = (LANGS[lang] && LANGS[lang].version) || '0';
@@ -87,32 +130,36 @@
       if (c && c.version === ver && c.data) {
         const d = sanitizeDict(c.data);
         if (d) {
-          dict = d; loadedLang = lang; loadedFrom = 'cache'; loadedVer = c.version;
+          setDict(d); loadedLang = lang; loadedFrom = 'cache'; loadedVer = c.version;
           console.info('[vcf-rosetta] 缓存字典:' + lang + ',' + Object.keys(dict).length + ' 条');
           return true;
         }
       }
     } catch (e) { /* ignore */ }
 
-    // ③ 远程下载 → 写缓存。优先钉到发布 tag(内容不可变,jsDelivr 长期缓存、免 purge);
-    //    tag 尚未打出(目录先行发布)或该 URL 不可达时,退回 @main 浮动引用。
-    const urls = [];
-    if (ver !== '0') urls.push(REPO_REF + '@v' + ver + EXT_PATH + '/dict.' + lang + '.json');
-    urls.push(REPO_REF + '@main' + EXT_PATH + '/dict.' + lang + '.json');
-    for (const url of urls) {
+    // ③ 远程下载(逐 CDN 主机回退)→ 写缓存。优先钉到发布 tag(内容不可变,jsDelivr 长期
+    //    缓存、免 purge);tag 尚未打出(目录先行发布)或不可达时,退回 @main 浮动引用。
+    const refs = [];
+    if (ver !== '0') refs.push('v' + ver);
+    refs.push('main');
+    for (const ref of refs) {
+      const res = await fetchFirst(ref, 'dict.' + lang + '.json', force ? { cache: 'reload' } : null, 20000);
+      if (!res) continue;
       try {
-        const res = await fetch(url, force ? { cache: 'reload' } : undefined);
-        if (!res.ok) { console.warn('[vcf-rosetta] 语言包下载失败 HTTP ' + res.status + ' @ ' + url); continue; }
         const d = sanitizeDict(await res.json());
-        if (!d) { console.warn('[vcf-rosetta] 语言包内容异常(非字符串映射)@ ' + url); continue; }
-        dict = d; loadedLang = lang; loadedFrom = 'cdn'; loadedVer = ver;
+        if (!d) { console.warn('[vcf-rosetta] 语言包内容异常(非字符串映射)@' + ref); continue; }
+        setDict(d); loadedLang = lang; loadedFrom = 'cdn'; loadedVer = ver;
         try { await chrome.storage.local.set({ [cacheKey]: { version: ver, data: dict } }); } catch (e) { /* 配额? */ }
         console.info('[vcf-rosetta] 已下载并缓存语言包:' + lang + ',' + Object.keys(dict).length + ' 条');
         return true;
       } catch (e) {
-        console.warn('[vcf-rosetta] 语言包下载异常 @ ' + url + ' : ' + e.message);
+        console.warn('[vcf-rosetta] 语言包解析异常 @' + ref + ' : ' + e.message);
       }
     }
+    // 所有来源尽数失败:标记给弹窗,并在控制台给出可执行的出路(离线包)
+    loadFailed = true;
+    console.warn('[vcf-rosetta] 词典加载失败:所有 CDN(' + CDN_HOSTS.join(' / ') + ')均不可达且无可用缓存。' +
+      '隔离网/受限网络请改用离线包(词典内置):https://github.com/vcf-rosetta/vcf-rosetta/releases/latest/download/vcf-rosetta-offline.zip');
     return false;
   }
 
@@ -394,6 +441,18 @@
       const body = dict[nm[2]];
       if (body && body !== nm[2]) { node.nodeValue = node.__vcOut = raw.replace(trimmed, () => nm[1] + body); return; }
     }
+    // 归一化二级查找:同一标签在不同版本控制台常只差大小写或尾部 ":"/"…"
+    // (如 9.0.x 带冒号、9.1 不带)。命中后把页面端的尾部标点原样带回。
+    const nk = dictAux[normTerm(trimmed)];
+    if (nk !== undefined) {
+      const base = dict[nk];
+      if (base && base !== nk) {
+        const tail = (trimmed.match(TAIL_RE) || [''])[0];
+        const out = base.replace(TAIL_RE, '') + tail;
+        node.nodeValue = node.__vcOut = raw.replace(trimmed, () => out);
+        return;
+      }
+    }
     // 精确未命中:试受控模式替换
     const ph = applyPhrases(trimmed);
     if (ph !== trimmed) {
@@ -412,7 +471,17 @@
       if (!val) return;
       const trimmed = val.trim();
       const zh = dict[trimmed];
-      if (zh && zh !== trimmed) el.setAttribute(attr, zh);
+      if (zh && zh !== trimmed) { el.setAttribute(attr, zh); return; }
+      if (zh) return;
+      // 与文本节点同款的归一化二级查找(tooltip/placeholder 同样存在版本间标点漂移)
+      const nk = dictAux[normTerm(trimmed)];
+      if (nk !== undefined) {
+        const base = dict[nk];
+        if (base && base !== nk) {
+          const tail = (trimmed.match(TAIL_RE) || [''])[0];
+          el.setAttribute(attr, base.replace(TAIL_RE, '') + tail);
+        }
+      }
     });
   }
 
@@ -553,7 +622,7 @@
     }
     // 当前页加载的词典信息(语言/版本/条数/来源)—— 供弹窗显示「我在用哪版」
     else if (msg.type === 'VC_DICT_INFO') {
-      sendResponse({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom });
+      sendResponse({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom, failed: loadFailed });
     }
     // 刷新词典:清掉本地缓存,强制重取(内置→重读文件;联网→绕缓存重下),再整页重翻
     else if (msg.type === 'VC_REFRESH_DICT') {
@@ -562,7 +631,7 @@
       if (lang === 'en') { done({ lang: 'en', version: null, count: 0, from: null }); return true; }
       chrome.storage.local.remove('dict:' + lang).catch(() => {}).then(() => loadDict(lang, { force: true })).then(ok => {
         if (ok) walkAndTranslate(document.body);
-        done({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom, ok: ok });
+        done({ lang: loadedLang || 'en', version: loadedVer, count: Object.keys(dict).length, from: loadedFrom, ok: ok, failed: loadFailed });
       });
       return true;   // 异步 sendResponse
     }

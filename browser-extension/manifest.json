@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "en",
   "name": "__MSG_extName__",
-  "version": "3.4.32",
+  "version": "3.4.33",
   "description": "__MSG_extDesc__",
   "permissions": [
     "storage",
@@ -10,7 +10,9 @@
     "activeTab"
   ],
   "host_permissions": [
-    "https://cdn.jsdelivr.net/*"
+    "https://cdn.jsdelivr.net/*",
+    "https://fastly.jsdelivr.net/*",
+    "https://gcore.jsdelivr.net/*"
   ],
   "icons": {
     "16": "icons/icon16.png",
