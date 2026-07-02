@@ -37,7 +37,7 @@ The extension's sole purpose: localize (translate) the VMware vCenter / VCF web 
 
 ## Permission justifications (required)
 - **storage**: persist user settings (language, interface language, active host allow-list, collect-terms flag). Local / account-sync only, never sent out.
-- **scripting / activeTab**: apply translation to the current vCenter tab and refresh on language change.
+- **activeTab**: read the current tab's hostname for the one-click allow-list buttons and reload the tab on language change. (No `scripting` permission — the content script is statically declared in the manifest.)
 - **host access (`https://*/*`)**: vCenter/VCF runs on customer-owned, arbitrary internal hostnames that cannot be enumerated in advance, so the extension must detect on each visited HTTPS page whether it is a vCenter console before replacing text. **The content script first checks for vCenter page markers; on non-vCenter pages it loads no dictionary and does nothing.** Users can further narrow scope via the popup allow-list.
 - **host_permissions `cdn.jsdelivr.net`**: download language-pack JSON (data only, never executable code) on demand and cache locally.
 

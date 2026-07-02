@@ -22,7 +22,7 @@ node  browser-extension/scripts/pack-store.mjs    # 产出轻量上传包 dist/v
 ## 3. 商品信息
 - [ ] 名称 / 简短描述 / 详细描述 / 类别 / 语言 → 复制 `store/LISTING.md`。
 - [ ] **单一用途说明**(Single purpose):见 LISTING.md。
-- [ ] **权限理由**:逐条填(storage / scripting / activeTab / host access)→ 见 LISTING.md。
+- [ ] **权限理由**:逐条填(storage / activeTab / host access)→ 见 LISTING.md(3.4.32 起已移除未使用的 `scripting` 权限)。
 
 ## 4. 数据使用 / 隐私(Privacy practices 标签页)
 - [ ] 勾选「不收集用户数据」。
