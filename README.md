@@ -1,100 +1,87 @@
-# vcf-rosetta
+# VCF 9 UI Translator
 
-为 VMware Cloud Foundation (VCF) 9.0 / 9.1 提供**中文(多语言)UI 本地化**。VCF 9 官方 UI 当前仅公开支持
-English / Français / Español / 日本語,没有中文入口。本项目用**浏览器扩展**把 vCenter / VCF 控制台界面
-实时翻译成中文(及更多语言),纯前端、不改 vCenter 服务器。
+**English** · [简体中文](README.zh-CN.md) · [繁體中文](README.zh-TW.md) · [Deutsch](README.de.md) · [Italiano](README.it.md) · [한국어](README.ko.md)
 
-> 罗塞塔石碑(Rosetta Stone)是多语言对照的经典符号 —— 取此名意在"让 VCF 说更多语言"。
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-install-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)
+[![Latest release](https://img.shields.io/github/v/release/vcf-rosetta/vcf-rosetta?label=offline%20pack)](https://github.com/vcf-rosetta/vcf-rosetta/releases/latest)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
-## 两个交付物(主次分明)
+Real-time, in-browser localization for the **VMware vCenter / VCF 9.x / Aria Operations (VCF Operations)** web console.
+VCF 9 ships with only English / 日本語 / Español / Français — this free, open-source Chrome/Edge extension puts back the
+five languages the platform dropped: **简体中文 · 繁體中文 · Deutsch · Italiano · 한국어**.
 
-| | 交付物 | 角色 | 状态 |
-|---|---|---|---|
-| **主线** | [`browser-extension/`](browser-extension/) | 翻译 vCenter / VCF / Aria Operations **原生界面**(DOM 实时替换),按需下载语言包 | ✅ 已发布 v3.4.34,持续迭代 |
-| 暂缓 | [`plugin/`](plugin/) | vSphere Client remote plug-in:嵌入 vCenter 的**中文运维助手面板**(告警解释 / 术语查询 / 资产概览)。**不翻译宿主界面** | ⏸️ POC/暂缓,代码保留,默认不部署 |
+> The GitHub project is codenamed **vcf-rosetta** — after the Rosetta Stone, the classic symbol of parallel languages.
 
-> **为什么插件暂缓**:它不参与界面汉化(那是扩展的事),增量价值仅在"中文运维语义层",目前还薄(告警解释 19 条),
-> 且部署需在服务器跑服务 + 证书 + 注册到 vCenter。**当前主线只需扩展即可交付核心价值**。等运维语义层做厚再启用。
+## Highlights
 
-## 范围
+- **Translates as you browse** — client-side DOM text replacement, in real time; no server changes, nothing installed on vCenter.
+- **Private by design** — page content never leaves your browser; dictionaries are data-only JSON.
+- **50k+ curated terms per language**, built from VMware's official localization packs plus field-collected terminology.
+  Simplified Chinese covers ~90% of everyday console screens; Traditional Chinese is close behind; de/it/ko are usable and improving.
+- **Works air-gapped** — the offline pack bundles all dictionaries; zero network needed.
+- **Self-updating dictionaries** (store version) — new terms reach installed users automatically via CDN, no re-release needed.
 
-- **语言**:VCF 9 原生支持 en/ja/es/fr 这 4 种(本项目不做);本项目只补 VCF 9 **已放弃**的 5 种 ——
-  `zh-CN`(简体中文,审定)/ `zh-TW`(繁體中文)/ `de`(德文)/ `it`(意大利文)/ `ko`(韩文)
-- **覆盖**:vCenter,以及 Aria Operations(VCF Operations)—— 把其地址加入扩展白名单即可翻译
-- **缺词回流**:官方包未覆盖的新界面(H5 对话框、Aria Ops 仪表板)靠众包采集补全(见 [`contrib/`](contrib/))
+## Install
 
-## 不做什么(重要边界)
+📘 **Illustrated install & user guide (6 languages):** <https://vcf-rosetta.github.io/vcf-rosetta/>
 
-- ❌ 不替换 / 不注册 vCenter 宿主 UI 的官方语言包(平台未公开支持 `zh-CN` locale)
-- ❌ 不向任何服务器发送页面内容,翻译全程在本地完成
-- ✅ 词典按需从公开主仓库 [`vcf-rosetta/vcf-rosetta`](https://github.com/vcf-rosetta/vcf-rosetta) 经 jsDelivr 下载并本地缓存
+### Option 1 — Chrome Web Store (online, recommended)
 
-## 目录
+Install **[VCF 9 UI Translator](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)** (works in Chrome and Edge).
+Open your vCenter / VCF / Aria Ops console → click the extension icon → pick a language → done.
+Dictionaries download on demand (via jsDelivr with mirror fallbacks) and stay up to date automatically.
 
-| 目录 | 内容 |
-|------|------|
-| [`browser-extension/`](browser-extension/) | **主线** 浏览器扩展(Chrome/Edge);打包、上架物料见其内 `scripts/` 与 `store/` |
-| [`plugin/`](plugin/) | (可选)vSphere Client remote plug-in 源码;部署见 [docs/DEPLOY-linux.md](docs/DEPLOY-linux.md) |
-| [`plugin/i18n/`](plugin/i18n/) | 术语词库(英→5 种语言),扩展据此构建词典(活跃核心;虽在 `plugin/` 下但**不随插件暂缓**) |
-| [`contrib/`](contrib/) | 社区词条回流(扩展一键采集 → Issue/邮件 → 合并) |
-| [`docs/`](docs/) | 架构、部署、Aria Ops 方案等文档 |
+### Option 2 — Offline pack (air-gapped / customer sites)
 
-## 运行时架构(词典怎么来)
-
-仓库**已公开**,不再拆单独的语言包数据仓库——词典 `dict.*.json` 直接随主仓库入库,
-经 [jsDelivr](https://www.jsdelivr.com/) CDN 从主仓库分发:
-
-```
-浏览器扩展  ──①内置(离线包)──▶ 直接用
-            ──②本地缓存─────▶ chrome.storage(版本一致)
-            ──③CDN 按需下载─▶ cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@v<版本>/browser-extension/dict.<lang>.json
-                              (版本号来自 @main 的 langs.json 目录;tag 未就绪时自动退回 @main)
-```
-
-- **轻量包 / 商店版**:包内不带词典(~63KB),选语言时走 ③ 从 CDN 下载并缓存。
-- **离线包**:词典内置(~6MB),走 ①,**全程零联网**,适合隔离网 / 客户现场。
-
-## 安装
-
-> 📘 **图文安装/使用指南(多语言,含截图)**:[在线查看](https://vcf-rosetta.github.io/vcf-rosetta/)
-> · 源文件 [`docs/index.html`](docs/index.html)(单文件自包含,可离线打开;支持 en / 简体 / 繁體 / Deutsch / Italiano / 한국어 切换)
-
-### 方式一:Chrome 应用商店(联网,推荐普通用户)
-
-- **已上架** → [**VCF 9 UI Translator**](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)(或在商店搜索 “VCF 9 UI Translator”)。
-- 装好 → 打开 vCenter / VCF / Aria Ops 页面 → 点扩展图标 → 选语言 → 自动翻译。
-
-### 方式二:下载离线包手动安装(隔离网 / 客户现场 / 尝鲜)
-
-1. **直接下载最新离线包(词典内置,~6MB)**:
+1. Download the offline pack (dictionaries bundled, ~6 MB, **zero network needed after install**):
    👉 <https://github.com/vcf-rosetta/vcf-rosetta/releases/latest/download/vcf-rosetta-offline.zip>
-   (固定地址,永远指向最新版;也可到 [Releases](https://github.com/vcf-rosetta/vcf-rosetta/releases/latest) 页手动选 `vcf-rosetta-<版本>-offline.zip`。)
-2. **解压**到一个固定、不会删的目录(得到含 `manifest.json` 的文件夹)。
-3. 浏览器打开 `chrome://extensions`(Edge 为 `edge://extensions`)→ 右上角开 **开发者模式**。
-4. 点 **加载已解压的扩展程序 / Load unpacked** → 选**第 2 步解压出的文件夹**(不是 zip 本身)。
-5. 列表出现 **VCF Rosetta** 即装好 → 打开 vCenter/VCF/Aria Ops → 点图标 → 选语言。
-   > 核对:弹窗「词典」行显示 `zh-CN · 5 万+ 条 · 内置` 即最新。
+2. Unzip to a permanent folder (you'll see `manifest.json` inside).
+3. Open `chrome://extensions` (Edge: `edge://extensions`) → enable **Developer mode**.
+4. Click **Load unpacked** → select the unzipped folder (not the zip).
+5. Open the console, click the icon, pick a language.
 
-> **GitHub Release 只提供离线包(词典内置)**——避免下错不含词典的包。
-> 联网轻量版请直接用 [Chrome 应用商店](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)(词典按需下载并自动更新)。
-> 详细的离线制作/升级/企业批量分发见 [`browser-extension/README.md`](browser-extension/README.md)。
+> GitHub Releases ship **only** the offline pack, so whatever you download always includes the dictionaries.
 
-## 从源码构建(维护者)
+## Found untranslated text?
+
+Enable **"Collect untranslated terms"** in the popup, browse the affected screens, then **Export JSON** or
+**Contribute** (opens a pre-filled GitHub Issue). Only English UI strings are sent — never business data.
+Issues / new-language requests: <https://github.com/vcf-rosetta/vcf-rosetta/issues>
+
+## How dictionaries are delivered
+
+```
+extension ──① bundled (offline pack)──▶ use directly
+          ──② local cache────────────▶ chrome.storage (version-matched)
+          ──③ CDN on demand──────────▶ cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@v<ver>/browser-extension/dict.<lang>.json
+                                       (version discovered via @main langs.json; falls back to @main / mirror hosts)
+```
+
+## Repository layout
+
+| Path | Contents |
+|------|----------|
+| [`browser-extension/`](browser-extension/) | **The extension** (Chrome/Edge MV3); packaging & store material in `scripts/` and `store/` |
+| [`plugin/i18n/`](plugin/i18n/) | Terminology database (EN → 5 languages) the dictionaries are built from |
+| [`contrib/`](contrib/) | Community term round-trip tooling (collect → Issue → merge) |
+| [`docs/`](docs/) | Install guide (GitHub Pages), architecture, roadmap |
+| [`plugin/`](plugin/) | (paused) vSphere Client remote plug-in PoC — kept for reference, not deployed |
+
+## Build from source (maintainers)
 
 ```bash
 git clone https://github.com/vcf-rosetta/vcf-rosetta.git
 cd vcf-rosetta
-# dict.*.json 已随仓库入库,clone 即有;仅当改了词库源 glossary.*.json 才需重建:
-node browser-extension/build-dict.mjs                       # 重建 dict.*.json
-node browser-extension/scripts/pack-store.mjs               # 轻量包(~63KB):联网时按需从 CDN 下词典
-node browser-extension/scripts/pack-store.mjs --offline     # 离线包(~6MB):词典内置,零联网可用
+# dict.*.json are committed — clone and go. Rebuild only after editing glossary sources:
+node browser-extension/build-dict.mjs                       # rebuild dict.*.json
+node browser-extension/scripts/pack-store.mjs --offline     # offline pack (~6 MB, dictionaries bundled)
+node browser-extension/scripts/pack-store.mjs               # lite pack (store upload artifact only)
 ```
 
-## 状态
+## License & team
 
-- 扩展:**v3.4.34** 已发布,并**已上架 [Chrome 应用商店](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)**;界面默认英文(切到中文才显示中文 UI);覆盖 5 种语言(简体中文 / 繁體中文 / 德文 / 意大利语 / 韩语),词库 50k+ 条;一键添加/移除站点;关于页;轻量/离线两种打包;离线包经 GitHub Releases 分发
-- 插件:POC,暂缓部署
+[Apache-2.0](LICENSE). A community localization tool — **not affiliated with Broadcom / VMware**; it does not
+distribute any VMware software. "VMware", "vCenter", "vSphere" and "VCF" are trademarks of their respective owners.
 
-## 许可证
-
-[Apache License 2.0](LICENSE)。开发团队:Tony Yuan <mycloud2015@126.com>、Jingsong Yang <yjs@tanzu.eu.org>、Wei Zhou <zhouwei008@gmail.com>。Bug、翻译纠错、优化建议或新增语言需求欢迎联系。
+Developers: Tony Yuan <mycloud2015@126.com> · Jingsong Yang <yjs@tanzu.eu.org> · Wei Zhou <zhouwei008@gmail.com> —
+bug reports, translation fixes and new-language requests are all welcome.
