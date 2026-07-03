@@ -1,0 +1,19 @@
+{
+  "_note": "vc 9.0.2 采集回流 2026-07 — de/it/ko 三语 DRAFT(仅短标签,按 vSphere 官方术语惯例草译,待人工审校;长句暂缺,退英文)。结构:{en: {de, it, ko}}。",
+  "IPv6 settings": { "de": "IPv6-Einstellungen", "it": "Impostazioni IPv6", "ko": "IPv6 설정" },
+  "NIC settings": { "de": "NIC-Einstellungen", "it": "Impostazioni NIC", "ko": "NIC 설정" },
+  "IPv6 addresses": { "de": "IPv6-Adressen", "it": "Indirizzi IPv6", "ko": "IPv6 주소" },
+  "New Cluster...": { "de": "Neuer Cluster...", "it": "Nuovo cluster...", "ko": "새 클러스터..." },
+  "Add Hosts...": { "de": "Hosts hinzufügen...", "it": "Aggiungi host...", "ko": "호스트 추가..." },
+  "New Datacenter...": { "de": "Neues Datacenter...", "it": "Nuovo data center...", "ko": "새 데이터 센터..." },
+  "Security Alert": { "de": "Sicherheitswarnung", "it": "Avviso di sicurezza", "ko": "보안 경고" },
+  "Cluster Resources": { "de": "Clusterressourcen", "it": "Risorse del cluster", "ko": "클러스터 리소스" },
+  "Find Host": { "de": "Host suchen", "it": "Trova host", "ko": "호스트 찾기" },
+  "Change Host": { "de": "Host ändern", "it": "Cambia host", "ko": "호스트 변경" },
+  "Image name": { "de": "Imagename", "it": "Nome immagine", "ko": "이미지 이름" },
+  "Show components": { "de": "Komponenten anzeigen", "it": "Mostra componenti", "ko": "구성 요소 표시" },
+  "Create a new image": { "de": "Neues Image erstellen", "it": "Crea una nuova immagine", "ko": "새 이미지 생성" },
+  "Selected Host": { "de": "Ausgewählter Host", "it": "Host selezionato", "ko": "선택한 호스트" },
+  "Retrieving host information...": { "de": "Hostinformationen werden abgerufen...", "it": "Recupero delle informazioni sull'host...", "ko": "호스트 정보 검색 중..." },
+  "Enter the host details": { "de": "Hostdetails eingeben", "it": "Immetti i dettagli dell'host", "ko": "호스트 세부 정보 입력" }
+}

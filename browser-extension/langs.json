@@ -1,10 +1,10 @@
 {
   "_note": "可下载语言包目录。扩展据此显示语言选择器并按需下载 dict.<code>.json。每语言的 version 变更即触发已装用户重新下载缓存;词典 URL 钉到发布 tag @v<version>(内容不可变,免 purge),本目录文件自身经 @main 分发(publish-langpacks.sh 负责 purge)。发布词典 = 词典入库 + 此处 bump version + 打出对应 tag。新增语种:登记一行,把 dict.<code>.json 入库到 browser-extension/。",
   "languages": {
-    "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.32", "source": "official+curated", "status": "stable" },
-    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.32", "source": "official+draft", "status": "stable" },
-    "zh-TW": { "name": "繁體中文", "english": "Traditional Chinese", "version": "3.4.32", "source": "official", "status": "stable" },
-    "it":    { "name": "Italiano", "english": "Italian", "version": "3.4.32", "source": "official+draft", "status": "stable" },
-    "ko":    { "name": "한국어", "english": "Korean", "version": "3.4.32", "source": "official+draft", "status": "stable" }
+    "zh-CN": { "name": "简体中文", "english": "Simplified Chinese", "version": "3.4.34", "source": "official+curated", "status": "stable" },
+    "de":    { "name": "Deutsch", "english": "German", "version": "3.4.34", "source": "official+draft", "status": "stable" },
+    "zh-TW": { "name": "繁體中文", "english": "Traditional Chinese", "version": "3.4.34", "source": "official", "status": "stable" },
+    "it":    { "name": "Italiano", "english": "Italian", "version": "3.4.34", "source": "official+draft", "status": "stable" },
+    "ko":    { "name": "한국어", "english": "Korean", "version": "3.4.34", "source": "official+draft", "status": "stable" }
   }
 }
