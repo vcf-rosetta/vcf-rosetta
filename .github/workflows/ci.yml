@@ -1,0 +1,32 @@
+# 扩展侧 CI:语法检查 → 单测 → 词典/发布不变量校验 → 打包演练。
+# 词典校验里的 tag 检查需要完整 tag 历史,checkout 用 fetch-depth: 0。
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check (content scripts)
+        run: |
+          node --check browser-extension/content/lib.js
+          node --check browser-extension/content/translator.js
+          node --check browser-extension/popup/popup.js
+          node --check browser-extension/popup/i18n.js
+      - name: Unit tests
+        run: node --test "browser-extension/tests/*.test.mjs"
+      - name: Validate dictionaries & release invariants
+        run: node browser-extension/scripts/validate-dicts.mjs
+      - name: Pack dry-run (store zip)
+        run: node browser-extension/scripts/pack-store.mjs
+      - name: Pack dry-run (offline zip)
+        run: node browser-extension/scripts/pack-store.mjs --offline

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "en",
   "name": "__MSG_extName__",
-  "version": "3.4.34",
+  "version": "3.4.35",
   "description": "__MSG_extDesc__",
   "permissions": [
     "storage",
@@ -36,6 +36,7 @@
         "https://*/*"
       ],
       "js": [
+        "content/lib.js",
         "content/translator.js"
       ],
       "all_frames": true,
