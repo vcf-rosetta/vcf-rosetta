@@ -22,6 +22,7 @@ jobs:
           node --check browser-extension/content/translator.js
           node --check browser-extension/popup/popup.js
           node --check browser-extension/popup/i18n.js
+          node --check browser-extension/options/options.js
       - name: Unit tests
         run: node --test "browser-extension/tests/*.test.mjs"
       - name: Validate dictionaries & release invariants

@@ -21,6 +21,7 @@ const INCLUDE = [
   "icons",
   "content",
   "popup",
+  "options",
   "langs.json",
   "LICENSE",
   "NOTICE",

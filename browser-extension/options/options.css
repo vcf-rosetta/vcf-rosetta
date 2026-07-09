@@ -1,0 +1,48 @@
+:root {
+  --green: #1f8a4e;
+  --dark: #1b2a32;
+  --grey: #66757e;
+  --line: #e3e8ec;
+  --bg: #f4f7f5;
+  --card: #fff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--dark);
+  background: var(--bg);
+  line-height: 1.6;
+}
+.wrap { max-width: 820px; margin: 0 auto; padding: 28px 22px 56px; }
+
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.topbar h1 { font-size: 22px; color: var(--green); margin: 0; }
+.uilang {
+  flex: none; font-size: 13px; color: #33424c;
+  border: 1px solid #ccd; border-radius: 6px; background: #eef1f3;
+  padding: 4px 8px; cursor: pointer;
+}
+
+.intro { font-size: 15px; color: #33424c; margin: 14px 0 22px; }
+
+table.skills { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: 14px; }
+table.skills th, table.skills td { border-bottom: 1px solid var(--line); padding: 10px 14px; text-align: left; vertical-align: top; }
+table.skills thead th { background: #eef4ef; color: #33424c; font-weight: 600; }
+table.skills tbody tr:last-child td { border-bottom: none; }
+table.skills td a { color: var(--green); font-weight: 600; text-decoration: none; word-break: break-word; }
+table.skills td a:hover { text-decoration: underline; }
+table.skills code { background: #eef1ee; padding: 2px 7px; border-radius: 5px; font-size: 13px; white-space: nowrap; }
+.entry { display: inline-block; font-size: 11px; color: #8a5a00; background: #fff7e6; border: 1px solid #ffe1a8; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+
+.quick { margin-top: 30px; }
+.quick h2 { font-size: 17px; color: var(--green); margin: 0 0 6px; }
+.quick-note { font-size: 13px; color: var(--grey); margin: 0 0 12px; }
+pre.cmd { background: #14202a; color: #d9ece0; border-radius: 8px; padding: 12px 14px; margin: 10px 0; overflow-x: auto; }
+pre.cmd code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; white-space: pre; background: none; color: inherit; padding: 0; }
+
+.note { color: var(--grey); font-size: 12px; margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); }
+
+@media (max-width: 560px) {
+  table.skills code { white-space: normal; word-break: break-word; }
+}

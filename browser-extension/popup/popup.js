@@ -180,6 +180,16 @@ document.getElementById('about').addEventListener('click', () => {
   if (panel) panel.hidden = !panel.hidden;
 });
 
+// 「全部 VMware skill 与安装」:打开扩展的详细配置页(options),展示 skill 家族与安装命令。
+const openSkillsEl = document.getElementById('openSkills');
+if (openSkillsEl) {
+  openSkillsEl.addEventListener('click', e => {
+    e.preventDefault();
+    if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
+    else chrome.tabs.create({ url: chrome.runtime.getURL('options/options.html') });
+  });
+}
+
 // 切换「翻译语言包」:保存并刷新当前页生效。界面语言不受影响(由顶部开关单独控制)。
 langEl.addEventListener('change', async () => {
   await chrome.storage.sync.set({ lang: langEl.value });
