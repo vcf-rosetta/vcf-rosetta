@@ -41,6 +41,12 @@
   let loadedVer = null;    // 已加载词典对应的版本号
   let loadFailed = false;  // 所有来源(内置/缓存/全部 CDN)都取不到词典 —— 供弹窗明确告知用户
   let LANGS = {};
+  let BUNDLED_LANGS = {};   // 随扩展打包、随代码签名一起分发的语言目录 —— 完整性校验的信任锚
+  // 计算字节的 SHA-256 十六进制串(用于校验下载的语言包)。
+  async function sha256hex(buf) {
+    const d = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(d)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
   // 语言目录:先读内置(必定可用),再用 CDN 上的最新目录覆盖(带超时,失败无害)。
   // 走缓存/CDN 取词典前必须 await 它 —— 修复竞态:LANGS 未就绪时 ver 取到 '0',缓存版本
   // 永远不匹配 → 每次页面加载都重下数 MB 词典,还把缓存写成 version:'0' 造成永久抖动。
@@ -53,7 +59,7 @@
     langsReadyP = (async () => {
       try {
         const j = await (await fetch(chrome.runtime.getURL('langs.json'))).json();
-        if (j && j.languages) LANGS = j.languages;
+        if (j && j.languages) { LANGS = j.languages; BUNDLED_LANGS = j.languages; }
       } catch (e) { /* ignore */ }
       try {
         const r = await fetchFirst('main', 'langs.json', null, 4000);
@@ -118,20 +124,35 @@
       }
     } catch (e) { /* ignore */ }
 
-    // ③ 远程下载(逐 CDN 主机回退)→ 写缓存。优先钉到发布 tag(内容不可变,jsDelivr 长期
-    //    缓存、免 purge);tag 尚未打出(目录先行发布)或不可达时,退回 @main 浮动引用。
-    const refs = [];
-    if (ver !== '0') refs.push('v' + ver);
-    refs.push('main');
+    // ③ 远程下载 → 校验完整性 → 写缓存。
+    //    信任锚是发布 tag @v<版本>(git tag 内容不可变,jsDelivr 视其为永久缓存,攻击者无法在
+    //    不移动 tag 的情况下替换内容)。**不再回退到 @main 浮动引用取词典内容** —— 那是唯一可被
+    //    仓库/CDN 投毒篡改的可变引用,一旦被换成恶意译文(如把 vCenter 上的「取消」「删除」按钮
+    //    对调),会直接误导管理员并被缓存复用。仅当连语言目录版本都拿不到(ver==='0',近乎离线)
+    //    时,才允许 @main 作为「有胜于无」的应急兜底,且此时无法做哈希校验。
+    //    完整性校验:内置 langs.json(随扩展签名分发)为该语言登记了 sha256,且下载的正是这一版本
+    //    时,强制比对下载字节的哈希,不符即拒(投毒的钉版内容也拦得住)。发现的是更新版本(经远程
+    //    目录得知、内置目录尚无对应哈希)时,退而依赖不可变 tag 本身,跳过哈希但仍不碰 @main。
+    const pinned = ver !== '0';
+    const refs = pinned ? ['v' + ver] : ['main'];
+    const trusted = (BUNDLED_LANGS[lang] && BUNDLED_LANGS[lang].version === ver) ? BUNDLED_LANGS[lang].sha256 : null;
     for (const ref of refs) {
       const res = await fetchFirst(ref, 'dict.' + lang + '.json', force ? { cache: 'reload' } : null, 20000);
       if (!res) continue;
       try {
-        const d = sanitizeDict(await res.json());
+        const buf = await res.arrayBuffer();
+        if (trusted) {
+          const got = await sha256hex(buf);
+          if (got !== trusted) {
+            console.error('[vcf-rosetta] 语言包完整性校验失败 @' + ref + '(期望 ' + trusted.slice(0, 12) + '…,实得 ' + got.slice(0, 12) + '…),已拒绝');
+            continue;   // 不加载、不缓存被篡改内容
+          }
+        }
+        const d = sanitizeDict(JSON.parse(new TextDecoder().decode(buf)));
         if (!d) { console.warn('[vcf-rosetta] 语言包内容异常(非字符串映射)@' + ref); continue; }
         setDict(d); loadedLang = lang; loadedFrom = 'cdn'; loadedVer = ver;
         try { await chrome.storage.local.set({ [cacheKey]: { version: ver, data: dict } }); } catch (e) { /* 配额? */ }
-        console.info('[vcf-rosetta] 已下载并缓存语言包:' + lang + ',' + Object.keys(dict).length + ' 条');
+        console.info('[vcf-rosetta] 已下载并缓存语言包:' + lang + ',' + Object.keys(dict).length + ' 条' + (trusted ? '(哈希已校验)' : ''));
         return true;
       } catch (e) {
         console.warn('[vcf-rosetta] 语言包解析异常 @' + ref + ' : ' + e.message);
