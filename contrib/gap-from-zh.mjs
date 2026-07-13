@@ -25,34 +25,34 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const i18n = join(root, "plugin/i18n");
 const hasCJK = s => /[一-鿿]/.test(s);
 
-const zh = JSON.parse(readFileSync(join(i18n, "glossary.zh-CN.json"), "utf8"));
-const target = JSON.parse(readFileSync(join(i18n, `glossary.${lang}.json`), "utf8"));
+// 用 Map 做查表:正确处理 __proto__/constructor 等键(obj[k] 方括号取值对这些键会命中原型链,是隐蔽 bug)。
+const zh = new Map(Object.entries(JSON.parse(readFileSync(join(i18n, "glossary.zh-CN.json"), "utf8"))));
+const target = new Map(Object.entries(JSON.parse(readFileSync(join(i18n, `glossary.${lang}.json`), "utf8"))));
 
 // 候选英文键集合:--all 用整个 zh-CN;默认用策展 UI 领域词(排除 zh 专属官方TM 与 de 手工 overlay)。
 let keySet;
 if (useAll) {
-  keySet = Object.keys(zh);
+  keySet = [...zh.keys()];
 } else {
   const dir = join(i18n, "domains");
   const EXCLUDE = new Set(["vmware-official-zh.json", "vcf9-vsphere-client-h5-de.json"]);
   const files = readdirSync(dir).filter(f => f.endsWith(".json") && !EXCLUDE.has(f));
   const s = new Set();
   for (const f of files) {
-    const o = JSON.parse(readFileSync(join(dir, f), "utf8"));
-    for (const k in o) if (k !== "_note") s.add(k);
+    for (const [k] of Object.entries(JSON.parse(readFileSync(join(dir, f), "utf8")))) if (k !== "_note") s.add(k);
   }
   keySet = [...s];
 }
 
 // 只保留:目标语言还没有 + zh-CN 有中文可参考。
 const missing = keySet
-  .filter(k => target[k] === undefined && zh[k] && hasCJK(zh[k]))
+  .filter(k => !target.has(k) && zh.get(k) && hasCJK(zh.get(k)))
   .sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
 
 if (!missing.length) { console.log(`${lang}: 无缺词(相对 zh-CN ${useAll ? "全量" : "策展UI"}),无需生成。`); process.exit(0); }
 
-const skeleton = missing.reduce((o, k) => (o[k] = "", o), {});
-const ref = missing.reduce((o, k) => (o[k] = zh[k], o), {});
+const skeleton = missing.reduce((o, k) => (o[k] = "", o), Object.create(null));
+const ref = missing.reduce((o, k) => (o[k] = zh.get(k), o), Object.create(null));
 const outDir = join(root, "contrib/incoming", lang);
 mkdirSync(outDir, { recursive: true });
 const base = `from-zh-${missing.length}`;

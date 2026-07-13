@@ -7,8 +7,9 @@
 //   3. zh-TW 简体残留:只查「无合法繁体用法」的简体专属字(SIMP_ONLY 集)。
 //      ★ 不要用 OpenCC s2tw 全量回译来校验 —— 会把台/游/准/余/云/伙/里 等台湾正字误报
 //        (量词「台」558 处全是对的,臺 只用于地名)。历史审计见 docs / 维护者笔记。
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -57,8 +58,8 @@ for (const [lang, meta] of Object.entries(langs)) {
   if (!existsSync(file)) { fail(`langs.json 声明 ${lang} 但缺 dict.${lang}.json`); continue; }
 
   // 1. 扁平映射 + 条数
-  let dict;
-  try { dict = JSON.parse(readFileSync(file, 'utf8')); }
+  let raw, dict;
+  try { raw = readFileSync(file); dict = JSON.parse(raw.toString('utf8')); }
   catch (e) { fail(`dict.${lang}.json 解析失败: ${e.message}`); continue; }
   if (!dict || typeof dict !== 'object' || Array.isArray(dict)) { fail(`dict.${lang}.json 不是对象`); continue; }
   const bad = [];
@@ -71,6 +72,25 @@ for (const [lang, meta] of Object.entries(langs)) {
   if (bad.length) fail(`dict.${lang}.json 有 ${bad.length} 个非字符串/空白条目,如: ${bad.slice(0, 5).join(' | ')}`);
   if (n < MIN_ENTRIES) fail(`dict.${lang}.json 仅 ${n} 条(< ${MIN_ENTRIES}),构建产物疑似损坏`);
   else ok(`dict.${lang}.json ${n} 条,扁平映射`);
+
+  // 1b. 完整性:langs.json 登记的 sha256 必须与词典字节一致 —— 扩展下载后据此校验,CI 里也确保
+  //     dict 是由 glossary 重建的(手改 dict 或改 glossary 忘重建都会哈希对不上)。
+  const digest = createHash('sha256').update(raw).digest('hex');
+  if (!meta.sha256) fail(`langs.json ${lang} 缺 sha256(跑 node browser-extension/build-dict.mjs 生成)`);
+  else if (meta.sha256 !== digest) fail(`dict.${lang}.json 与 langs.json 登记的 sha256 不符(实得 ${digest.slice(0, 12)}…,登记 ${meta.sha256.slice(0, 12)}…)—— 词典未由 glossary 重建?`);
+  else ok(`dict.${lang}.json sha256 与 langs.json 一致`);
+
+  // 1c. 占位符对称:键含 {0}/{1}/%s/%d 等占位而译文缺(或反之)= 运行期坏串。存量少量已知截断,
+  //     暂作告警不阻断;新增大量不对称时人工复核。
+  const PLACEHOLDER = /\{\d+\}|%\d*\$?[sd@]/g;
+  let phMismatch = 0; const phExamples = [];
+  for (const [k, v] of Object.entries(dict)) {
+    if (typeof v !== 'string') continue;
+    const kp = (k.match(PLACEHOLDER) || []).sort().join(',');
+    const vp = (v.match(PLACEHOLDER) || []).sort().join(',');
+    if (kp !== vp) { phMismatch++; if (phExamples.length < 5) phExamples.push(`"${k}" → "${v}"`); }
+  }
+  if (phMismatch) warn(`dict.${lang}.json 占位符不对称 ${phMismatch} 条(人工复核),如: ${phExamples.join(' | ')}`);
 
   // 2. 版本
   if (!/^\d+\.\d+\.\d+$/.test(meta.version || '')) fail(`langs.json ${lang} version 非法: ${meta.version}`);
@@ -90,6 +110,15 @@ for (const [lang, meta] of Object.entries(langs)) {
     else ok('dict.zh-TW.json 无简体专属字残留');
   }
 }
+
+// 4. 反向映射:每个 dict.<lang>.json 都必须在 langs.json 登记 —— 否则会被 pack-store 通配
+//    (dict.*.json)悄悄打进离线包,却无目录项/无哈希、不受管控。
+const dictFiles = readdirSync(ext).filter(f => /^dict\.[a-z]{2}(-[A-Z]{2})?\.json$/.test(f));
+for (const f of dictFiles) {
+  const code = f.match(/^dict\.(.+)\.json$/)[1];
+  if (!langs[code]) fail(`${f} 存在但未在 langs.json 登记(会被打包却不受管控)`);
+}
+if (dictFiles.length === Object.keys(langs).length) ok(`dict 文件与 langs.json 一一对应(${dictFiles.length} 个)`);
 
 if (failed) { console.error('\n校验失败'); process.exit(1); }
 console.log('\n全部校验通过');
