@@ -6,10 +6,15 @@ on:
     branches: [main]
   pull_request:
 
+# 最小权限:CI 只读仓库,不需要写权限(降低被投毒 action / 注入攻破后的爆炸半径)。
+permissions:
+  contents: read
+
 jobs:
   extension:
     runs-on: ubuntu-latest
     steps:
+      # 加固建议:后续可把 @v4 钉到完整 commit SHA(供应链防篡改);此处保留主版本标签便于维护。
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -25,6 +30,13 @@ jobs:
           node --check browser-extension/options/options.js
       - name: Unit tests
         run: node --test "browser-extension/tests/*.test.mjs"
+      # 词典必须由 glossary 源确定性重建:跑构建后 dict.*.json 与 langs.json 不得有 diff。
+      # 拦住「直接手改 dict」或「改了 glossary 忘重建」——否则漂移会直发 CDN/商店。
+      - name: Dictionaries are rebuilt from source (no drift)
+        run: |
+          node browser-extension/build-dict.mjs
+          git diff --exit-code -- 'browser-extension/dict.*.json' browser-extension/langs.json \
+            || { echo '::error::dict/langs.json 与 glossary 源不同步,请跑 node browser-extension/build-dict.mjs 并提交'; exit 1; }
       - name: Validate dictionaries & release invariants
         run: node browser-extension/scripts/validate-dicts.mjs
       - name: Pack dry-run (store zip)

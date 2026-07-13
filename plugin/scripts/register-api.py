@@ -15,6 +15,8 @@ Config via env (or edit defaults below):
   VC_HOST      vCenter FQDN/IP
   VC_USER      administrator@vsphere.local
   VC_PASS      password (omit to be prompted)
+  VC_CACERT    path to the vCenter CA/cert PEM to trust (recommended)
+  VC_INSECURE  set to 1 to skip TLS verification (lab only — prints a loud warning)
   PLUGIN_URL   https://<plugin-host>:8443/plugin.json
   THUMBPRINT   SHA-256 thumbprint, colon-separated (from get-thumbprint.sh)
   PLUGIN_KEY   com.vcfrosetta.r1probe
@@ -39,12 +41,39 @@ LABEL = "VCF Rosetta R1 Probe"
 SUMMARY = "R1 locale verification plug-in"
 
 
+def build_ssl_context():
+    """Verify the vCenter TLS cert by default. This function sends the vCenter
+    *admin* password over the wire, so an unverified channel exposes it to any
+    on-path attacker. Opt out only with an explicit VC_INSECURE=1 (lab use)."""
+    cacert = os.environ.get("VC_CACERT")
+    if os.environ.get("VC_INSECURE") == "1":
+        print(
+            "WARNING: VC_INSECURE=1 — vCenter TLS certificate NOT verified. "
+            "Admin credentials are exposed to on-path attackers. Lab use only.",
+            file=sys.stderr,
+        )
+        return ssl._create_unverified_context()
+    if cacert:
+        if not os.path.isfile(cacert):
+            sys.exit(f"VC_CACERT not found: {cacert}")
+        return ssl.create_default_context(cafile=cacert)
+    # Default: verify against the system trust store.
+    return ssl.create_default_context()
+
+
 def connect():
     host = os.environ.get("VC_HOST") or sys.exit("set VC_HOST")
     user = os.environ.get("VC_USER", "administrator@vsphere.local")
     pwd = os.environ.get("VC_PASS") or getpass.getpass(f"Password for {user}@{host}: ")
-    ctx = ssl._create_unverified_context()  # lab vCenter cert not trusted; fine for R1
-    si = SmartConnect(host=host, user=user, pwd=pwd, sslContext=ctx)
+    ctx = build_ssl_context()
+    try:
+        si = SmartConnect(host=host, user=user, pwd=pwd, sslContext=ctx)
+    except ssl.SSLCertVerificationError as e:
+        sys.exit(
+            f"ERROR: vCenter TLS verification failed for {host}: {e.verify_message}.\n"
+            "  Fix by trusting the cert:  export VC_CACERT=/path/to/vcenter-ca.pem\n"
+            "  Or (lab only, insecure):   export VC_INSECURE=1"
+        )
     return si
 
 

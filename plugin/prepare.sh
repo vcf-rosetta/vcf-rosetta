@@ -15,8 +15,10 @@ warn() { printf "  \033[33m!\033[0m %s\n" "$1"; }
 die()  { printf "  \033[31m✗ %s\033[0m\n" "$1"; exit 1; }
 
 # --- load config -----------------------------------------------------------
-[ -f r1.env ] && { set -a; . ./r1.env; set +a; ok "loaded r1.env"; } \
-              || warn "no r1.env (using defaults + auto-detect); cp r1.env.example r1.env to customize"
+# 用安全解析器载入 r1.env(不 source/不执行文件),见 scripts/load-env.sh。
+. ./scripts/load-env.sh
+if [ -f r1.env ]; then load_r1_env ./r1.env; ok "loaded r1.env"; \
+else warn "no r1.env (using defaults + auto-detect); cp r1.env.example r1.env to customize"; fi
 PORT="${PORT:-8443}"
 
 echo "$HR"; echo "1) Dependency check"
@@ -38,7 +40,7 @@ fi
 
 echo "$HR"; echo "3) TLS cert (SAN=$PLUGIN_HOST)"
 if [ -f certs/server.crt ] && openssl x509 -in certs/server.crt -noout -text 2>/dev/null \
-     | grep -q "DNS:$PLUGIN_HOST"; then
+     | grep -qF "DNS:$PLUGIN_HOST"; then
   ok "existing certs/server.crt already covers $PLUGIN_HOST"
 else
   bash scripts/gen-cert.sh "$PLUGIN_HOST" ./certs >/dev/null

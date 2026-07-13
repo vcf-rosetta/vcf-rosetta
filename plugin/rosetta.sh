@@ -26,22 +26,17 @@ ok()   { printf "  \033[32m✓\033[0m %s\n" "$1"; }
 warn() { printf "  \033[33m!\033[0m %s\n" "$1"; }
 die()  { printf "  \033[31m✗ %s\033[0m\n" "$1" >&2; exit 1; }
 
-# 载入 r1.env,但**已在环境中设置的变量优先**(命令行传入可覆盖 r1.env)
-if [ -f r1.env ]; then
-  while IFS= read -r line; do
-    case "$line" in ''|\#*) continue;; esac
-    key="${line%%=*}"; val="${line#*=}"; key="$(echo "$key" | tr -d ' ')"
-    [ -z "$key" ] && continue
-    [ -z "${!key:-}" ] && export "$key=$val"
-  done < r1.env
-fi
+# 载入 r1.env(安全解析,不 source/不执行文件);已在环境中设置的变量优先(命令行可覆盖)。
+. ./scripts/load-env.sh
+load_r1_env ./r1.env
 PORT="${PORT:-8443}"
+case "$PORT" in ''|*[!0-9]*) die "PORT 非法(需纯数字): $PORT";; esac
 PLUGIN_HOST="${PLUGIN_HOST:-$(hostname -f 2>/dev/null || hostname)}"
 HAS_SYSTEMD=0; command -v systemctl >/dev/null 2>&1 && [ -d /run/systemd/system ] && HAS_SYSTEMD=1
 
 # ── 公共步骤 ───────────────────────────────────────────────
 ensure_cert() {
-  if [ -f certs/server.crt ] && openssl x509 -in certs/server.crt -noout -text 2>/dev/null | grep -qE "DNS:$PLUGIN_HOST|IP Address:$PLUGIN_HOST"; then
+  if [ -f certs/server.crt ] && openssl x509 -in certs/server.crt -noout -text 2>/dev/null | grep -qF -e "DNS:$PLUGIN_HOST" -e "IP Address:$PLUGIN_HOST"; then
     ok "证书已覆盖 $PLUGIN_HOST"
   else
     bash scripts/gen-cert.sh "$PLUGIN_HOST" ./certs >/dev/null
@@ -56,13 +51,16 @@ check_deps() {
   command -v openssl >/dev/null || die "缺 openssl";        ok "openssl 就绪"
   command -v zip     >/dev/null || die "缺 zip";            ok "zip 就绪"
 }
-serve_cmd() { echo node server/serve.mjs --cert ./certs/server.crt --key ./certs/server.key --port "$PORT"; }
+# 前台直接 exec(不经 $(...) 字段分割/通配展开);数组式传参,PORT 已在上方校验为纯数字。
+serve_run() { exec node server/serve.mjs --cert ./certs/server.crt --key ./certs/server.key --port "$PORT"; }
+# 仅供提示打印的等价命令行(nohup 示例)
+serve_cmd() { printf 'node server/serve.mjs --cert ./certs/server.crt --key ./certs/server.key --port %s' "$PORT"; }
 
 # ── 子命令 ─────────────────────────────────────────────────
 cmd_start() {        # 前台,调试用
   check_deps; ensure_cert; ensure_zip
   echo "$HR"; ok "前台启动:https://$PLUGIN_HOST:$PORT/plugin.json  (Ctrl-C 退出)"
-  exec $(serve_cmd)
+  serve_run
 }
 
 cmd_install() {
@@ -72,6 +70,7 @@ cmd_install() {
   echo "$HR"; echo "4) 后台服务"
   if [ "$HAS_SYSTEMD" = 1 ]; then
     NODE_BIN="$(command -v node)"; SVC_USER="${SUDO_USER:-$USER}"; DIR="$(pwd)"
+    case "$DIR" in *[[:space:]]*) die "安装目录含空白字符,systemd 单元无法可靠转义: $DIR";; esac
     sudo tee "/etc/systemd/system/$SVC.service" >/dev/null <<EOF
 [Unit]
 Description=VCF Rosetta plug-in server
@@ -82,7 +81,7 @@ Wants=network-online.target
 Type=simple
 User=$SVC_USER
 WorkingDirectory=$DIR
-ExecStart=$NODE_BIN $DIR/server/serve.mjs --cert $DIR/certs/server.crt --key $DIR/certs/server.key --port $PORT
+ExecStart="$NODE_BIN" "$DIR/server/serve.mjs" --cert "$DIR/certs/server.crt" --key "$DIR/certs/server.key" --port $PORT
 Restart=always
 RestartSec=3
 
@@ -116,7 +115,7 @@ cmd_stop() {
 }
 cmd_status() {
   if [ "$HAS_SYSTEMD" = 1 ]; then sudo systemctl status "$SVC" --no-pager | head -5 || true; fi
-  if curl -ksI --noproxy '*' --max-time 5 "https://localhost:$PORT/plugin.json" 2>/dev/null | grep -q "200"; then
+  if curl -ksI --noproxy '*' --max-time 5 "https://localhost:$PORT/plugin.json" 2>/dev/null | grep -qE "^HTTP/[0-9.]+ 200"; then
     ok "本机自测 https://localhost:$PORT/plugin.json → 200"
   else
     warn "本机自测未返回 200(服务可能未起,或端口/证书问题)"
@@ -137,7 +136,7 @@ cmd_update() {       # 发版更新:拉代码→重建→重启
 cmd_register() {
   : "${VC_HOST:?在 r1.env 设 VC_HOST}"; : "${VC_USER:?在 r1.env 设 VC_USER}"
   case "$VC_HOST" in *your-domain.com|*example.com)
-    die "VC_HOST 还是占位值($VC_HOST)。请在 r1.env 改成真实 vCenter,如:sed -i 's|^VC_HOST=.*|VC_HOST=vc.knight.com|' r1.env";; esac
+    die "VC_HOST 还是占位值($VC_HOST)。请在 r1.env 改成你的真实 vCenter 域名或 IP(如 vc.corp.lan),再重试";; esac
   case "$PLUGIN_HOST" in *your-domain.com|*example.com|localhost)
     warn "PLUGIN_HOST=$PLUGIN_HOST 可能不可被 vCenter 访问,注册后插件可能不显示。";; esac
   [ -f certs/server.crt ] || die "没有证书,先跑 rosetta.sh install/start 生成"

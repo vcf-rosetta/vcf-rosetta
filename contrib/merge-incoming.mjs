@@ -10,10 +10,16 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 const [file, lang] = process.argv.slice(2);
 if (!file || !lang) { console.error("用法: node contrib/merge-incoming.mjs <terms.json> <lang>"); process.exit(1); }
+// lang 用作路径片段与文件名 —— 严格校验为 locale 形态,挡住 ../ 目录穿越(输入来自不可信 Issue)。
+if (!/^[a-z]{2}(-[A-Z]{2})?$/.test(lang)) { console.error(`非法 lang(需 locale 形态,如 zh-CN/ja/fr): ${lang}`); process.exit(1); }
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+// 复用扩展端权威过滤器(content/lib.js 的 looksTranslatable / applyPhrases),避免本地副本漂移。
+const require = createRequire(import.meta.url);
+const L = require(join(root, "browser-extension/content/lib.js"));
 
 // 接受多种形态:字符串数组 / 对象数组[{text}] / {entries:[{text}]} / {text:meta}
 const parsed = JSON.parse(readFileSync(file, "utf8"));
@@ -29,49 +35,46 @@ if (!terms.length) { console.error("无法从输入提取词条(支持:字符串
 const glossaryPath = join(root, "plugin/i18n", `glossary.${lang}.json`);
 const glossary = existsSync(glossaryPath) ? JSON.parse(readFileSync(glossaryPath, "utf8")) : {};
 const hasCJK = s => /[一-鿿]/.test(s);
-const translated = new Set(Object.keys(glossary).filter(k => glossary[k] && glossary[k] !== k && hasCJK(glossary[k])));
+// 用 Object.entries(自有可枚举项,__proto__/constructor 的取值也正确)而非 keys+方括号取值
+// (obj["__proto__"] 会返回原型而非自有值,是隐蔽 bug)。
+const translated = new Set(
+  Object.entries(glossary)
+    .filter(([k, v]) => typeof v === "string" && v && v !== k && hasCJK(v))
+    .map(([k]) => k)
+);
 
 // 中文是目前最全的语言:为其它小语种附上 zh-CN 参考译文,翻译时可直接对照(见 contrib/gap-from-zh.mjs)。
 const zhPath = join(root, "plugin/i18n", "glossary.zh-CN.json");
-const zhRef = lang !== "zh-CN" && existsSync(zhPath) ? JSON.parse(readFileSync(zhPath, "utf8")) : {};
+const zhRefObj = lang !== "zh-CN" && existsSync(zhPath) ? JSON.parse(readFileSync(zhPath, "utf8")) : {};
+const zhRef = new Map(Object.entries(zhRefObj));   // Map 正确处理任意键(含 __proto__/constructor)
 
-// 运行时数据 / 标识符过滤(与扩展 looksTranslatable 同口径,从严)
-function isData(s) {
-  if (s.length < 2) return true;                              // 不设长度上限(与扩展 looksTranslatable 同口径):容纳段落级长描述
-  if (!/[A-Za-z]/.test(s)) return true;                       // 无字母
-  if (/^[0-9.\-:/\s%|]+$/.test(s)) return true;               // 纯数字/时间/百分比
-  if (/^[\d.,]+\s*(B|KB|MB|GB|TB|Hz|MHz|GHz|ms|%)/.test(s)) return true;
-  if (/\d{2}\/\d{2}\/\d{4},/.test(s)) return true;            // 时间戳
-  if (/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(s)) return true;      // UUID
-  if (/\.(com|local|net|org)\b/.test(s)) return true;         // 主机名/FQDN
-  if (/^task-\d+$/.test(s) || /^VSPHERE\.LOCAL\\/.test(s)) return true;
-  if (/@vsphere\.local/i.test(s)) return true;
-  return false;
-}
+// 过滤:非「值得翻译的英文」(扩展权威口径 looksTranslatable),或命中 PHRASES 受控模式
+// (动态数值串,归 PHRASES 而非词典)的一律剔除。
+const isDrop = s => !L.looksTranslatable(s) || L.applyPhrases(s, "zh-CN") !== s;
 
 const seen = new Set();
-const candidates = {};
+const candidates = new Map();
 let dropTranslated = 0, dropData = 0;
 for (const raw of terms) {
   const s = String(raw).trim();
   if (!s || seen.has(s)) continue; seen.add(s);
   if (translated.has(s)) { dropTranslated++; continue; }
-  if (isData(s)) { dropData++; continue; }
-  candidates[s] = "";
+  if (isDrop(s)) { dropData++; continue; }
+  candidates.set(s, "");
 }
 
-const keys = Object.keys(candidates).sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
-const sorted = keys.reduce((o, k) => (o[k] = "", o), {});
+const keys = [...candidates.keys()].sort((a, b) => a.toLowerCase() < b.toLowerCase() ? -1 : 1);
+const sorted = keys.reduce((o, k) => (o[k] = "", o), Object.create(null));
 const outDir = join(root, "contrib/incoming", lang);
 mkdirSync(outDir, { recursive: true });
 const outPath = join(outDir, `candidates-${keys.length}.json`);
 writeFileSync(outPath, JSON.stringify(sorted, null, 2) + "\n");
 
 // 参考伴随文件:英文 → zh-CN 译文,供翻译时对照(中文最全)。仅在有可用参考时写出。
-const refPairs = keys.filter(k => zhRef[k] && hasCJK(zhRef[k]));
+const refPairs = keys.filter(k => zhRef.get(k) && hasCJK(zhRef.get(k)));
 let refPath = null;
 if (refPairs.length) {
-  const ref = refPairs.reduce((o, k) => (o[k] = zhRef[k], o), {});
+  const ref = refPairs.reduce((o, k) => (o[k] = zhRef.get(k), o), Object.create(null));
   refPath = join(outDir, `candidates-${keys.length}.ref.json`);
   writeFileSync(refPath, JSON.stringify(ref, null, 2) + "\n");
 }

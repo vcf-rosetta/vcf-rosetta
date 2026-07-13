@@ -5,7 +5,9 @@
 set -euo pipefail
 cd "$(dirname "$0")"   # -> plugin/
 
-[ -f r1.env ] && { set -a; . ./r1.env; set +a; }
+# 安全解析 r1.env(不 source/不执行文件),见 scripts/load-env.sh。
+. ./scripts/load-env.sh
+load_r1_env ./r1.env
 PORT="${PORT:-8443}"
 PLUGIN_HOST="${PLUGIN_HOST:-$(hostname -f 2>/dev/null || hostname)}"
 

@@ -56,7 +56,7 @@ test('looksTranslatable: 动态值/机器标识/噪声剔除', () => {
   for (const s of [
     '05/03/2026', '11:42:09 PM', '00:50:56:aa:bb:cc',      // 日期/时钟/MAC
     '0 MB', '267 GHz free',                                 // 数值±单位
-    'com.vmware.cns', 'fleet-ops.knight.com', 'vc01.local:443', // 标识符/FQDN
+    'com.vmware.cns', 'fleet-ops.example.com', 'vc01.local:443', // 标识符/FQDN
     'snake_case_token', 'CisTaskProgress',                  // snake/驼峰
     'api/v1/{id}/tasks', 'urn:vmomi:HostSystem',            // 路径/URN
     '6f9619ff-8b86-d011-b42d-00c04fc964ff',                 // GUID
@@ -65,6 +65,18 @@ test('looksTranslatable: 动态值/机器标识/噪声剔除', () => {
     'Administrator@VSPHERE.LOCAL', 'lic...', 'Jun 20',      // UPN/截断/月日
     'knight-md-cl01', '已经是中文', 'A', '42%',
   ]) assert.equal(L.looksTranslatable(s), false, s);
+});
+
+test('looksTranslatable: 病态输入不触发灾难性回溯(ReDoS 回归锁)', () => {
+  // 旧 NOISE_RE 里 [\w]*([-_][\w]+){2,} 的嵌套量词对「近似匹配」串会指数回溯:
+  // 42 个下划线即需 ~69s,50+ 挂死管理台页面主线程。去嵌套后必须线性(此处放宽到 1s 上限)。
+  const evil = 'ab1' + '_'.repeat(60) + '!';
+  const t0 = Date.now();
+  L.looksTranslatable(evil);
+  assert.ok(Date.now() - t0 < 1000, `looksTranslatable 病态输入耗时 ${Date.now() - t0}ms`);
+  // 超长无空格串按机器标识剔除;超长「有空格」的段落级描述仍放行(长度门不误伤)
+  assert.equal(L.looksTranslatable('x'.repeat(400)), false);
+  assert.equal(L.looksTranslatable('This is a legitimate long paragraph. '.repeat(20)), true);
 });
 
 // ── classifyFlags ─────────────────────────────────────────
@@ -118,9 +130,9 @@ test('applyPhrases: 数字模式各语言替换', () => {
 });
 
 test('applyPhrases: 无数字模式必须可达(历史预筛 bug 回归锁)', () => {
-  const s = 'Query container volume async task running on target vc.knight.com finished with status SUCCESS';
+  const s = 'Query container volume async task running on target vc.example.com finished with status SUCCESS';
   assert.equal(L.applyPhrases(s, 'zh-CN'),
-    '在目标 vc.knight.com 上运行的“Query container volume async”任务已完成,状态为 SUCCESS');
+    '在目标 vc.example.com 上运行的“Query container volume async”任务已完成,状态为 SUCCESS');
   assert.equal(L.applyPhrases('esx01 (Maintenance Mode)', 'zh-CN'), 'esx01 (维护模式)');
   assert.equal(L.applyPhrases('a few seconds ago', 'zh-TW'), '幾秒前');
 });

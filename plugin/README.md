@@ -64,7 +64,7 @@ bash serve.sh
 ### 3) 注册到 vCenter(一次,改版本后重做)
 ```bash
 source .venv/bin/activate
-export VC_HOST=vc.knight.com VC_USER=administrator@vsphere.local
+export VC_HOST=vc.example.com VC_USER=administrator@vsphere.local
 export PLUGIN_HOST=$(hostname -f) PORT=8443
 export PLUGIN_URL=https://$PLUGIN_HOST:$PORT/plugin.zip
 export THUMBPRINT=$(bash scripts/get-thumbprint.sh localhost $PORT)

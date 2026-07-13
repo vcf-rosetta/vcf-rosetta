@@ -22,11 +22,15 @@ if [ "${1:-}" = "remove" ]; then
   exit 0
 fi
 
-[ -f "$PLUGIN_DIR/r1.env" ] && { set -a; . "$PLUGIN_DIR/r1.env"; set +a; }
+# 安全解析 r1.env(不 source/不执行文件),见 scripts/load-env.sh。
+. "$PLUGIN_DIR/scripts/load-env.sh"
+load_r1_env "$PLUGIN_DIR/r1.env"
 PORT="${PORT:-8443}"
 PLUGIN_HOST="${PLUGIN_HOST:-$(hostname -f 2>/dev/null || hostname)}"
 NODE_BIN="$(command -v node)" || { echo "找不到 node"; exit 1; }
 SVC_USER="${SUDO_USER:-$USER}"
+case "$PORT" in ''|*[!0-9]*) echo "PORT 非法(需纯数字): $PORT"; exit 1;; esac
+case "$PLUGIN_DIR" in *[[:space:]]*) echo "安装目录含空白字符,systemd 单元无法可靠转义: $PLUGIN_DIR"; exit 1;; esac
 
 # 启动前确保证书与插件包就绪(服务进程不交互)
 [ -f "$PLUGIN_DIR/certs/server.crt" ] || bash "$PLUGIN_DIR/scripts/gen-cert.sh" "$PLUGIN_HOST" >/dev/null
@@ -43,7 +47,7 @@ Wants=network-online.target
 Type=simple
 User=$SVC_USER
 WorkingDirectory=$PLUGIN_DIR
-ExecStart=$NODE_BIN $PLUGIN_DIR/server/serve.mjs --cert $PLUGIN_DIR/certs/server.crt --key $PLUGIN_DIR/certs/server.key --port $PORT
+ExecStart="$NODE_BIN" "$PLUGIN_DIR/server/serve.mjs" --cert "$PLUGIN_DIR/certs/server.crt" --key "$PLUGIN_DIR/certs/server.key" --port $PORT
 Restart=always
 RestartSec=3
 
