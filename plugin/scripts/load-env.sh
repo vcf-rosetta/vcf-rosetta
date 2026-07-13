@@ -15,6 +15,11 @@ load_r1_env() {
     key="$(printf '%s' "$key" | tr -d '[:space:]')"
     [ -z "$key" ] && continue
     case "$key" in [!A-Za-z_]* | *[!A-Za-z0-9_]*) continue ;; esac  # 非法变量名,跳过
+    # 去掉值两端成对的引号(与旧 source 行为一致,支持 PORT="8443");仍不做任何求值。
+    case "$val" in
+      \"*\") val="${val#\"}"; val="${val%\"}" ;;
+      \'*\') val="${val#\'}"; val="${val%\'}" ;;
+    esac
     [ -z "${!key:-}" ] && export "$key=$val"
   done < "$envfile"
 }
