@@ -4,6 +4,10 @@ dist/
 build/
 *.log
 
+# Python
+__pycache__/
+*.pyc
+
 # Env / secrets
 .env
 .env.*
@@ -11,12 +15,17 @@ build/
 
 # OS / editor
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
 *.swp
+~$*            # Office 临时锁文件(如 ~$deck.pptx)
 
 # Scratch / working assets (screenshots, article drafts, store-asset exports)
 tmp/
+
+# 演示素材(二进制 pptx + 构建脚本,不入公开仓库)
+ppt/
 
 # R1 test certs
 plugin/certs/

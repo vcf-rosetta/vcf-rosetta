@@ -37,8 +37,10 @@ python3 scripts/register-api.py list
 ```bash
 sudo apt update
 sudo apt install -y nodejs npm openssl zip curl git python3-pip
-node -v    # < 18 则用 NodeSource:
-#   curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt install -y nodejs
+node -v    # < 18 则用 NodeSource(先下载脚本、核对内容再执行,勿直接 curl|sudo bash):
+#   curl -fsSLo nodesource_setup.sh https://deb.nodesource.com/setup_20.x
+#   less nodesource_setup.sh        # 过目确认后再执行
+#   sudo bash nodesource_setup.sh && sudo apt install -y nodejs
 # 放行端口(ufw):
 sudo ufw allow 8443/tcp
 ```
@@ -46,9 +48,9 @@ sudo ufw allow 8443/tcp
 ## RHEL / CentOS Stream / Rocky / AlmaLinux
 ```bash
 sudo dnf install -y nodejs openssl zip curl git python3-pip
-node -v    # < 18 则用模块或 NodeSource:
+node -v    # < 18 则优先用 dnf 模块(免远程脚本):
 #   sudo dnf module reset nodejs -y && sudo dnf module enable nodejs:20 -y && sudo dnf install -y nodejs
-#   或 curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash - && sudo dnf install -y nodejs
+#   NodeSource 备选:先 curl -fsSLo setup.sh https://rpm.nodesource.com/setup_20.x,过目后 sudo bash setup.sh
 # 放行端口(firewalld):
 sudo firewall-cmd --permanent --add-port=8443/tcp && sudo firewall-cmd --reload
 ```

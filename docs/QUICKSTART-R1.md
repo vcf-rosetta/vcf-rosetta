@@ -27,7 +27,7 @@ nslookup dc.vclass.local
 cd ~/vcf-rosetta && git pull && cd plugin
 
 # 注销可能存在的旧注册(没有也无妨)
-VC_HOST=vc.knight.com VC_USER=administrator@vsphere.local \
+VC_HOST=vc.example.com VC_USER=administrator@vsphere.local \
   python3 scripts/register-api.py unregister 2>/dev/null || true
 
 # 删旧证书,重新来
@@ -100,7 +100,7 @@ python -c "import pyVmomi; from pyVim.connect import SmartConnect; print('pyvmom
 
 ```bash
 # venv 仍激活状态下:
-export VC_HOST=vc.knight.com
+export VC_HOST=vc.example.com
 export VC_USER=administrator@vsphere.local
 export PLUGIN_HOST=<PLUGIN_HOST>
 export PLUGIN_URL=https://$PLUGIN_HOST:8443/plugin.json
