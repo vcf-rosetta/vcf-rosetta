@@ -104,6 +104,9 @@ button.grp-about {
 .aboutpanel .ap-skill-links a { font-weight: 600; }
 [hidden] { display: none; }
 hr { border: none; border-top: 1px solid #e3e8ec; margin: 10px 0 8px; }
+.promo { margin: 0 0 8px; display: flex; flex-direction: column; gap: 3px; }
+.promo a { color: #1d7a46; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.promo a:hover { text-decoration: underline; }
 .hint { color: #1d7a46; font-size: 12px; min-height: 14px; margin: 6px 0 0; }
 .meta { color: #889; font-size: 11px; margin: 6px 0 0; }
 /* 翻译关闭提示:醒目但不刺眼 */
