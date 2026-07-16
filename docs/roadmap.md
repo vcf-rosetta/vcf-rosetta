@@ -6,7 +6,7 @@
 
 ## 已交付(现状)
 
-- **首发 v3.4.33,现 v3.4.37**:vCenter / VCF / Aria Operations 原生 UI 实时翻译(Chrome/Edge MV3)
+- **首发 v3.4.33,现 v3.4.38**:vCenter / VCF / Aria Operations 原生 UI 实时翻译(Chrome/Edge MV3)
 - 5 种翻译语言(zh-CN / zh-TW / de / it / ko,VCF 9 已放弃的语言),词库 5 万+ 条/语言
 - 6 语言弹窗界面;轻量包(CDN 取词典)/ 离线包(词典内置,隔离网可用)双形态
 - **已上架 [Chrome 应用商店](https://chromewebstore.google.com/detail/vcf-9-ui-translator/fcpofclniofejlnhfckblonhecghkbmp)**;离线包经 GitHub Releases 固定直链分发
@@ -19,7 +19,7 @@
 
 | 项 | 状态 |
 |----|------|
-| 商店版持续迭代 | ✅ 已上架并迭代至 v3.4.37(提审上传 `dist/vcf-rosetta-<版本>.zip`) |
+| 商店版持续迭代 | ✅ 已上架并迭代至 v3.4.38(提审上传 `dist/vcf-rosetta-<版本>.zip`) |
 | VCF 9.0.2 / SDDC Manager 词表回流 | ⬜ 等现场用户导出缺词 JSON(SDDC Manager 词条目前任何来源都没有) |
 
 ## 待开发(backlog,按优先级)

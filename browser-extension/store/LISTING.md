@@ -1,4 +1,4 @@
-# Chrome Web Store — Listing copy (v3.4.37)
+# Chrome Web Store — Listing copy (v3.4.38)
 
 > Paste into the Chrome Developer Dashboard "Store listing". Summary ≤132 chars.
 > The popup UI ships in 6 languages (English, Simplified/Traditional Chinese, German, Italian, Korean) and on first open follows the browser language, falling back to English. The store name/description in `chrome://extensions` also localize per browser language via `_locales/`.
