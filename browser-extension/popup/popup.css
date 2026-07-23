@@ -97,6 +97,11 @@ button.grp-about {
 .aboutpanel a { color: #1d7a46; }
 .aboutpanel .ap-team { margin: 0 0 2px; font-weight: 600; }
 .aboutpanel .ap-note { color: #889; margin: 4px 0 0; }
+/* 关于面板:支持/捐赠(无广告、无追踪,自愿支持) */
+.aboutpanel .ap-support { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #d7ddE1; }
+.aboutpanel .ap-support-lead { margin: 0 0 6px; color: #33424c; }
+.aboutpanel .ap-donate { display: inline-block; padding: 5px 12px; background: #1d7a46; color: #fff; font-weight: 600; text-decoration: none; border-radius: 5px; }
+.aboutpanel .ap-donate:hover { background: #166237; }
 /* 关于面板底部:同团队的 VMware skill 家族推荐(引导发现,不喧宾夺主) */
 .aboutpanel .ap-skill { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #d7ddE1; }
 .aboutpanel .ap-skill-lead { margin: 0 0 4px; color: #33424c; }
