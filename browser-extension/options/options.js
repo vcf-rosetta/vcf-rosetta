@@ -9,13 +9,15 @@ let ui = 'en';
 // skill 家族(vmware-aiops 为推荐入口)。名称、GitHub、安装命令为技术内容,统一英文;
 // scope 简述随各 skill 固定。数据源:VMware skill 家族各仓库 README 的家族总表。
 const SKILLS = [
-  { name: 'vmware-aiops', repo: 'https://github.com/zw008/VMware-AIops', install: 'uv tool install vmware-aiops', scope: 'VM lifecycle, deployment, guest ops, clusters', entry: true },
-  { name: 'vmware-monitor', repo: 'https://github.com/zw008/VMware-Monitor', install: 'uv tool install vmware-monitor', scope: 'Read-only: inventory, health, alarms, events, metrics' },
+  { name: 'vmware-aiops', repo: 'https://github.com/zw008/VMware-AIops', install: 'uv tool install vmware-aiops', scope: 'VM lifecycle, deployment, guest ops, clusters, triage', entry: true },
+  { name: 'vmware-monitor', repo: 'https://github.com/zw008/VMware-Monitor', install: 'uv tool install vmware-monitor', scope: 'Read-only: inventory, health, alarms, events, investigation bundles' },
   { name: 'vmware-storage', repo: 'https://github.com/zw008/VMware-Storage', install: 'uv tool install vmware-storage', scope: 'Datastores, iSCSI, vSAN' },
   { name: 'vmware-vks', repo: 'https://github.com/zw008/VMware-VKS', install: 'uv tool install vmware-vks', scope: 'Tanzu Namespaces, TKC cluster lifecycle' },
-  { name: 'vmware-nsx', repo: 'https://github.com/zw008/VMware-NSX', install: 'uv tool install vmware-nsx-mgmt', scope: 'NSX networking: segments, gateways, NAT, IPAM' },
-  { name: 'vmware-nsx-security', repo: 'https://github.com/zw008/VMware-NSX-Security', install: 'uv tool install vmware-nsx-security', scope: 'DFW microsegmentation, security groups, Traceflow' },
-  { name: 'vmware-aria', repo: 'https://github.com/zw008/VMware-Aria', install: 'uv tool install vmware-aria', scope: 'Aria Ops metrics, alerts, capacity planning' },
+  { name: 'vmware-nsx', repo: 'https://github.com/zw008/VMware-NSX', install: 'uv tool install vmware-nsx-mgmt', scope: 'NSX networking: segments, gateways, NAT, routing, IPAM' },
+  { name: 'vmware-nsx-security', repo: 'https://github.com/zw008/VMware-NSX-Security', install: 'uv tool install vmware-nsx-security', scope: 'DFW policies, security groups, Traceflow, IDS/IPS' },
+  { name: 'vmware-aria', repo: 'https://github.com/zw008/VMware-Aria', install: 'uv tool install vmware-aria', scope: 'Aria Ops metrics, alerts, capacity, anomalies' },
+  { name: 'vmware-avi', repo: 'https://github.com/zw008/VMware-AVI', install: 'uv tool install vmware-avi', scope: 'AVI (NSX ALB) load balancing, AKO Kubernetes ops' },
+  { name: 'vmware-harden', repo: 'https://github.com/zw008/VMware-Harden', install: 'uv tool install vmware-harden', scope: 'Compliance baselines (CIS / vSphere SCG / PCI-DSS), drift detection' },
 ];
 
 // 渲染一行 skill(不可变:每次从数据构造新节点,不改动既有 DOM 数据)
