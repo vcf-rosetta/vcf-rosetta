@@ -17,10 +17,12 @@ function applyUi() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(ui, el.getAttribute('data-i18n'));
   });
-  // 会被省略号截断的推广/技能链接:补 title,悬停浮动显示当前语言全文,避免看不全
-  document.querySelectorAll('.promo a[data-i18n], .ap-skill-links a[data-i18n]').forEach(a => {
-    a.title = a.textContent;
-  });
+  // 捐赠通道按界面语言切换:简体中文用微信赞赏码(PayPal 大陆不可用),其它语言用 PayPal
+  const isCN = ui === 'zh-CN';
+  const paypalEl = document.getElementById('donatePaypal');
+  const wechatEl = document.getElementById('donateWechat');
+  if (paypalEl) paypalEl.hidden = isCN;
+  if (wechatEl) wechatEl.hidden = !isCN;
   if (uiLangEl) { uiLangEl.value = ui; uiLangEl.title = t(ui, 'uiTip'); }
   const orig = langEl.querySelector('option[value="en"]');
   if (orig) orig.textContent = t(ui, 'langOriginal');   // 「英文原文」选项随界面语言刷新
