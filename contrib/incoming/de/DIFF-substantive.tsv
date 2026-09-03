@@ -1,0 +1,105 @@
+批次	英文(机翻侧)	机翻译文	英文(库内侧)	官方译文
+long-001	Accept Certificate Thumbprint	Zertifikat-Fingerabdruck akzeptieren	Accept certificate thumbprint:	Fingerabdruck des Zertifikats akzeptieren
+long-001	Add new and existing hosts to your cluster	Neue und vorhandene Hosts zu Ihrem Cluster hinzufügen	Add new and existing hosts to your cluster.	Fügen Sie Ihrem Cluster neue und bereits bestehende Hosts hinzu.
+long-002	Allow Reduced Redundancy	Reduzierte Redundanz zulassen	Allow reduced redundancy	Verringerte Redundanz zulassen
+long-002	App Heartbeats Detected	App-Heartbeats erkannt	App Heartbeats detected	App-Taktsignale erkannt
+long-002	Apply Storage DRS Recommendations	Storage DRS-Empfehlungen anwenden	Apply Storage DRS recommendations	Storage DRS-Empfehlungen übernehmen
+long-004	Checks if the vSAN performance service network diagnostic mode is enabled. This alarm is triggered when the network diagnostic mode is enabled for more than 24 hours	Überprüft, ob der Netzwerkdiagnosemodus des vSAN-Leistungsdiensts aktiviert ist. Dieser Alarm wird ausgelöst, wenn der Netzwerkdiagnosemodus länger als 24 Stunden aktiviert ist	"Checks if the vSAN performance service network diagnostic mode is enabled. This alarm is triggered when the network diagnostic mode is enabled for more than 24 hours".	„Überprüft, ob der Netzwerkdiagnosemodus für den vSAN-Leistungsdienst aktiviert ist. Dieser Alarm wird ausgelöst, wenn der Netzwerkdiagnosemodus länger als 24 Stunden aktiviert ist.“
+long-005	Configuration Baseline	Konfigurationsbaseline	Configuration baseline	Konfigurations-Baseline
+long-008	Destination Datastore	Ziel-Datenspeicher	Destination datastore	Zieldatenspeicher
+long-008	Destination Resource Pool	Ziel-Ressourcenpool	Destination resource pool	Zielressourcenpool
+long-009	Disable DPM on the Cluster	DPM auf dem Cluster deaktivieren	Disable DPM on the cluster.	Deaktivieren Sie DPM auf dem Cluster.
+long-009	Disable DPM on the cluster	DPM auf dem Cluster deaktivieren	Disable DPM on the cluster.	Deaktivieren Sie DPM auf dem Cluster.
+long-009	Disable HA Admission Control	HA-Zugangssteuerung deaktivieren	Disable HA admission control.	Deaktivieren Sie die HA-Zugangssteuerung.
+long-009	Disable HA admission control	HA-Zugangssteuerung deaktivieren	Disable HA admission control.	Deaktivieren Sie die HA-Zugangssteuerung.
+long-009	Do not use CHAP unless required by target	CHAP nur verwenden, wenn vom Ziel gefordert	Do Not Use Chap Unless Required By Target	CHAP nicht verwenden, sofern nicht vom Ziel benötigt
+long-010	Enable vSAN Performance Service	vSAN-Leistungsdienst aktivieren	Enable vSAN performance service	vSAN-Leistungservice aktivieren
+long-011	Exit Partial Maintenance Mode	Teilweisen Wartungsmodus beenden	Exit partial maintenance mode	Partiellen Wartungsmodus beenden
+long-011	Export Impact Details	Details zu Auswirkungen exportieren	Export impact details	Auswirkungsdetails exportieren
+long-013	Host Inventory Privileges	Rechte für Hostbestandsliste	Host.Inventory Privileges	Host.Inventory-Rechte
+long-013	Hosts are waiting to retry remediation as defined in remediation policy's retry and delay settings.	Die Hosts warten auf einen erneuten Versuch der Standardisierung gemäß den Wiederholungs- und Verzögerungseinstellungen der Standardisierungsrichtlinie.	"Hosts are waiting to retry remediation as defined in remediation policy's retry and delay settings.";	„Hosts warten auf eine erneute Standardisierung gemäß der Definition in den Wiederholungs- und Verzögerungseinstellungen der Standardisierungsrichtlinie.“;
+long-014	Include Patches and Updates for Current ESXi Version	Patches und Updates für die aktuelle ESXi-Version einschließen	Include patches and updates for current ESXi version	Patches und Aktualisierungen für aktuelle ESXi-Version einschließen
+long-014	Include Upgrades to New ESXi Versions	Upgrades auf neue ESXi-Versionen einschließen	Include upgrades to new ESXi versions	Beinhaltet Upgrades auf neue ESXi-Versionen
+long-014	Independent persistent	Unabhängig, dauerhaft	independent-persistent	Unabhängig – Dauerhaft
+long-018	Network Failure Detection	Netzwerkfehlererkennung	Network failure detection	Netzwerkausfallerkennung
+long-018	Network(RDMA NIC: RoCE v2) driver/firmware is vSAN certified	Netzwerk (RDMA-Netzwerkkarte: RoCE v2): Treiber/Firmware ist vSAN-zertifiziert	Network (RDMA NIC: RoCE v2) driver/firmware is vSAN certified	Netzwerk (RDMA-Netzwerkkarte: RoCE v2)-Treiber/-Firmware ist für vSAN zertifiziert
+long-018	Network(RDMA NIC: RoCE v2) is vSAN certified	Netzwerk (RDMA-Netzwerkkarte: RoCE v2) ist vSAN-zertifiziert	Network (RDMA NIC: RoCE v2) is vSAN certified	Netzwerk (RDMA-Netzwerkkarte: RoCE v2) ist für vSAN zertifiziert
+long-019	No Cryptography Administrator	Administrator ohne Kryptografierechte	No cryptography administrator	Kein Kryptografie-Administrator
+long-019	Number of Backups to Retain	Anzahl der aufzubewahrenden Sicherungen	Number of backups to retain	Anzahl der Sicherungen, die aufbewahrt werden sollen
+long-020	Object Space Reservation	Objektspeicherplatz-Reservierung	Object space reservation	Reservierter Objektspeicherplatz
+long-021	Power Management Policy	Richtlinie für die Energieverwaltung	Power management policy	Energieverwaltungs-\nrichtlinie
+long-021	Pre-Check Remediation	Vorabprüfung der Standardisierung	Pre-check Remediation	Überprüfung vor der Standardisierung
+long-021	Pre-check remediation	Vorabprüfung der Standardisierung	Pre-check Remediation	Überprüfung vor der Standardisierung
+long-021	Press Enter and use left or right key to move the card to a new position	Drücken Sie die Eingabetaste und verwenden Sie die Nach-links- oder Nach-rechts-Taste, um die Karte an eine neue Position zu verschieben	Press Enter and use left or right key to move the card to a new position.	Drücken Sie die Eingabetaste und verwenden Sie die Links- oder Rechts-Taste, um die Karte an eine neue Position zu verschieben.
+long-022	Reapply Storage Policy	Speicherrichtlinie erneut anwenden	Reapply storage policy	Speicherrichtlinie neu anwenden
+long-022	Remediation Pre-Check	Vorabprüfung der Standardisierung	Remediation pre-check	Standardisierungsvorabprüfung
+long-023	Review your selections before finishing the wizard	Prüfen Sie Ihre Auswahl, bevor Sie den Assistenten abschließen	Review your selections before finishing the wizard.	Überprüfen Sie die Auswahl, bevor Sie den Assistenten beenden.
+long-024	Same Format as Source	Gleiches Format wie Quelle	Same format as source	Format wie Quelle
+long-028	Traffic Filtering and Marking	Datenverkehrsfilterung und -markierung	Traffic filtering and marking	Filtern und Markieren des Datenverkehrs
+long-029	Upgrade VM Compatibility	Upgrade der VM-Kompatibilität durchführen	Upgrade VM compatibility	Kompatibilitäts-Upgrade der VM
+long-029	Upgrade VM Compatibility...	Upgrade der VM-Kompatibilität durchführen...	Upgrade VM compatibility	Kompatibilitäts-Upgrade der VM
+long-029	Use CHAP unless prohibited by target	CHAP verwenden, sofern nicht vom Ziel untersagt	Use Chap Unless Prohibited By Target	CHAP verwenden, es sei denn, das Ziel verbietet dies
+long-031	VM fault tolerance state changed	Fault Tolerance-Status der VM geändert	VM Fault Tolerance state changed	VM - Fault Tolerance-Zustand geändert
+long-032	vSAN health service alarm	Alarm des vSAN-Integritätsdiensts	vSAN Health Service Alarm	Alarm für vSAN-Systemzustandsdienst
+long-033	vSAN Storage Policy Compliance up-to-date	Konformität der vSAN-Speicherrichtlinie auf dem neuesten Stand	vSAN storage policy compliance up-to-date	Einhaltung der vSAN-Speicherrichtlinien ist aktuell
+long-033	vSphere replication persistent state file	Dauerhafte Zustandsdatei der vSphere-Replizierung	vSphere Replication persistent state file	vSphere Replication-Datei für persistenten Zustand
+short-001	Account (password)	Konto (Kennwort)	Account password	Kontokennwort
+short-001	Acknowledge (alarm)	Bestätigen (Alarm)	Acknowledge alarm	Alarm bestätigen
+short-004	All-Flash	All-Flash	All Flash	Alle Flash
+short-006	Auto-Update	Automatisches Update	Auto Update	Automatische Aktualisierung
+short-006	Automation Level	Automatisierungsgrad	Automation level	Automatisierungsstufe
+short-006	Backup Configuration	Sicherungskonfiguration	Backup configuration	Konfiguration sichern
+short-008	CHANGE VERSION	VERSION ÄNDERN	Change version	Änderungsversion
+short-008	Check Compliance	Konformität prüfen	Check compliance	Übereinstimmung prüfen
+short-008	CHECK COMPLIANCE	KONFORMITÄT PRÜFEN	Check compliance	Übereinstimmung prüfen
+short-009	Cluster Lifecycle	Cluster-Lebenszyklus	Cluster lifecycle	Clusterlebenszyklus
+short-009	compliant	konform	Compliant	Übereinstimmung
+short-011	CPU Usage %	CPU-Auslastung %	CPU Usage(%)	CPU-Nutzung (%)
+short-011	CPU Usage (%)	CPU-Auslastung (%)	CPU Usage(%)	CPU-Nutzung (%)
+short-011	Create New	Neu erstellen	Create new	Neue erstellen
+short-012	Custom (time range)	Benutzerdefiniert (Zeitraum)	Custom time range	Benutzerdefinierter Zeitraum
+short-013	Datastore Size	Datenspeichergröße	Datastore size	Größe des Datenspeichers
+short-013	Default Gateway	Standardgateway	Default gateway	Standard-Gateway
+short-014	Disabled (DRS)	Deaktiviert (DRS)	Disabled DRS	DRS deaktiviert.
+short-015	Drag and Drop	Ziehen und Ablegen	Drag and drop	Drag &amp; Drop
+short-018	Event Severity	Ereignisschweregrad	Event severity	Schweregrad des Ereignisses
+short-022	Health Check Result	Ergebnis der Integritätsprüfung	Health check result	Ergebnis der Systemdiagnose
+short-023	Host Summary	Hostzusammenfassung	Host summary	Hostübersicht
+short-024	In Progress	Wird ausgeführt	In progress	In Bearbeitung
+short-024	inaccessible	nicht zugänglich	Inaccessible	Kein Zugriff
+short-024	Interface Name	Schnittstellenname	Interface name	Name der Schnittstelle
+short-026	Kbps	kbit/s	KBps	KB/s
+short-027	Last run time	Zeitpunkt der letzten Ausführung	Last Run Time	Zuletzt ausgeführt
+short-027	Last Updated	Zuletzt aktualisiert	Last updated :	Letztes Update:
+short-027	Last updated	Zuletzt aktualisiert	Last updated :	Letztes Update:
+short-027	Last:	Zuletzt:	Last	Letzte
+short-029	Maximum Connections	Maximale Verbindungen	Maximum connections	Maximale Anzahl an Verbindungen
+short-030	Memory Swap In	Arbeitsspeicher-Einlagerung	Memory swap in	Arbeitsspeicher – Einlagerung
+short-030	Memory Swap Out	Arbeitsspeicher-Auslagerung	Memory swap out	Arbeitsspeicher – Auslagerung
+short-031	Net Access Control	Netzwerkzugriffssteuerung	Net access control	Netzzugriffssteuerung
+short-032	New Datacenter	Neues Datencenter	New Datacenter...	Neues Datacenter...
+short-033	No Window	Kein Zeitfenster	No window	Kein Fenster
+short-033	Non-Compliant Hosts	Nicht konforme Hosts	Non compliant hosts	Nicht übereinstimmende Hosts
+short-033	nonCompliant	Nicht konform	Noncompliant	Nicht übereinstimmend
+short-034	Number of Retries	Anzahl der Wiederholungsversuche	Number of retries	Wiederholungsversuche
+short-035	orphaned	Verwaist	Orphaned	Ohne übergeordnetes Element
+short-036	Persistent Volume	Persistentes Volume	Persistent volume	Dauerhaftes Volume
+short-039	queued	In Warteschlange	Queued	In der Warteschlange
+short-039	reconfiguring	Wird neu konfiguriert	Reconfiguring	Neukonfiguration
+short-040	Remediate (All)	Standardisieren (Alle)	Remediate All	Alle standardisieren
+short-040	Remediate (host)	Standardisieren (Host)	Remediate Host	Host standardisieren
+short-043	Select a Datastore	Datenspeicher auswählen	Select a datastore.	Wählen Sie einen Datenspeicher aus.
+short-045	Skip to Main Content	Zum Hauptinhalt springen	Skip to main content	Zum Hauptinhalt überspringen
+short-049	Task description	Aufgabenbeschreibung	Task Description	Beschreibung der Aufgabe
+short-049	Task Progress	Aufgabenfortschritt	Task progress	Fortschritt der Aufgabe
+short-049	Teaming and Failover	Gruppierung und Failover	Teaming and failover	Teaming und Failover
+short-049	This object	Dieses Objekt	This Object	Diesem Objekt
+short-050	Time Range	Zeitbereich	Time Range:	Zeitraum:
+short-050	Time Synchronization	Zeitsynchronisierung	Time synchronization	Uhrzeitsynchronisierung
+short-050	Timeout Settings	Einstellungen für Zeitüberschreitungen	Timeout settings	Zeitüberschreitungseinstellungen
+short-051	Update from File	Update aus Datei	Update from file	Update über Datei
+short-053	vCenter Server name:	vCenter Server-Name:	vCenter Server name	Name des vCenter Server
+short-054	VM CPU usage	VM-CPU-Nutzung	VM CPU Usage	VM-CPU-Auslastung
+short-056	vSAN disk balance	vSAN-Datenträgerausgleich	vSAN Disk Balance	vSAN-Datenträgerverteilung
+short-056	vSAN Fault Domains	vSAN-Fehlerdomänen	vSAN fault domains	vSAN-Fault Domains
+short-056	Warning (alert)	Warnung (Alert)	Warning alert	Warnmeldung

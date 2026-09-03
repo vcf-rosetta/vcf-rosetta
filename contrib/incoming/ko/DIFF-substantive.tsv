@@ -1,0 +1,104 @@
+批次	英文(机翻侧)	机翻译文	英文(库内侧)	官方译文
+long-001	Add new and existing hosts to your cluster	새 호스트와 기존 호스트를 클러스터에 추가	Add new and existing hosts to your cluster.	새 호스트와 기존 호스트를 클러스터에 추가합니다.
+long-009	Destination Resource Pool	대상 리소스 풀	Destination resource pool	대상 자원 풀
+long-009	Disable DPM on the Cluster	클러스터에서 DPM 사용 안 함	Disable DPM on the cluster.	클러스터에서 DPM을 사용하지 않도록 설정하십시오.
+long-009	Disable DPM on the cluster	클러스터에서 DPM 사용 안 함	Disable DPM on the cluster.	클러스터에서 DPM을 사용하지 않도록 설정하십시오.
+long-009	Disable HA Admission Control	HA 승인 제어 사용 안 함	Disable HA admission control.	HA 승인 제어 기능을 사용하지 않도록 설정하십시오.
+long-009	Disable HA admission control	HA 승인 제어 사용 안 함	Disable HA admission control.	HA 승인 제어 기능을 사용하지 않도록 설정하십시오.
+long-009	Do not use CHAP unless required by target	대상에서 요구하지 않는 한 CHAP를 사용하지 않음	Do Not Use Chap Unless Required By Target	대상에 필요하지 않는 한 CHAP 사용 안 함
+long-011	Enter Maintenance Mode	유지 보수 모드로 전환	Enter maintenance mode	유지 보수 모드 시작
+long-013	Get Latest Version Online	온라인으로 최신 버전 가져오기	Get latest version online	온라인으로 최신 버전 입수
+long-014	Host Inventory Privileges	호스트 인벤토리 권한	Host.Inventory Privileges	Host.Inventory 권한
+long-014	Independent persistent	독립형 영구적	independent-persistent	독립-영구
+long-020	Obtain IPv4 Settings Automatically	IPv4 설정 자동으로 가져오기	Obtain IPv4 settings automatically	자동으로 IPv4 설정 가져오기
+long-022	Persistent Volume Claim	영구 볼륨 클레임	Persistent volume claim	영구 볼륨 할당
+long-022	Pre-Check Remediation	업데이트 적용 사전 검사	Pre-check Remediation	업데이트 적용 사전 확인
+long-022	Pre-check remediation	업데이트 적용 사전 검사	Pre-check Remediation	업데이트 적용 사전 확인
+long-023	Record session on Virtual Machine	가상 시스템에서 세션 기록	Record session on virtual machine	가상 시스템의 세션 기록
+long-023	Remediation Pre-Check	업데이트 적용 사전 검사	Remediation pre-check	업데이트 적용 사전 확인
+long-024	Replay session on Virtual Machine	가상 시스템에서 세션 재생	Replay session on virtual machine	가상 시스템의 세션 재생
+long-026	Shut Down and Restart VMs	VM 종료 및 다시 시작	Shut down and restart VMs	종료 후 VM 다시 시작
+long-026	Site Disaster Tolerance	사이트 재해 허용치	site disaster tolerance	사이트 재해 허용
+long-029	Test Restart Secondary VM	보조 VM 다시 시작 테스트	Test restart Secondary VM	보조 VM 재시작 테스트
+long-030	Use Explicit Failover Order	명시적 페일오버 순서 사용	Use explicit failover order	명시적 페일오버 명령 사용
+long-031	Validate Configuration	구성 검증	Validate configuration	구성 유효성 검사
+long-032	VM fault tolerance state changed	VM Fault Tolerance 상태가 변경됨	VM Fault Tolerance state changed	VM에서 Fault Tolerance 상태가 변경됨
+long-033	VMware Paravirtual (SCSI)	VMware Paravirtual(SCSI)	VMware paravirtual SCSI	VMware 반가상화 SCSI
+long-034	vSAN Storage Policy Compliance up-to-date	vSAN 스토리지 정책 규정 준수 최신 상태	vSAN storage policy compliance up-to-date	vSAN 스토리지 정책 규정 준수가 최신 상태임
+long-034	vSphere replication persistent state file	vSphere 복제 영구 상태 파일	vSphere Replication persistent state file	vSphere Replication 영구 상태 파일
+short-001	\ day	\ 일	Day	날짜
+short-001	\ hour	\ 시간	Hour	시
+short-001	\ second	\ 초	Second	두 번째
+short-001	Acknowledge (alarm)	승인(경보)	Acknowledge alarm	경보 승인
+short-002	Add Permission	권한 추가	Add permission	사용 권한 추가
+short-002	Add Permission...	권한 추가...	Add permission	사용 권한 추가
+short-004	All-Flash	올 플래시	All Flash	플래시 전용
+short-004	AND	AND	and	및
+short-006	Backup Configuration	백업 구성	Backup configuration	구성 백업
+short-008	Capabilities	기능	Capabilities:	용량:
+short-008	Change Permission	권한 변경	Change permission	사용 권한 변경
+short-008	Chart	차트	Chart.	차트입니다.
+short-008	Check Compliance	규정 준수 확인	Check compliance	규정 준수 검사
+short-008	CHECK COMPLIANCE	규정 준수 확인	Check compliance	규정 준수 검사
+short-012	Custom EVC Mode	사용자 지정 EVC 모드	Custom EVC mode.	사용자 지정 EVC 모드입니다.
+short-013	DELETE	DELETE	_Delete	삭제(_D)
+short-014	Disabled (DRS)	사용 안 함(DRS)	Disabled DRS	DRS 사용 안 함
+short-015	Disconnect Host	호스트 연결 해제	Disconnect host	호스트 연결 끊기
+short-017	election	선출 중	Election	선택
+short-018	Enter Standby Mode	대기 모드 시작	Enter standby mode	대기 모드로 전환
+short-018	Evaluation license	평가 라이센스	Evaluation License	평가판 라이센스
+short-019	Failures to Tolerate	허용되는 실패 수	failures to tolerate	허용되는 장애
+short-019	Fault Details	결함 세부 정보	Fault Details:	장애 상세 정보:
+short-020	First page	첫 페이지	First Page	첫 번쨰 페이지
+short-021	Getting Started	시작하기	Getting Started -	시작 -
+short-022	Health Check Result	상태 점검 결과	Health check result	상태 검사 결과입니다.
+short-022	highest	가장 높음	Highest	최고
+short-022	Host added	호스트 추가됨	Host Added	호스트가 추가됨
+short-022	Host CIM Privileges	호스트 CIM 권한	Host.Cim Privileges	Host.Cim 권한
+short-024	IN	수신	in	다음에서
+short-024	In	수신	in	다음에서
+short-024	invalid	무효	Invalid	잘못됨
+short-026	Last Updated	마지막 업데이트	Last updated :	마지막 업데이트 날짜:
+short-027	Last updated	마지막 업데이트	Last updated :	마지막 업데이트 날짜:
+short-028	Logical Unit Number	논리 장치 번호	Logical unit number.	논리 장치 번호입니다.
+short-028	lowest	가장 낮음	Lowest	최저
+short-030	Memory Usage	메모리 사용량	Memory usage.	메모리 사용량입니다.
+short-032	Network Usage	네트워크 사용량	Network usage	네트워크 사용
+short-032	No network	네트워크 없음	No network.	네트워크가 없습니다.
+short-032	No results found	결과를 찾을 수 없음	No results found.	검색된 결과가 없습니다.
+short-032	No Results Found	결과를 찾을 수 없음	No results found.	검색된 결과가 없습니다.
+short-033	Non-Compliant Hosts	비준수 호스트	Non compliant hosts	규정 비준수 호스트
+short-033	normal	정상	Normal	보통
+short-033	Not In	포함되지 않음	not in	다음에 없을 때
+short-033	Not Running	실행되지 않음	Not running	실행 중 아님
+short-034	Operational state	운영 상태	Operational State	작동 상태
+short-035	Packets Received	수신된 패킷	Packets received	수신한 패킷 수
+short-036	Per Server	서버당	Per server	서버 단위
+short-037	Preferred path	기본 경로	Preferred Path	기본 설정 경로
+short-038	queued	대기열에 있음	Queued	큐 대기 시간
+short-039	Redundancy lost	이중화 손실	Redundancy Lost	중복성이 손실됨
+short-039	Remediate (All)	업데이트 적용(전체)	Remediate All	모두에 업데이트 적용
+short-039	Remediate (host)	업데이트 적용(호스트)	Remediate Host	호스트 업데이트 적용
+short-040	Remove Permission	권한 제거	Remove permission	사용 권한 제거
+short-041	Resource Pool Name:	리소스 풀 이름:	Resource pool name	자원 풀 이름
+short-041	retry	다시 시도	Retry	재시도
+short-042	Scheduling Options	스케줄링 옵션	Scheduling Options:	스케줄 옵션:
+short-043	Search domains	검색 도메인	Search domains:	도메인 검색:
+short-043	Select a Datastore	데이터스토어 선택	Select a datastore.	데이터스토어를 선택하십시오.
+short-044	Send Email	이메일 보내기	Send email	e-메일 보내기
+short-045	Skip to Main Content	주 컨텐츠로 건너뛰기	Skip to main content	기본 컨텐츠로 건너뛰기
+short-046	Starts with	시작 문자	starts with	다음으로 시작
+short-047	Supervisor Service	Supervisor 서비스	Supervisor service	감독자 서비스
+short-048	Task Details	작업 세부 정보	Task Details:	작업 상세 정보:
+short-049	Thin provision	씬 프로비저닝	Thin Provision	씬 프로비전
+short-050	unavailable	사용할 수 없음	Unavailable	사용 불가능
+short-051	Unused Uplinks	사용하지 않는 업링크	Unused uplinks	사용되지 않은 업링크
+short-052	Valid To	유효 기간 끝	Valid to	유효 기간 종료
+short-054	VM CPU usage	VM CPU 사용률	VM CPU Usage	VM CPU 사용량
+short-054	VM memory usage	VM 메모리 사용률	VM Memory Usage	VM 메모리 사용량
+short-054	VM network usage	VM 네트워크 사용률	VM Network Usage	VM 네트워크 사용량
+short-056	Warning (alert)	경고(경고)	Warning alert	주의 경고
+short-056	Warning:	경고:	warning	주의
+short-056	Watchdog Timer	워치독 타이머	Watchdog timer	감시 타이머
+short-056	What If Analysis	가정 분석	What if analysis	What-if 분석
+short-056	What-If Analysis	가정 분석	What if analysis	What-if 분석

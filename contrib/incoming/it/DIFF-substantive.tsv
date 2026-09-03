@@ -1,0 +1,199 @@
+批次	英文(机翻侧)	机翻译文	英文(库内侧)	官方译文
+long-001	Accept Certificate Thumbprint	Accetta identificazione personale del certificato	Accept certificate thumbprint:	Accettare l'identificazione personale del certificato:
+long-002	App Heartbeats Detected	Heartbeat dell'applicazione rilevati	App Heartbeats detected	Heartbeat app rilevati
+long-002	Apply Storage DRS Recommendations	Applica i consigli di Storage DRS	Apply Storage DRS recommendations	Applica i consigli Storage DRS
+long-003	Attach Host Profile...	Collega profilo host...	Attach host profile	Allega profilo host
+long-003	Auto-policy management	Gestione automatica dei criteri	Auto-Policy management	Gestione criteri automatici
+long-004	Change Download Source	Modifica origine di download	Change download source	Modifica origine download
+long-004	Check Out VM Template	Estrai il modello di macchina virtuale	Check-out VM template	Estrai modello macchina virtuale
+long-006	Create a Datastore Cluster	Crea un cluster di datastore	Create a datastore cluster	Crea un cluster datastore
+long-007	Data at Rest Encryption	Crittografia dei dati inattivi	Data at rest encryption	Crittografia di dati inattivi
+long-009	Disable DPM on the Cluster	Disabilita DPM nel cluster	Disable DPM on the cluster.	Disabilitare DPM nel cluster.
+long-009	Disable DPM on the cluster	Disabilita DPM nel cluster	Disable DPM on the cluster.	Disabilitare DPM nel cluster.
+long-009	Disable HA Admission Control	Disabilita il controllo ammissione HA	Disable HA admission control.	Disabilitare il controllo ammissione HA.
+long-009	Disable HA admission control	Disabilita il controllo ammissione HA	Disable HA admission control.	Disabilitare il controllo ammissione HA.
+long-009	Disable Lockdown Mode	Disabilita modalità di blocco	Disable lockdown mode	Disabilita modalità blocco
+long-011	Enable vSAN File Service	Abilita servizio file di vSAN	Enable vSAN file service	Abilita servizio file vSAN
+long-011	Enable vSAN Performance Service	Abilita servizio prestazioni di vSAN	Enable vSAN performance service	Abilita servizio prestazioni vSAN
+long-012	Export Impact Details	Esporta dettagli dell'impatto	Export impact details	Dettagli dell'impatto dell'esportazione
+long-013	Get Latest Version Online	Ottieni la versione più recente online	Get latest version online	Ottieni l'ultima versione online
+long-013	Guest Operation Queries	Query sulle operazioni guest	Guest operation queries	Query per operazioni guest
+long-014	Host Inventory Privileges	Privilegi di inventario dell'host	Host.Inventory Privileges	Privilegi Host.Inventory
+long-014	Import from Reference Host	Importa dall'host di riferimento	Import from reference host	Importa da host di riferimento
+long-015	Install VMware Tools...	Installa VMware Tools...	Install VMware Tools	Installare VMware Tools
+long-015	IOPS Limit for Object	Limite IOPS per l'oggetto	IOPS limit for object	Limite di IOPS per oggetto
+long-018	Move into Resource Pool	Sposta all'interno del pool di risorse	Move into resource pool	Sposta nel pool di risorse
+long-019	Network Failure Detection	Rilevamento degli errori di rete	Network failure detection	Rilevamento errori di rete
+long-019	Network(RDMA NIC: RoCE v2) driver/firmware is vSAN certified	Il driver/firmware di rete (NIC RDMA: RoCE v2) è certificato per vSAN	Network (RDMA NIC: RoCE v2) driver/firmware is vSAN certified	Il driver/firmware della rete (NIC RDMA: RoCE v2) è certificato per vSAN
+long-020	Number of Disk Stripes per Object	Numero di stripe del disco per oggetto	Number of disk stripes per object	Numero di striping del disco per oggetto
+long-020	Object Space Reservation	Prenotazione dello spazio degli oggetti	Object space reservation	Prenotazione dello spazio dell'oggetto
+long-020	Obtain IPv4 Settings Automatically	Ottieni automaticamente le impostazioni IPv4	Obtain IPv4 settings automatically	Ottieni le impostazioni IPv4 automaticamente
+long-021	Performance diagnostics	Diagnostica delle prestazioni	Performance Diagnostics	Diagnostica prestazioni
+long-022	Power Off and Restart VMs	Spegni e riavvia le macchine virtuali	Power off and restart VMs	Spegni e riavvia macchine virtuali
+long-022	Pre-Check Remediation	Verifica preliminare della correzione	Pre-check Remediation	Verifiche preliminari correzione
+long-022	Pre-check remediation	Verifica preliminare della correzione	Pre-check Remediation	Verifiche preliminari correzione
+long-022	Press Enter and use left or right key to move the card to a new position	Premere Invio e utilizzare il tasto freccia sinistra o destra per spostare la scheda in una nuova posizione	Press Enter and use left or right key to move the card to a new position.	Premi Invio e usa i tasti sinistra o destra per spostare la scheda in una nuova posizione.
+long-023	Reapply Storage Policy	Riapplica il criterio di storage	Reapply storage policy	Riapplica criterio di storage
+long-023	Record session on Virtual Machine	Registra la sessione nella macchina virtuale	Record session on virtual machine	Registra sessione sulla macchina virtuale
+long-024	Replay session on Virtual Machine	Riproduci la sessione nella macchina virtuale	Replay session on virtual machine	Riproduci sessione nella macchina virtuale
+long-024	Restore Configuration	Ripristina la configurazione	Restore configuration	Ripristina configurazione
+long-025	Security Configuration	Configurazione della sicurezza	Security configuration	Configurazione sicurezza
+long-026	Shut Down and Restart VMs	Arresta e riavvia le macchine virtuali	Shut down and restart VMs	Arresta e riavvia macchine virtuali
+long-026	Site Disaster Tolerance	Tolleranza ai disastri del sito	site disaster tolerance	tolleranza di emergenza del sito
+long-027	Statistics collection	Raccolta delle statistiche	Statistics Collection	Raccolta statistiche
+long-029	Test Restart Secondary VM	Verifica riavvio macchina virtuale secondaria	Test restart Secondary VM	Testa riavvio macchina virtuale secondaria
+long-029	Time Synchronization Mode	Modalità di sincronizzazione dell'ora	Time synchronization mode	Modalità di sincronizzazione ora
+long-029	Traffic Filtering and Marking	Filtraggio e marcatura del traffico	Traffic filtering and marking	Filtro e contrassegno del traffico
+long-030	Use All Available Partitions	Utilizza tutte le partizioni disponibili	Use all available partitions	Usa tutte le partizioni disponibili
+long-030	Use CHAP unless prohibited by target	Utilizza CHAP se non vietato dalla destinazione	Use Chap Unless Prohibited By Target	Utilizza CHAP a meno che non sia vietato dalla destinazione
+long-030	Use static IPv6 addresses	Utilizza indirizzi IPv6 statici	Use static IPv6 addresses:	Usa indirizzi IPv6 statici:
+long-032	Virtual Machine Console User	Utente della console della macchina virtuale	Virtual Machine console user	Utente della console delle macchine virtuali
+long-033	VMware Paravirtual (SCSI)	Paravirtuale VMware (SCSI)	VMware paravirtual SCSI	SCSI paravirtuale VMware
+long-033	vSAN Data-At-Rest Encryption	Crittografia dei dati inattivi di vSAN	vSAN Data-At-Rest encryption	Crittografia dei dati vSAN a riposo
+long-033	vSAN Data-In-Transit Encryption	Crittografia dei dati in transito di vSAN	vSAN Data-In-Transit encryption	Crittografia dei dati vSAN in transito
+long-033	vSAN health service alarm	Allarme del servizio di integrità di vSAN	vSAN Health Service Alarm	Allarme servizio integrità vSAN
+long-034	vSAN Storage Policy Compliance up-to-date	Conformità del criterio di storage vSAN aggiornata	vSAN storage policy compliance up-to-date	Conformità ai criteri di storage vSAN aggiornata
+short-001	Account (password)	Account (password)	Account password	Password account
+short-001	Account Unlock Time	Ora di sblocco account	Account unlock time	Tempo di sblocco account
+short-002	Add Host to Cluster	Aggiungi host al cluster	Add host to cluster	Aggiungi host a cluster
+short-006	Backup Configuration	Configurazione backup	Backup configuration	Esegui backup configurazione
+short-007	Block Size	Dimensione blocco	Block size	Dimensioni blocco
+short-007	Build:	Build:	Build	Creazione
+short-007	Burst Size	Dimensione burst	Burst size	Dimensioni burst
+short-007	Cache Disks	Dischi cache	Cache disks	Dischi della cache
+short-008	Capacity Disks	Dischi di capacità	Capacity disks	Dischi capacità
+short-008	Capacity Planning	Pianificazione capacità	Capacity planning	Pianificazione della capacità
+short-008	Capacity Tier	Livello di capacità	Capacity tier	Livello capacità
+short-008	Change host	Modifica host	Change Host	Cambia host
+short-008	Check for updates	Verifica aggiornamenti	CHECK FOR UPDATES	CONTROLLA AGGIORNAMENTI
+short-008	Check for Updates	Verifica aggiornamenti	CHECK FOR UPDATES	CONTROLLA AGGIORNAMENTI
+short-009	Compatibility Checks	Controlli di compatibilità	Compatibility checks	Verifiche di compatibilità
+short-011	CPU System	Sistema CPU	CPU system	CPU sistema
+short-011	Create a New vApp	Crea un nuovo vApp	Create a new vApp	Crea una nuova vApp
+short-012	Custom (time range)	Personalizzato (intervallo di tempo)	Custom time range	Personalizzare intervallo di tempo
+short-012	Custom Time Range	Intervallo di tempo personalizzato	Custom time range	Personalizzare intervallo di tempo
+short-015	Disabled (DRS)	Disabilitato (DRS)	Disabled DRS	DRS disabilitato
+short-015	DNS Server Addresses	Indirizzi server DNS	DNS server addresses	Indirizzi del server DNS
+short-015	done	completato	Done	Fine
+short-016	Drag and Drop	Trascina e rilascia	Drag and drop	Trascinamento e rilascio
+short-018	Enter Standby Mode	Attiva modalità standby	Enter standby mode	Passa alla modalità standby
+short-018	Ephemeral Binding	Binding effimero	Ephemeral binding	Binding temporaneo
+short-018	Event Severity	Gravità evento	Event severity	Gravità dell'evento
+short-019	Exit Standby Mode	Esci dalla modalità standby	Exit standby mode	Esci da modalità standby
+short-020	Field Name	Nome campo	field name	nome del campo
+short-022	Health Check Result	Risultato del controllo integrità	Health check result	Risultato controllo di integrità
+short-022	high	alto	High	Alta
+short-023	highest	massimo	Highest	Massima
+short-023	Host CIM Privileges	Privilegi CIM host	Host.Cim Privileges	Privilegi Host.Cim
+short-023	Host disk usage	Utilizzo del disco host	Host Disk Usage	Utilizzo disco dell'host
+short-024	Image Library	Libreria di immagini	Image library	Libreria immagini
+short-024	Image Name	Nome dell'immagine	Image name	Nome immagine
+short-025	Installed on	Installato il	Installed On	Installato su
+short-025	Interface Name	Nome dell'interfaccia	Interface name	Nome interfaccia
+short-026	Is Above	È superiore a	Is above	È superiore
+short-026	Is Below	È inferiore a	Is below	È inferiore
+short-026	Is Not Equal To	Non è uguale a	is not equal to	è non uguale a
+short-026	Key Provider	Provider di chiavi	Key provider	Fornitore principale
+short-027	Last run result	Risultato ultima esecuzione	Last Run Result	Risultato dell'ultima esecuzione
+short-027	Last run time	Ora ultima esecuzione	Last Run Time	Ora dell'ultima esecuzione
+short-027	License Server	Server di licenza	License server	License Server
+short-028	Link Status Only	Solo stato del collegamento	Link status only	Solo stato link
+short-028	List View	Vista elenco	List view	Visualizzazione elenco
+short-028	Log level:	Livello di registro:	Log level	Livello di registrazione
+short-029	low	basso	Low	Bassa
+short-029	lowest	minimo	Lowest	Minima
+short-029	LUN Runtime Health	Integrità runtime della LUN	LUN runtime health	Integrità runtime LUN
+short-029	MAC Address Changes	Modifiche dell'indirizzo MAC	MAC address changes	Modifiche all'indirizzo MAC
+short-029	Mail Sender	Mittente di posta	Mail sender	Mittente e-mail
+short-029	Mail Server	Server di posta	Mail server	Server e-mail
+short-030	medium	medio	Medium	Media
+short-030	Memory Overcommit	Overcommit della memoria	Memory overcommit	Overcommit di memoria
+short-030	Memory Size	Dimensioni della memoria	Memory size	Dimensioni memoria
+short-030	Memory Swap In	Swap in della memoria	Memory swap in	Swap in memoria
+short-030	Memory Swap Out	Swap out della memoria	Memory swap out	Swap out memoria
+short-030	Memory Usage	Utilizzo della memoria	Memory usage.	Utilizzo memoria.
+short-030	Memory Usage %	Utilizzo della memoria %	Memory Usage(%)	Utilizzo memoria (%)
+short-030	Memory Usage (%)	Utilizzo della memoria (%)	Memory Usage(%)	Utilizzo memoria (%)
+short-031	Monitor Replication	Monitora la replica	Monitor replication	Monitora replica
+short-031	Move Down	Sposta giù	Move down	Sposta verso il basso
+short-031	Move Up	Sposta su	Move up	Sposta verso l'alto
+short-031	Net Access Control	Controllo degli accessi di rete	Net access control	Controllo accesso di rete
+short-032	New Datacenter	Nuovo Datacenter	New Datacenter...	Nuovo data center...
+short-033	NIC Teaming	Raggruppamento di NIC	NIC teaming	Raggruppamento NIC
+short-033	Not In	Non incluso in	not in	non in
+short-033	Notify Switches	Notifica agli switch	Notify switches	Invia notifica ai commutatori
+short-034	Object Count	Numero di oggetti	Object count	Conteggio oggetti
+short-034	Object Health	Integrità dell'oggetto	Object health	Integrità oggetto
+short-035	on	attivato	On	Attivata
+short-036	Password Expiration	Scadenza della password	Password expiration	Scadenza password
+short-036	Password History	Cronologia delle password	Password history	Cronologia password
+short-036	Patch Baseline	Base di confronto delle patch	Patch baseline	Base di confronto patch
+short-037	PMem (storage)	PMem (storage)	PMem storage	Storage PMem
+short-037	Port Allocation	Allocazione delle porte	Port allocation	Allocazione porta
+short-037	Port Binding	Binding delle porte	Port binding	Binding porta
+short-037	Port Group Name	Nome del gruppo di porte	Port group name	Nome gruppo di porte
+short-037	Power management	Gestione dell'alimentazione	Power Management	Gestione alimentazione
+short-038	Prefix Length	Lunghezza del prefisso	Prefix length	Lunghezza prefisso
+short-039	PXE Booted Hosts	Host avviati tramite PXE	PXE booted hosts	Host con avvio PXE
+short-039	Read IOPs	IOPS di lettura	Read IOPS	IOPS lettura
+short-040	reconfiguring	riconfigurazione in corso	Reconfiguring	Riconfigurazione
+short-040	Rekey Interval	Intervallo di ridefinizione chiavi	Rekey interval	Intervallo di ridefinizione delle chiavi
+short-040	Remaining	Rimanente	remaining	rimanenti
+short-040	Remediation Settings	Impostazioni della correzione	Remediation settings	Impostazioni di correzione
+short-041	Rescan storage	Ripeti scansione dello storage	Rescan Storage	Ripeti analisi archiviazione
+short-041	Rescan Storage...	Ripeti scansione dello storage...	Rescan Storage	Ripeti analisi archiviazione
+short-041	Resource Allocation	Allocazione delle risorse	Resource allocation	Allocazione risorse
+short-041	Resource Pool Name:	Nome del pool di risorse:	Resource pool name	Nome pool di risorse
+short-042	Rule Name	Nome della regola	Rule name	Nome regola
+short-043	Runtime Settings	Impostazioni del runtime	Runtime settings	Impostazioni runtime
+short-043	Search domains	Domini di ricerca	Search domains:	Cerca domini.
+short-044	Select a Datastore	Seleziona un datastore	Select a datastore.	Selezionare un datastore.
+short-044	Send Email	Invia e-mail	Send email	Invia email
+short-046	Silence alert	Silenzia avviso	Silence Alert	Avviso segreto
+short-046	Site latency	Latenza del sito	Site Latency	Latenza sito
+short-046	Site Name	Nome del sito	Site name	Nome sito
+short-046	Snapshot Management	Gestione degli snapshot	Snapshot management	Gestione snapshot
+short-046	Space Reclamation	Recupero dello spazio	Space reclamation	Recupero spazio
+short-047	SSH login	Accesso SSH	SSH Login	Accesso a SSH
+short-047	SSO Domain Name	Nome del dominio SSO	SSO domain name	Nome dominio SSO
+short-047	standBy	Standby	Standby	In standby
+short-047	standby	Standby	Standby	In standby
+short-047	Standby Uplinks	Uplink standby	Standby uplinks	Uplink di standby
+short-048	Storage adapters	Schede di storage	Storage Adapters	Adattatori di archiviazione
+short-048	Supervisor Service	Servizio Supervisor	Supervisor service	Servizio supervisore
+short-048	suspended	sospesa	Suspended	Sospeso
+short-049	System Name	Nome del sistema	System name	Nome sistema
+short-049	Task description	Descrizione dell'attività	Task Description	Descrizione attività
+short-049	Task Details	Dettagli dell'attività	Task Details:	Dettagli attività:
+short-049	Task name	Nome dell'attività	Task Name	Nome attività
+short-049	Task Progress	Avanzamento dell'attività	Task progress	Avanzamento attività
+short-050	Test Failover	Test di failover	Test failover	Test del failover
+short-050	Time Synchronization	Sincronizzazione dell'ora	Time synchronization	Sincronizzazione ora
+short-050	Timeout Settings	Impostazioni del timeout	Timeout settings	Impostazioni timeout
+short-051	Traffic Shaping	Traffic shaping	Traffic shaping	Shaping traffico
+short-052	User Directory	Directory degli utenti	User directory	Directory utente
+short-053	Valid From	Valido dal	Valid from	Valido da
+short-053	Valid To	Valido fino al	Valid to	Valido fino a
+short-053	vApp Privileges	Privilegi della vApp	VApp Privileges	Privilegi vApp
+short-053	vCenter Server name:	Nome di vCenter Server:	vCenter Server name	Nome del vCenter Server
+short-054	View Details	Visualizza dettagli	View details	Visualizzare dettagli
+short-054	VIEW YOUR LICENSES	VISUALIZZA LE TUE LICENZE	View your licenses	Visualizza le licenze
+short-055	VM CPU usage	Utilizzo della CPU della macchina virtuale	VM CPU Usage	Utilizzo CPU della macchina virtuale
+short-055	VM memory usage	Utilizzo della memoria della macchina virtuale	VM Memory Usage	Utilizzo memoria della macchina virtuale
+short-055	VM Name:	Nome della macchina virtuale:	VM name	Nome macchina virtuale
+short-055	VM Network	Rete della macchina virtuale	VM network	Rete macchina virtuale
+short-055	VM network usage	Utilizzo della rete della macchina virtuale	VM Network Usage	Utilizzo rete della macchina virtuale
+short-055	VM snapshot size	Dimensioni dello snapshot della macchina virtuale	VM Snapshot Size	Dimensioni snapshot della macchina virtuale
+short-055	VM Storage Policies	Criteri di storage delle macchine virtuali	VM storage policies	Criteri di storage della macchina virtuale
+short-055	VM storage policy:	Criterio di storage della macchina virtuale:	VM Storage Policy	Criterio di storage macchina virtuale
+short-055	VM templates	Modelli di macchine virtuali	VM Templates	Modelli VM
+short-055	VM-Host Affinity	Affinità macchina virtuale-host	VM-Host affinity	Affinità tra macchine virtuali e host
+short-055	VMware-certified	Certificato VMware	VMware Certified	Certificato da VMware
+short-056	VPC subnets	Subnet del VPC	VPC Subnets	Subnet VPC
+short-056	vSAN disk balance	Bilanciamento dei dischi vSAN	vSAN Disk Balance	Bilanciamento del disco vSAN
+short-057	Warning (alert)	Avviso (avviso)	Warning alert	Avviso di allerta
+short-057	Week(s)	Settimane	week(s)	settimana/e
+short-057	What If Analysis	Analisi What-If	What if analysis	Analisi di simulazione
+short-057	What-If Analysis	Analisi What-If	What if analysis	Analisi di simulazione
+short-057	Write IOPs	IOPS di scrittura	Write IOPS	IOPS scrittura
+short-058	Zero Pages	Pagine zero	Zero pages	Zero pagine

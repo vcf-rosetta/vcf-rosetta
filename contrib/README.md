@@ -60,3 +60,52 @@ zh-CN 词库目前最全(策展 UI 词条约 1.5 万),de/it/ko/zh-TW 各缺约 1
    ```
    > zh-TW 多数可由 zh-CN 繁简+台湾用词转换得到,`.ref.json` 基本即答案。
    > 产品名/功能名按策略保持英文(见 `plugin/i18n/domains/` 既有 overlay)。
+
+## 批量机翻流水线(de/it/ko,2026-09)
+
+上面的 `gap-from-zh.mjs` 以 zh-CN 为基准。**基准应改用并集** —— zh-CN 不是超集:
+de 有 390 条、it 207、ko 138 是 zh-CN 没有的真串,按 zh-CN 裁齐会砍掉已翻好的内容。
+对 zh-TW 差别最大(zh-CN 基准说缺 482,并集基准说缺 945)。**只增不删。**
+
+```bash
+node contrib/gap-batches.mjs de --size 150      # 并集算缺口 → 按串长风险切定长批次
+node contrib/check-batch.mjs <batch> de         # 单批次审核,必须 0 error
+node contrib/check-consistency.mjs de           # 跨批次术语漂移(check-batch 的盲区)
+node contrib/merge-batches.mjs de --class long  # DRY-RUN;加 --write 才落盘
+node browser-extension/build-dict.mjs           # 合入后重建;再 bump langs.json 的 version
+```
+
+### 风险分级(实测,不是估计)
+
+32 条盲测(取德语已有官方译文的串,只看英文盲翻后比对):字面一致 38%,按严重度拆开
+—— 排版差异 25%、语义等价 16%、**真错 19%**。错误高度集中在短串:
+
+| 串长 | 占 de 缺口 | 实测错误率 | 性质 |
+|---|---|---|---|
+| `>20` 字符 | 37% | **8%** | 错误消息/描述,用户最需要且无法自行看懂 → 优先做 |
+| `<=20` 字符 | 63% | **25%** | 按钮/菜单/列名,动名歧义高发 → 留后做,须人工复核 |
+
+### 三条被实测否掉的思路,别再重试
+
+1. **拿 zh-CN 给短标签消歧** —— 无效。6/6 翻错的条目,中文犯同样的错或有同样歧义
+   (中文词条本身同一流程产出,错误相关而非独立)。上一节说「有中文可对照」只对**语义**成立,
+   **不能**用来判断英文是动词还是名词。
+2. **逐条查 it/ko 官方译文** —— 无效,只覆盖德语缺口的 2.6%(三语共缺 13,369,重叠 97.4%)。
+3. **Google 免费翻译端点** —— 返回 bot 检测拦截页,不可用。要测需 Cloud Translation API key。
+
+**有效的**是把跨语言用在筛查而非生成:de/it 短标签词性一致率 83%(跟随意语 82.9% vs
+基线先验 75.0%),分歧集约 17% → 人工复核量从 8,516 降到约 1,460,6 倍。
+前提:三语必须**独立**翻译,互相转译会重蹈 zh-CN 的相关性覆辙。
+
+### 查库必须看频次,不能只看单条
+
+库里有离群值,实测踩过三次:`Image -> Abbild`(实际 484:2 用 Image)、
+`Datastore Cluster -> Datastore-Cluster`(实际 64/66 用 Datenspeicher)、
+`Datastore -> Datenspeicher`(993:73)。单条 `glossary.de["X"]` 会给出错误答案。
+
+### 并行 agent 可行,但主会话必须收跨批次漂移
+
+给足术语规则 + 要求自跑 `check-batch` 到 0 error,agent 产出质量与人工相当。
+但 `check-batch` 按单批次跟 glossary 比,看不见**批次之间**的漂移 —— glossary 无先例的术语,
+A 批译 X、B 批译 Y,两边各自都过 W3。实测漏过 `Heartbeat Datastore` / `Passphrase` /
+`Workload Domain` 三处,必须由主会话跑 `check-consistency.mjs` 收口。
