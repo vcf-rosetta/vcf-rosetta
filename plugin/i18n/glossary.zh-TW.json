@@ -47194,7 +47194,7 @@
   "Virtual machines owned by the current cluster": "目前叢集所擁有的虛擬機器",
   "Virtual machines running on a vSAN Compute Cluster do not support performance monitoring.": "在 vSAN 運算叢集上執行的虛擬機器不支援效能監控。",
   "Virtual Machines running on VMware vSAN 7.0 U1 may report in-guest data consistency following a concurrent maintenance activity and storage policy change. Click the Ask VMware link above for more details and a resolution.": "在 VMware vSAN 7.0 U1 上執行的虛擬機器可能會在並行維護活動及儲存區原則變更後報告客體內資料一致性。請按一下上方的 [AskVMware] 連結，以取得更多詳細資料和解決方案。",
-  "Virtual machines that have the tag \\": "具有標籤 {0} 的虛擬機器將放置在具有標籤 {1} 的主機上。",
+  "Virtual machines that have the tag \\": "具有以下標記的虛擬機器 \\",
   "Virtual machines that have the VM tag will be placed on hosts that have the host tag.": "具有虛擬機器標記的虛擬機器將放置在具有主機標記的主機上。",
   "Virtual machines that have the VM tag will be vMotioned when their host is evacuated.": "撤除具有虛擬機器標籤的虛擬機器的主機時，這些虛擬機器將執行 vMotion。",
   "Virtual machines that have the VM tag will not be placed on hosts that have the host tag.": "具有虛擬機器標記的虛擬機器將不會放置在具有主機標記的主機上。",

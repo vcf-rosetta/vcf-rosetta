@@ -4,10 +4,10 @@
     "zh-CN": {
       "name": "简体中文",
       "english": "Simplified Chinese",
-      "version": "3.4.34",
+      "version": "3.4.45",
       "source": "official+curated",
       "status": "stable",
-      "sha256": "847f30c2d0434c86fc4bca634ac4f7df9127d31e46d8ca9c3341fadb81f22dc5"
+      "sha256": "d647457c269480f5fe3e10f622a9d414b231f799b546562dba9b4ac23c5ac6f6"
     },
     "de": {
       "name": "Deutsch",
@@ -20,10 +20,10 @@
     "zh-TW": {
       "name": "繁體中文",
       "english": "Traditional Chinese",
-      "version": "3.4.34",
+      "version": "3.4.45",
       "source": "official",
       "status": "stable",
-      "sha256": "6b1807bac935261d8b97f97179660e7830b5d91dc4c6d8597858f4e3f3c538d6"
+      "sha256": "6210eeda5c1c5d59f15d74e7b0c7856f1a05e7d5bd5f576fa104e0506cdbb862"
     },
     "it": {
       "name": "Italiano",
