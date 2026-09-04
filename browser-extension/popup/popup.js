@@ -226,57 +226,9 @@ document.getElementById('dump').addEventListener('click', async () => {
   }
 });
 
-// 词条回流:两条通道(GitHub Issue / 邮件),共用采集结果
-const REPO = 'vcf-rosetta/vcf-rosetta';   // 公开主仓库:外部用户可见可提 Issue
-const DEV_EMAIL = 'zhouwei008@gmail.com'; // 词条贡献接收邮箱
-const URL_BUDGET = 7000; // GitHub/mailto URL 实测安全上限,超出则截断并提示附本地文件
-
-// 取当前页采集到的未翻译词条(带标记),回调 (entries, lang, region)
-function withMissing(cb) {
-  activeTab().then(tab => {
-    if (!tab || tab.id == null) { statusEl.textContent = t(ui, 'openVcFirst'); return; }
-    chrome.tabs.sendMessage(tab.id, { type: 'VC_GET_MISSING' }, resp => {
-      if (chrome.runtime.lastError || !resp) { statusEl.textContent = t(ui, 'refreshAndCollect'); return; }
-      const entries = resp.entries || (resp.list || []).map(t2 => ({ text: t2, tool: '?', count: 1, flags: [] }));
-      if (!entries.length) { statusEl.textContent = t(ui, 'noneCollected'); return; }
-      cb(entries, resp.lang || langEl.value || 'en', (document.getElementById('region').value || '').trim());
-    });
-  });
-}
-// 在预算内尽量多地塞词条,返回 { arr, truncated }
-function fitWithin(list, render) {
-  let arr = list, truncated = false;
-  while (arr.length > 1 && encodeURIComponent(render(arr)).length > URL_BUDGET) {
-    arr = arr.slice(0, Math.floor(arr.length * 0.8)); truncated = true;
-  }
-  return { arr, truncated };
-}
-// 紧凑序列化(带标记):{text, tool, flags},省去 title/count 控制体积
-const compact = a => a.map(e => e.flags && e.flags.length ? { text: e.text, tool: e.tool, flags: e.flags } : { text: e.text, tool: e.tool });
-
-document.getElementById('contribute').addEventListener('click', () => withMissing((entries, lang, region) => {
-  const title = `[i18n] ${lang} missing ${entries.length}${region ? ' · ' + region : ''}`;
-  const render = a => `> Untranslated UI terms auto-collected by the VCF UI Translator extension. Target language: **${lang}**${region ? ', source: ' + region : ''}.\n` +
-    `> Each entry carries \`tool\` (source tool page) and \`flags\` (anomaly hints) to help maintainers triage.\n` +
-    `> Maintainer: \`node contrib/merge-incoming.mjs <file> ${lang}\` to dedupe & merge into \`plugin/i18n/domains/\`.\n\n\`\`\`json\n${JSON.stringify(compact(a))}\n\`\`\`\n`;
-  const { arr, truncated } = fitWithin(entries, render);
-  let body = render(arr);
-  if (truncated) body += `\n_Note: too many terms; this Issue includes only the first ${arr.length}/${entries.length}. Attach the full list via “Export JSON (local)”._\n`;
-  chrome.tabs.create({ url: `https://github.com/${REPO}/issues/new?labels=${encodeURIComponent('i18n,translation-contribution')}` +
-    `&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}` });
-  statusEl.textContent = truncated ? `GitHub opened (first ${arr.length}/${entries.length}); attach the local export for the rest.` : `GitHub opened (${entries.length}); click Submit.`;
-}));
-
-document.getElementById('mail').addEventListener('click', () => withMissing((entries, lang, region) => {
-  const subject = `[vcf-rosetta i18n] ${lang} missing ${entries.length}${region ? ' · ' + region : ''}`;
-  const render = a => `Target language: ${lang}\nSource: ${region || '(none)'}\nTerms: ${a.length}\n(each entry: tool=source page, flags=anomaly hints)\n\n` +
-    `${JSON.stringify(compact(a), null, 2)}\n`;
-  const { arr, truncated } = fitWithin(entries, render);
-  let body = render(arr);
-  if (truncated) body += `\nNote: many terms; this email body includes only the first ${arr.length}/${entries.length}. Please attach the full JSON from “Export JSON (local)”.\n`;
-  chrome.tabs.create({ url: `mailto:${DEV_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}` });
-  statusEl.textContent = truncated ? `Email opened (first ${arr.length}/${entries.length}); attach the local JSON.` : `Email opened (${entries.length}); send it.`;
-}));
+// 采集到的未翻译词条【只能本地导出】。此前还有 GitHub Issue / mailto 两条一键回流通道,
+// 但它们会把页面文本放进 URL 发往 github.com,与「页面内容绝不离开设备」的隐私承诺冲突,
+// 已于 3.4.46 移除。用户仍可自行把导出的 JSON 附到 Issue 里。
 
 document.getElementById('clear').addEventListener('click', async () => {
   const tab = await activeTab();

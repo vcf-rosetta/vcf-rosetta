@@ -46,7 +46,7 @@ a { color:var(--blue); word-break:break-all; }
   <li><b>不收集任何个人信息。</b> 扩展不读取、不存储、不传输用户身份、凭据、浏览历史或页面业务数据。</li>
   <li><b>不向任何服务器发送页面内容。</b> 翻译在浏览器本地完成，词典文件随扩展打包或按需下载到本地后使用。</li>
   <li><b>本地设置。</b> 仅在浏览器本地 / 账号同步存储区（<code>chrome.storage</code>）保存用户偏好：启用开关、界面语言、生效主机白名单、是否开启「未翻译词条采集」。这些数据不发送给作者或第三方。</li>
-  <li><b>未翻译词条采集（默认关闭，需用户手动开启）。</b> 开启后，扩展会收集当前页面上「未命中词典的英文界面文本」，仅保存在本设备的浏览器本地存储（<code>chrome.storage.local</code>）中，由用户主动点击「导出」生成 JSON 文件下载到本地，也可随时一键清空。<b>扩展本身不会自动上传任何内容</b>；是否将导出文件提交给项目，完全由用户自行决定。</li>
+  <li><b>未翻译词条采集（默认关闭，需用户手动开启）。</b> 开启后，扩展会收集当前页面上「未命中词典的英文界面文本」，仅保存在本设备的浏览器本地存储（<code>chrome.storage.local</code>）中，由用户主动点击「导出」生成 JSON 文件保存到本地，也可随时一键清空。<b>扩展没有任何上传通道</b> —— 采集结果只能落到本机文件；若愿意反馈给项目，由用户自行把该文件附到 GitHub Issue，扩展不参与。</li>
   <li><b>无远程分析、无广告、无跟踪。</b></li>
 </ul>
 </div>
@@ -58,7 +58,7 @@ a { color:var(--blue); word-break:break-all; }
   <li><b>No personal data is collected.</b> It does not read, store, or transmit identity, credentials, browsing history, or business data from pages.</li>
   <li><b>No page content is sent to any server.</b> Translation happens locally using dictionary files bundled with the extension or downloaded on demand to the local device.</li>
   <li><b>Local settings only</b> are kept in <code>chrome.storage</code> (enable toggle, UI language, host allow-list, optional "collect untranslated strings" flag). They are never sent to the author or third parties.</li>
-  <li><b>Untranslated-string collection (off by default, user-enabled).</b> When enabled, untranslated English UI strings on the current page are stored only in the browser's local storage (<code>chrome.storage.local</code>) on the user's own device, and are only written to a local JSON file when the user clicks "export"; they can be cleared at any time. The extension never auto-uploads anything; submitting an exported file to the project is entirely the user's choice.</li>
+  <li><b>Untranslated-string collection (off by default, user-enabled).</b> When enabled, untranslated English UI strings on the current page are stored only in the browser's local storage (<code>chrome.storage.local</code>) on the user's own device, and are only written to a local JSON file when the user clicks "export"; they can be cleared at any time. <b>The extension has no upload path at all</b> — the collected list can only reach a local file. Sharing it with the project means the user attaching that file to a GitHub issue themselves; the extension plays no part.</li>
   <li><b>No remote analytics, ads, or tracking.</b></li>
 </ul>
 </div>

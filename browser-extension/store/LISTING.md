@@ -1,4 +1,4 @@
-# Chrome Web Store — Listing copy (v3.4.45)
+# Chrome Web Store — Listing copy (v3.4.46)
 
 > Paste into the Chrome Developer Dashboard "Store listing". Summary ≤132 chars.
 > The popup UI ships in 6 languages (English, Simplified/Traditional Chinese, German, Italian, Korean) and on first open follows the browser language, falling back to English. The store name/description in `chrome://extensions` also localize per browser language via `_locales/`.
@@ -26,7 +26,7 @@ VCF 9 UI Translator translates the VMware vCenter Server / VCF 9.x web console U
 • The popup interface itself is localized into 6 languages and follows your browser language on first open (English fallback); switch it any time from the top-right selector.
 • Activates only on pages detected as a vCenter / VCF console. On all other pages it makes no network requests and reads no data. If auto-detection misses your console, one click adds the current site to a personal allow-list.
 • Dictionaries are fetched on demand from a public data repo via CDN and cached locally; page content is never sent to any server.
-• Optional: collect untranslated terms (off by default) and export them as a local JSON download to help improve coverage — nothing is uploaded automatically.
+• Optional: collect untranslated terms (off by default) and export them to a local JSON file — the extension has no upload path at all, so the list can only ever reach a file on your own device.
 
 For VMware Cloud Foundation 9.x / vSphere operations teams who prefer a localized console.
 

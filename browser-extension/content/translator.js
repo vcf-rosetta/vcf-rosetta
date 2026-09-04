@@ -512,13 +512,6 @@
       ensureMissingLoaded().then(() => sendResponse({ count: window.__vcDumpMissing() }));
       return true;   // 异步 sendResponse
     }
-    else if (msg.type === 'VC_GET_MISSING') {
-      ensureMissingLoaded().then(() => {
-        const entries = missingEntries();
-        sendResponse({ entries: entries, list: entries.map(e => e.text), lang: loadedLang || 'en' });
-      });
-      return true;   // 异步 sendResponse
-    }
     else if (msg.type === 'VC_CLEAR_MISSING') {
       // 内存 + 存储一并清;同时把「已载入」置真 —— 之后的惰性载入不得把旧存量复活
       missing.clear();
