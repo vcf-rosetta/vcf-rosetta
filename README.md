@@ -54,7 +54,9 @@ Issues / new-language requests: <https://github.com/vcf-rosetta/vcf-rosetta/issu
 extension ──① bundled (offline pack)──▶ use directly
           ──② local cache────────────▶ chrome.storage (version-matched)
           ──③ CDN on demand──────────▶ cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@v<ver>/browser-extension/dict.<lang>.json
-                                       (version discovered via @main langs.json; falls back to @main / mirror hosts)
+                                       (version discovered via @main langs.json; mirror-host failover only —
+                                        dictionary content is NEVER fetched from @main: a mutable ref is the one
+                                        poisonable path, so a missing tag fails closed rather than falling back)
 ```
 
 ## Repository layout

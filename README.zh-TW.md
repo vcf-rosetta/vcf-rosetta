@@ -54,7 +54,9 @@ Bug / 新語言需求:<https://github.com/vcf-rosetta/vcf-rosetta/issues>
 瀏覽器擴充 ──①內建(離線包)──▶ 直接用
           ──②本機快取──────▶ chrome.storage(版本一致)
           ──③CDN 按需下載──▶ cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@v<版本>/browser-extension/dict.<lang>.json
-                             (版本號來自 @main 的 langs.json;tag 未就緒或主網域不可達時自動回退 @main / 鏡像網域)
+                             (版本號來自 @main 的 langs.json;主網域不可達時切換鏡像網域。
+                              詞典內容絕不從 @main 取 —— 可變參考是唯一可被投毒的路徑,
+                              tag 缺失即失敗,不回退)
 ```
 
 ## 儲存庫結構

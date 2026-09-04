@@ -1,0 +1,11 @@
+{
+  "_note": "审定覆盖表:对已发布官方词条中确认的误译/错字的规范裁决。优先级最高。合并顺序:glossary.<lang>.json(官方合并)-> 本文件(覆盖)。每条的依据是同一份 glossary 内的整句证据或同族主流译法,不是凭感觉改。2026-09 首版,由 contrib/AUDIT-2026-09.md 的审核发现。",
+  "Partner Supported": "Partner-unterstützt",
+  "Community Supported": "Community-unterstützt",
+  "Partner Supported Package": "Von Partnern unterstütztes Paket",
+  "Community Supported Package": "Von der Community unterstütztes Paket",
+  "EDRS scale in recommendation event": "Empfehlungsereignis EDRS-Herunterskalierung",
+  "EDRS scale out recommendation event": "Empfehlungsereignis EDRS-Hochskalierung",
+  "No matching CRL was found in the provided local CRL store. \\": "Es wurde keine passende Zertifikatssperrliste (CRL) im lokalen Speicher gefunden. \\",
+  "The DN of the TrustAnchor is improperly specified.": "Der DN des vertrauenswürdigen Root-Zertifikats hat ein falsches Format."
+}

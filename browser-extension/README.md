@@ -85,8 +85,11 @@ git pull                                  # ① 拉最新词典(dict 已入库,�
 1. **扩展内置** `chrome-extension://…/dict.<lang>.json` —— 离线包走这条,零联网。
 2. **本地缓存**(`chrome.storage.local`,版本一致才用)。
 3. **远程下载** —— 从公开主仓库 [`vcf-rosetta/vcf-rosetta`](https://github.com/vcf-rosetta/vcf-rosetta)(`browser-extension/dict.*.json`)经 jsDelivr 下载并写缓存。
-   词典 URL **钉到发布 tag**(`@v<版本>`,版本号来自 `@main` 的 `langs.json` 目录,tag 未就绪时自动退回 `@main`);
-   下载内容经 schema 校验(仅接受扁平的字符串映射)后才使用/入缓存。
+   词典 URL **钉到发布 tag**(`@v<版本>`,版本号来自 `@main` 的 `langs.json` 目录)。
+   **词典内容绝不从 `@main` 取** —— 可变引用是唯一可被投毒的路径(比如把「取消」「删除」的译文对调),
+   所以 tag 缺失时是「取不到就失败」,不回退;只有连版本号都拿不到(近乎离线)才允许 `@main` 应急。
+   因此**发布时 tag 必须与 commit 一起推,并在刷 `@main` 的 `langs.json` 之前就位**。
+   下载内容经 schema 校验(仅接受扁平的字符串映射)后才使用/入缓存;内置目录登记了 sha256 时还会强制比对哈希。
 
 弹窗的「词典」行会显示当前用的是哪一级(`内置/缓存/在线`)、语言、版本号、条数;旁边 **↻ 刷新词典** 可清缓存强制重取最新。
 

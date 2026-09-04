@@ -95,7 +95,7 @@ for (const [lang, meta] of Object.entries(langs)) {
   // 2. 版本
   if (!/^\d+\.\d+\.\d+$/.test(meta.version || '')) fail(`langs.json ${lang} version 非法: ${meta.version}`);
   else if (tags.size && !tags.has('v' + meta.version)) {
-    if (meta.version === manifest.version) warn(`${lang} v${meta.version} 尚无 tag(与 manifest 同步的待发布版本,扩展先走 @main)`);
+    if (meta.version === manifest.version) warn(`${lang} v${meta.version} 尚无 tag(与 manifest 同步的待发布版本)—— 推送时必须 git push origin HEAD v${meta.version} 一起推,且在 purge @main 之前;扩展【不会】回退 @main,tag 缺失即 404`);
     else fail(`langs.json ${lang} version=${meta.version} 无对应 tag v${meta.version},钉版词典 URL 永远 404`);
   }
 

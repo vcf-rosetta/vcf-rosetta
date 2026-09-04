@@ -54,7 +54,9 @@ Bug / 新语言需求:<https://github.com/vcf-rosetta/vcf-rosetta/issues>
 浏览器扩展 ──①内置(离线包)──▶ 直接用
           ──②本地缓存──────▶ chrome.storage(版本一致)
           ──③CDN 按需下载──▶ cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@v<版本>/browser-extension/dict.<lang>.json
-                             (版本号来自 @main 的 langs.json;tag 未就绪或主域不可达时自动回退 @main / 镜像域)
+                             (版本号来自 @main 的 langs.json;主域不可达时切换镜像域。
+                              词典内容绝不从 @main 取 —— 可变引用是唯一可被投毒的路径,
+                              tag 缺失即失败,不回退)
 ```
 
 ## 仓库结构

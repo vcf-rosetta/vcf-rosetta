@@ -12,10 +12,10 @@
     "de": {
       "name": "Deutsch",
       "english": "German",
-      "version": "3.4.43",
+      "version": "3.4.44",
       "source": "official+draft",
       "status": "stable",
-      "sha256": "2cb26fc61a04308b205bd2a26de78f3e45b8d14ba4be13c12669ad99c1b71c40"
+      "sha256": "617d5f4f24797a93a32711178f2f4e91c66aaa19946a0550107b62dd8b8cddd8"
     },
     "zh-TW": {
       "name": "繁體中文",
@@ -28,18 +28,18 @@
     "it": {
       "name": "Italiano",
       "english": "Italian",
-      "version": "3.4.43",
+      "version": "3.4.44",
       "source": "official+draft",
       "status": "stable",
-      "sha256": "5e73ea4dac80e6ecd9f6d6841306174773605657b2a36f8a375b44f05ad8d661"
+      "sha256": "4c549ea358e2b3931c846ffea210e59969d88f2db721de7659dffa7b9d87b70e"
     },
     "ko": {
       "name": "한국어",
       "english": "Korean",
-      "version": "3.4.43",
+      "version": "3.4.44",
       "source": "official+draft",
       "status": "stable",
-      "sha256": "4104b29bfadc8af50b8c7eb2857702206cd0ca32f401c73fd33030b615039d2a"
+      "sha256": "d6cdfba548aecef54141feece253f677536c83cf66d76c47d46f4d72dabf15b3"
     }
   }
 }

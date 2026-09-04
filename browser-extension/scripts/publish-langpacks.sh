@@ -7,9 +7,15 @@
 #   - 语言目录 langs.json 走 @main 浮动引用(小文件),已装用户据此发现新版本 → 触发重下缓存
 #
 # 本脚本负责:① 校验「词典变了必须 bump langs.json 里对应语言的 version」;
-#            ② 提交词典 + 目录并推送;③ 刷新 jsDelivr 上 @main 的 langs.json(及词典兜底路径)。
-# ★ 发布 tag 由发版流程负责:词典 URL 要生效,必须存在与 version 对应的 git tag(v<版本>)。
-#   在 tag 打出之前,扩展会自动退回 @main 词典 URL,不影响用户。
+#            ② 提交词典 + 目录并推送;③ 刷新 jsDelivr 上 @main 的 langs.json。
+#
+# ★★ tag 必须与 commit 一起推,且要在本脚本 purge @main 之前就位。★★
+#   词典 URL 钉到 @v<版本>,而 translator.js 里 `refs = pinned ? ['v'+ver] : ['main']`
+#   只有一个元素 —— **没有 @main 回退**(那是唯一可被投毒的可变引用,已刻意移除)。
+#   所以一旦 @main 的 langs.json 报出新版本而 tag 不存在,已装用户就是三个镜像全 404、
+#   词典加载失败。正确顺序:
+#       git commit → git tag -m "…" v<版本> → git push origin HEAD v<版本> → 本脚本 purge
+#   (仓库 tag.gpgsign=true,`git tag` 漏了 -m 会直接失败。)
 #
 # 用法:bash browser-extension/scripts/publish-langpacks.sh
 # 前提:已用 build-dict.mjs 生成 dict.<lang>.json;对主仓库有推送权限(gh 已登录)。
@@ -57,6 +63,20 @@ for f in langs.json $(cd "$EXT" && ls dict.*.json); do
   curl -s --max-time 20 "https://purge.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/$EXT/$f" >/dev/null || true
 done
 echo "已刷新 jsDelivr(@main)。"
-echo "★ 别忘了:发版时打出与 langs.json version 对应的 tag(如 git tag v3.4.32 && git push origin v3.4.32),"
-echo "  钉版词典 URL(@v<版本>)才会生效。验证:"
-echo "  curl -I https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/$EXT/langs.json"
+
+# 事后自检:langs.json 里每个语言的 version 都必须有对应 tag,否则该语言的用户直接 404
+# (扩展不回退 @main)。这里只报警,不改动任何东西。
+node --input-type=module -e '
+import { readFileSync } from "node:fs";
+import { execSync } from "node:child_process";
+const langs = JSON.parse(readFileSync("browser-extension/langs.json","utf8")).languages || {};
+const tags = new Set(execSync("git tag", {encoding:"utf8"}).split("\n").filter(Boolean));
+const bad = Object.entries(langs).filter(([, m]) => !tags.has("v" + m.version)).map(([l, m]) => `${l}=v${m.version}`);
+if (bad.length) {
+  console.error("✗ 以下语言的 version 没有对应 tag,这些用户会 404(扩展不回退 @main):" + bad.join(", "));
+  console.error("  立即补:git tag -m \"…\" v<版本> && git push origin v<版本>");
+  process.exit(1);
+}
+console.log("✓ 每个语言的 version 都有对应 tag");
+'
+echo "验证:curl -I https://cdn.jsdelivr.net/gh/vcf-rosetta/vcf-rosetta@main/$EXT/langs.json"

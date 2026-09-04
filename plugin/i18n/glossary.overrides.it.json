@@ -1,0 +1,9 @@
+{
+  "_note": "审定覆盖表:对已发布官方词条中确认的误译/错字的规范裁决。优先级最高。合并顺序:glossary.<lang>.json(官方合并)-> 本文件(覆盖)。每条的依据是同一份 glossary 内的整句证据或同族主流译法,不是凭感觉改。2026-09 首版,由 contrib/AUDIT-2026-09.md 的审核发现。",
+  "Key provider": "Provider di chiavi",
+  "Key provider is not selected.": "Provider di chiavi non selezionato.",
+  "Key provider {kmsCluster} is not available on host.": "Il provider di chiavi {kmsCluster} non è disponibile nell'host.",
+  "The KMS cluster {kmsCluster} is a Trusted Key Provider that is not supported with vSAN Encryption": "Il cluster KMS {kmsCluster} è un provider di chiavi attendibile non supportato con la crittografia vSAN",
+  "Silence Alert": "Silenzia avviso",
+  "is not equal to": "non è uguale a"
+}
