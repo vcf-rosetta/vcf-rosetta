@@ -1,6 +1,9 @@
 # 隐私政策 / Privacy Policy — VCF 9 UI Translator(vcf-rosetta)
 
-_最后更新:2026-07-04_
+_最后更新 / Last updated:2026-09-04_
+
+> 公开地址 / Canonical URL: https://vcf-rosetta.github.io/vcf-rosetta/privacy.html
+> (由 `docs/privacy.html` 经 GitHub Pages 发布;本文件为源文本,两者内容须保持一致)
 
 ## 简体中文
 VCF 9 UI Translator(项目名 vcf-rosetta)是一个纯前端的界面本地化(翻译)扩展。

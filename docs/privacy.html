@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — VCF 9 UI Translator</title>
+<style>
+:root { --green:#2E7D32; --dark:#1b1b1b; --grey:#606060; --blue:#1a5fb4; --bg:#f4f7f5; --card:#fff; --line:#e3e8e4; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC","Noto Sans CJK",sans-serif; color:var(--dark); background:var(--bg); line-height:1.6; }
+.topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+.topbar .brand { font-weight:700; color:var(--green); }
+.topbar a { font-size:14px; }
+.wrap { max-width:900px; margin:0 auto; padding:0 20px 60px; }
+.hero { text-align:center; padding:44px 20px 10px; }
+.hero h1 { font-size:36px; margin:0; color:var(--green); letter-spacing:-.5px; }
+.hero .sub { font-size:15px; color:var(--grey); margin:10px 0 0; }
+h2 { font-size:22px; color:var(--green); border-bottom:2px solid var(--green); padding-bottom:6px; margin:38px 0 14px; }
+p { margin:8px 0; }
+ul { margin:8px 0; padding-left:22px; }
+li { margin:8px 0; }
+code { background:#eef1ee; padding:1px 6px; border-radius:5px; font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:14px 0; }
+footer { text-align:center; color:var(--grey); font-size:12px; margin-top:40px; padding-top:16px; border-top:1px solid var(--line); }
+a { color:var(--blue); word-break:break-all; }
+@media (max-width:520px) { .hero h1 { font-size:28px; } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">VCF 9 UI Translator</span>
+  <a href="./">← Home</a>
+</div>
+
+<div class="hero">
+  <h1>隐私政策 / Privacy Policy</h1>
+  <p class="sub">VCF 9 UI Translator（vcf-rosetta）· 最后更新 / Last updated: 2026-09-04</p>
+</div>
+
+<div class="wrap">
+
+<h2>简体中文</h2>
+<div class="card">
+<p>VCF 9 UI Translator（项目名 vcf-rosetta）是一个纯前端的界面本地化（翻译）扩展。</p>
+<ul>
+  <li><b>不收集任何个人信息。</b> 扩展不读取、不存储、不传输用户身份、凭据、浏览历史或页面业务数据。</li>
+  <li><b>不向任何服务器发送页面内容。</b> 翻译在浏览器本地完成，词典文件随扩展打包或按需下载到本地后使用。</li>
+  <li><b>本地设置。</b> 仅在浏览器本地 / 账号同步存储区（<code>chrome.storage</code>）保存用户偏好：启用开关、界面语言、生效主机白名单、是否开启「未翻译词条采集」。这些数据不发送给作者或第三方。</li>
+  <li><b>未翻译词条采集（默认关闭，需用户手动开启）。</b> 开启后，扩展会收集当前页面上「未命中词典的英文界面文本」，仅保存在本设备的浏览器本地存储（<code>chrome.storage.local</code>）中，由用户主动点击「导出」生成 JSON 文件下载到本地，也可随时一键清空。<b>扩展本身不会自动上传任何内容</b>；是否将导出文件提交给项目，完全由用户自行决定。</li>
+  <li><b>无远程分析、无广告、无跟踪。</b></li>
+</ul>
+</div>
+
+<h2>English</h2>
+<div class="card">
+<p>VCF 9 UI Translator (project name: vcf-rosetta) is a client-side UI localization (translation) extension.</p>
+<ul>
+  <li><b>No personal data is collected.</b> It does not read, store, or transmit identity, credentials, browsing history, or business data from pages.</li>
+  <li><b>No page content is sent to any server.</b> Translation happens locally using dictionary files bundled with the extension or downloaded on demand to the local device.</li>
+  <li><b>Local settings only</b> are kept in <code>chrome.storage</code> (enable toggle, UI language, host allow-list, optional "collect untranslated strings" flag). They are never sent to the author or third parties.</li>
+  <li><b>Untranslated-string collection (off by default, user-enabled).</b> When enabled, untranslated English UI strings on the current page are stored only in the browser's local storage (<code>chrome.storage.local</code>) on the user's own device, and are only written to a local JSON file when the user clicks "export"; they can be cleared at any time. The extension never auto-uploads anything; submitting an exported file to the project is entirely the user's choice.</li>
+  <li><b>No remote analytics, ads, or tracking.</b></li>
+</ul>
+</div>
+
+<h2>联系 / Contact</h2>
+<div class="card">
+<p>GitHub: <a href="https://github.com/vcf-rosetta/vcf-rosetta">https://github.com/vcf-rosetta/vcf-rosetta</a></p>
+<p>问题反馈 / Issues: <a href="https://github.com/vcf-rosetta/vcf-rosetta/issues">https://github.com/vcf-rosetta/vcf-rosetta/issues</a></p>
+</div>
+
+<footer>
+  VCF 9 UI Translator · A community localization tool. Not affiliated with Broadcom / VMware.
+</footer>
+</div>
+</body>
+</html>

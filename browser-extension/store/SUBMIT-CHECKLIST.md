@@ -2,7 +2,7 @@
 
 ## 0. 一次性准备
 - [ ] 注册 Chrome Web Store 开发者账号(一次性 **$5** 注册费)。
-- [ ] 准备一个公开的隐私政策 URL(把 `store/PRIVACY.md` 发布到 GitHub Pages,或用主仓库 raw 链接)。
+- [x] 隐私政策 URL(已就位):**https://vcf-rosetta.github.io/vcf-rosetta/privacy.html** —— 由 `docs/privacy.html` 经 GitHub Pages 发布(Pages 源为 `main` 分支 `/docs`)。改隐私政策时 `docs/privacy.html` 与 `store/PRIVACY.md` 两处都要改。
 
 ## 1. 先发布语言包,再构建上传包
 扩展包**不内置词典**(仅 ~26KB),运行时按需从**公开主仓库 `vcf-rosetta/vcf-rosetta`**(`browser-extension/dict.*.json`)经 jsDelivr 下载。**所以上架前必须先把最新词典入库主仓库并刷 jsDelivr**,否则用户装上后下不到词典、无法翻译。
